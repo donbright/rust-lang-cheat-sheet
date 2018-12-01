@@ -3,22 +3,22 @@
 
 unfinished
 
-## Credits
-
-Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
 
 ## Rust in a Nutshell
 
 * Syntax tokens similar to C
 * Ownership of memory enforced at compile time
 * Statically linked
-* Functional influences
-* Package manager, tester: cargo
+* Functional influences, lots of ()()}{}()
+* Integrated package manager and tester: cargo
 * Concurrency: Rayon package
 
 # Basic Syntax
 
 ## Hello World
+
+`$ cargo new bin`
+
 File `src/main.rs`:
 ```rust
 fn main() {
@@ -26,6 +26,7 @@ fn main() {
 }
 ```
 `$ cargo run`
+`$ cargo test`
 
 ## Operators
 ### Arithmetic
@@ -193,9 +194,18 @@ u := uint(f)
 * Upper case identifier: exported (visible from other packages)
 * Lower case identifier: private (not visible from other packages)
 
-## Control structures
+// Control
 
-### If
+// If
+
+if x == 4 {
+    println!("x is four");
+} else if x == 3 {
+    println!("x is three");
+} else {
+    println!("x is something else");
+}
+
 ```go
 func main() {
 	// Basic one
@@ -578,22 +588,59 @@ func doStuff(channelOut, channelIn chan int) {
   // 1 2 0
   ```
 
-## Printing
+// Ownership, Borrowing, Movement
 
-```go
-fmt.Println("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ") // basic print, plus newline
+// variables have one owner at a time. trying to have two owners
+// is called "moving", and causes a compile time error.
+
+let s1 = String::from("hello");
+let s2 = s1; // s1 "moved" to s2, which is new owner
+println!("{}, world!", s1); // error, s1, as String, has no 'Copy' trait
+println!("{}, world!", s1.clone()); // OK, copy of s1 made, s1 itself is not 'moved'
+
+// Files
+
+use std::fs::File;
+use std::io::Read;
+
+let filename = "test.txt";
+match File::open(filename) {
+	Err(why) => panic!("failed to open file '{}': {}", filename, why),
+        Ok(mut f) => {
+        	println!("ok, opened {}",filename);
+                let mut data = String::new();
+                match f.read_to_string( &mut data ) {
+                	Err(why) => panic!("failed to read {}, {}",filename,why),
+                        Ok(s) => println!("read {} bytes",s),
+                };
+	},
+}
+
+// Strings
+
+let s = String::from("上善若水");
+println!("{} {} {}",s.as_ptr(), s.len(), s.capacity());
+
+// Printing
+
+println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
+print!("Hi, the answer is {} ",42);
+println!();
+
 p := struct { X, Y int }{ 17, 2 }
-fmt.Println( "My point:", p, "x coord=", p.X ) // print structs, ints, etc
-s := fmt.Sprintln( "My point:", p, "x coord=", p.X ) // print to string variable
+println!( "My point: {} x coord={}", p, p.X )
+let s = format!( "My point: {} x coord={}", p, p.X )
 
-fmt.Printf("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0) // c-ish format
+println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0));
 s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // formatted print to string variable
 
-hellomsg := `
+let hellomsg = r###" 
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
-` // multi-line string literal, using back-tick at beginning and end
-```
+"###;
+
+println!(hellomsg)
+
 
 ## Reflection
 ### Type Switch
@@ -615,36 +662,17 @@ func main() {
 	do("hello")
 	do(true)
 }
-```
 
-# Snippets
+// Credits
 
-## HTTP Server
-```go
-package main
-
-import (
-    "fmt"
-    "net/http"
-)
-
-// define a type for the response
-type Hello struct{}
-
-// let that type implement the ServeHTTP method (defined in interface http.Handler)
-func (h Hello) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprint(w, "Hello!")
-}
-
-func main() {
-    var h Hello
-    http.ListenAndServe("localhost:4000", h)
-}
-
-// Here's the method signature of http.ServeHTTP:
-// type Handler interface {
-//     ServeHTTP(w http.ResponseWriter, r *http.Request)
-// }
-```
-
+/*
+Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
+carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
+c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
+codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
+rust-lang.org, rust book, https://doc.rust-lang.org/book/second-edition
+rust-lang.org, rust reference, https://doc.rust-lang.org
+Adam Leventhal, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
+Shepmaster https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
+*/
 
