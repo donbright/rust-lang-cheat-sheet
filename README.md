@@ -95,6 +95,10 @@ func returnMulti() -> (int, String) {
 
 x, s = returnMulti()
 
+Function with variable number of parameters: doesn't exist. 
+Alternative: builder pattern, different named functions. 
+https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optional_arguments/
+
 ```
 
 ### Functions As Values And Closures
