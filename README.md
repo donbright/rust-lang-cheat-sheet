@@ -588,8 +588,10 @@ func doStuff(channelOut, channelIn chan int) {
   // 1 2 0
   ```
 
-// Ownership, Borrowing, Movement
+### Ownership, Borrowing, Movement
 
+
+```rust
 // variables have one owner at a time. trying to have two owners
 // is called "moving", and causes a compile time error.
 
@@ -597,9 +599,11 @@ let s1 = String::from("hello");
 let s2 = s1; // s1 "moved" to s2, which is new owner
 println!("{}, world!", s1); // error, s1, as String, has no 'Copy' trait
 println!("{}, world!", s1.clone()); // OK, copy of s1 made, s1 itself is not 'moved'
+```
 
-// Files
+### Files
 
+```rust
 use std::fs::File;
 use std::io::Read;
 
@@ -615,14 +619,18 @@ match File::open(filename) {
                 };
 	},
 }
+```
 
-// Strings
+### Strings
 
+```rust
 let s = String::from("上善若水");
 println!("{} {} {}",s.as_ptr(), s.len(), s.capacity());
+```
 
-// Printing
+### Printing
 
+```rust
 println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
 print!("Hi, the answer is {} ",42);
 println!();
@@ -641,6 +649,7 @@ let hellomsg = r###"
 
 println!(hellomsg)
 
+```
 
 ## Reflection
 ### Type Switch
