@@ -225,6 +225,16 @@ func outer() (func() int, int) {
     return inner, outer_var // return inner func and mutated outer_var 101
 }
 ```
+### Math
+
+```rust
+
+use std::cmp
+let a = cmp::max(5,3); // maximum value
+let b = -5;
+let c = b.abs();       // absolute value 
+
+```
 
 ### Variadic Functions
 ```go
