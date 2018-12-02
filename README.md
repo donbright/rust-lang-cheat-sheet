@@ -12,12 +12,10 @@ unfinished
 * Functional influences, lots of ()()}{}()
 * Integrated package manager and tester: cargo
 * Concurrency: Rayon package
+* formatter: rustfmt filename.rs
 
 ## Hello World
 
-`$ cargo new bin`
-
-File `src/main.rs`:
 ```rust
 fn main() {
     println!("Hello World");
@@ -25,16 +23,56 @@ fn main() {
 ```
 
 ```bash
-$ cargo run
-$ cargo test
+$ rustc main.rs
 ```
 
-## Declarations and initialization
+## Hello Packages, Tests, Dependencies
+
+```bash
+$ cargo new bin   # start new executable project
+$ ls -lR          # creates skeleton of files
+src/main.rs       # main executable, main()
+Cargo.toml        # Cargo.toml defines packaging and
+$ cat Cargo.toml  # also dependencies and other details
+[package]
+name = "helloworld"
+version = "0.1.0"
+authors = ["ada astra <ada@astra.moon>"]
+
+[dependencies]
+serde = "1.0.80"
+
+$ cargo build     # downloads dependencies from crates.io 
+$ cargo run       # runs program created from main.rs
+$ cargo test      # runs tests (in parallel by default)
+$ cargo test -- --test-threads=1  # run tests one at a time
+$ cargo test -- --nocapture       # run tests, show output
+```
+
+## types, declarations, initialization
 ```rust
-let x = a;
-let v:Vec<f32> = Vec::new();
+
+let x: bool = false; // let keyword
+let y: char = 'n';   // chars are 4 bytes
+let z = x;           // rust figures out type
+let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
+let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
+let n: f32 = 0.32;   // 32 bit float, also f64 for 64 bit           
+let r: [int;3] = [3,4,5];    // array of 3 int, cannot grow
+let v:Vec<int> = Vec::new(); // vector of int, can grow
+let (p,d,q) = (4,5,6)        // tuple
+let m = (4,5,6)              // another tuple
+let t,s = (2,"two")          // tuple can have different types
+let o = String::from(" hello "); // String
+, slice, str
+usize, isize       
+
 struct X { a: int, b: int };
 let x = X{ 5, 6 };
+
+let numx: u16 = 42;       // 16 bit unsigned int value to be casted
+let numy: u8 = x as u8;   // casting to 8 bits
+let numz: i32 = x as i32; // casting to signed 32 bit
 ```
 
 ## Operators
@@ -51,7 +89,71 @@ let a = 5;         // pointer + dereference example
 let b = &a;        // &a is 'address of a'
 let c = *b;        // *b is contents of memory at address in b (dereference)
 print("{}",c);     // 5
+
+let s = String::from("上善若水");
+println!("{} {} {}",s.as_ptr(), s.len(), s.capacity());
+
 ```
+
+### Printing
+
+```rust
+println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
+print!("Hi, the answer is {} ",42);
+println!();
+
+p := struct { X, Y int }{ 17, 2 }
+println!( "My point: {} x coord={}", p, p.X )
+let s = format!( "My point: {} x coord={}", p, p.X )
+
+println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0));
+s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // formatted print to string variable
+
+let hellomsg = r###" 
+ "Hello" in Chinese is 你好 ('Ni Hao')
+ "Hello" in Hindi is नमस्ते ('Namaste')
+"###;
+
+println!(" {:>4} {:>4} ", 232, 8 );   // pad to 4 spaces, align right
+
+```
+## If, conditionals, controls
+
+if x == 4 {
+    println!("x is four");
+} else if x == 3 {
+    println!("x is three");
+} else {
+    println!("x is something else");
+}
+
+```go
+func main() {
+	// Basic one
+	if x > 10 {
+		return x
+	} else if x == 10 {
+		return 10
+	} else {
+		return -x
+	}
+
+	// You can put one statement before the condition
+	if a := b + c; a < 42 {
+		return a
+	} else {
+		return a - 42
+	}
+
+	// Type assertion inside if
+	var val interface{}
+	val = "foo"
+	if str, ok := val.(string); ok {
+		fmt.Println(str)
+	}
+}
+```
+
 
 
 ## Functions
@@ -136,87 +238,6 @@ func adder(args ...int) int {
 	return total
 }
 ```
-
-## Built-in Types
-
-```
-bool, char
-usize, isize       
-i8, i16, i32, i64  
-u8, u16, u32, u64  
-f32, f64           
-array, slice, str
-tuple
-String
-
-```
-
-## Tests
-
-```bash
-$ cargo test                      # run tests in parallel
-$ cargo test -- --test-threads=1  # run tests one at a time
-$ cargo test -- --nocapture       # run tests, show output
-```
-
-## Type Conversions
-```go
-var i int = 42
-var f float64 = float64(i)
-var u uint = uint(f)
-
-// alternative syntax
-i := 42
-f := float64(i)
-u := uint(f)
-```
-
-## Packages
-* Package declaration at top of every source file
-* Executables are in package `main`
-* Convention: package name == last name of import path (import path `math/rand` => package `rand`)
-* Upper case identifier: exported (visible from other packages)
-* Lower case identifier: private (not visible from other packages)
-
-// Control
-
-// If
-
-if x == 4 {
-    println!("x is four");
-} else if x == 3 {
-    println!("x is three");
-} else {
-    println!("x is something else");
-}
-
-```go
-func main() {
-	// Basic one
-	if x > 10 {
-		return x
-	} else if x == 10 {
-		return 10
-	} else {
-		return -x
-	}
-
-	// You can put one statement before the condition
-	if a := b + c; a < 42 {
-		return a
-	} else {
-		return a - 42
-	}
-
-	// Type assertion inside if
-	var val interface{}
-	val = "foo"
-	if str, ok := val.(string); ok {
-		fmt.Println(str)
-	}
-}
-```
-
 ### Loops
 ```go
     // There's only `for`, no `while`, no `until`
@@ -605,35 +626,7 @@ match File::open(filename) {
 }
 ```
 
-### Strings
 
-```rust
-let s = String::from("上善若水");
-println!("{} {} {}",s.as_ptr(), s.len(), s.capacity());
-```
-
-### Printing
-
-```rust
-println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
-print!("Hi, the answer is {} ",42);
-println!();
-
-p := struct { X, Y int }{ 17, 2 }
-println!( "My point: {} x coord={}", p, p.X )
-let s = format!( "My point: {} x coord={}", p, p.X )
-
-println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0));
-s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // formatted print to string variable
-
-let hellomsg = r###" 
- "Hello" in Chinese is 你好 ('Ni Hao')
- "Hello" in Hindi is नमस्ते ('Namaste')
-"###;
-
-println!(hellomsg)
-
-```
 
 ## Reflection
 ### Type Switch
