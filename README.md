@@ -13,8 +13,6 @@ unfinished
 * Integrated package manager and tester: cargo
 * Concurrency: Rayon package
 
-# Basic Syntax
-
 ## Hello World
 
 `$ cargo new bin`
@@ -31,55 +29,30 @@ $ cargo run
 $ cargo test
 ```
 
-## Operators
-### Arithmetic
-|Operator|Description|
-|--------|-----------|
-|`+`|addition|
-|`-`|subtraction|
-|`*`|multiplication|
-|`/`|quotient|
-|`%`|remainder|
-|`&`|bitwise and|
-|`\|`|bitwise or|
-|`^`|bitwise xor|
-|`&^`|bit clear (and not)|
-|`<<`|left shift|
-|`>>`|right shift|
-
-### Comparison
-|Operator|Description|
-|--------|-----------|
-|`==`|equal|
-|`!=`|not equal|
-|`<`|less than|
-|`<=`|less than or equal|
-|`>`|greater than|
-|`>=`|greater than or equal|
-
-### Logical
-|Operator|Description|
-|--------|-----------|
-|`&&`|logical and|
-|`\|\|`|logical or|
-|`!`|logical not|
-
-### Other
-|Operator|Description|
-|--------|-----------|
-|`&`|address of / create pointer|
-|`*`|dereference pointer|
-
-## Declarations
-Type goes after identifier!
+## Declarations and initialization
 ```rust
-var foo int // declaration without initialization
-var foo int = 42 // declaration with initialization
-var foo, bar int = 42, 1302 // declare and init multiple vars at once
-var foo = 42 // type omitted, will be inferred
-foo := 42 // shorthand, only in func bodies, omit var keyword, type is always implicit
-const constant = "This is a constant"
+let x = a;
+let v:Vec<f32> = Vec::new();
+struct X { a: int, b: int };
+let x = X{ 5, 6 };
 ```
+
+## Operators
+
+```rust
+1 + 2 - 3 * 4 / 5  // arithmetic add, minus, multiply, divide
+7 % 5              // modulo (remainder)
+& | ^ << >>        // bitwise and, or, xor, leftshift, rightshift
+&^                 // bitwise andnot
+a == b != c < d <= e > f >= g  // logical comparison
+a && b || c ! d    // logical boolean , and, or, not
+
+let a = 5;         // pointer + dereference example
+let b = &a;        // &a is 'address of a'
+let c = *b;        // *b is contents of memory at address in b (dereference)
+print("{}",c);     // 5
+```
+
 
 ## Functions
 ```rust
