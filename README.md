@@ -1,5 +1,5 @@
 
-## WARNING unfinished
+## WARNING very unfinished
 
 unfinished
 
@@ -9,7 +9,7 @@ unfinished
 * Syntax tokens similar to C
 * Ownership of memory enforced at compile time
 * Statically linked
-* Functional influences, lots of ()()}{}()
+* Functional influences, lots of ()(),{},();
 * Integrated package manager and tester: cargo
 * Concurrency: Rayon package
 * formatter: rustfmt filename.rs
@@ -61,6 +61,7 @@ let n: f32 = 0.32;   // 32 bit float, also f64 for 64 bit
 let r: [int;3] = [3,4,5];    // array of 3 int, cannot grow
 let v:Vec<int> = Vec::new(); // vector of int, can grow
 let (p,d,q) = (4,5,6)        // tuple
+print("{}",p)                // tuple is a way to assign multiple variables
 let m = (4,5,6)              // another tuple
 let t,s = (2,"two")          // tuple can have different types
 let o = String::from(" hello "); // String
