@@ -25,8 +25,11 @@ fn main() {
     println!("Hello World");
 }
 ```
-`$ cargo run`
-`$ cargo test`
+
+```bash
+$ cargo run
+$ cargo test
+```
 
 ## Operators
 ### Arithmetic
@@ -173,6 +176,14 @@ array, slice, str
 tuple
 String
 
+```
+
+## Tests
+
+```bash
+$ cargo test                      # run tests in parallel
+$ cargo test -- --test-threads=1  # run tests one at a time
+$ cargo test -- --nocapture       # run tests, show output
 ```
 
 ## Type Conversions
