@@ -155,29 +155,36 @@ func main() {
 ```
 
 
+### loop, for, while
+```rust
+for i in 0..10 { print!("{} ",x) };               // 0 to 10
+for i in (0..10).rev() { print!("{} ",x) };       // 10 down to 0
+for i in (0..10).step_by(2) { print!("{} ",x) };  // skip every other item
+
+let v = vec![1, 35, 64, 36, 26];	// vector iterate
+for n in v { println!("{}",n) }		// ordinary
+for (i, n) in v.iter().enumerate() {	// use index and item 
+	println!("{},{}", i, n); }
+
+done = false;
+loop { if done { break; } }		// loop
+
+let i = 10;				// while
+while i > 0; {
+	println("{}",i);
+	i -= 2;
+}
+```
 
 ## Functions
 ```rust
-fn functionName() {}
-
-fn functionName( a:int, b:i32) -> i32 {}
-
-fn functionName( a,b,c: i32 ) -> String {}
-
-fn functionName() int {
-    42
-}
-
-func returnMulti() -> (int, String) {
-    ( 42, String::from("foobar") )
-}
-
-x, s = returnMulti()
+fn adder( a:i8, b:i32) -> i32 { b + a }
+fn multi_return( a:i8, b:i32) -> (char,i32) { ('s',a+b) }
+let (x, s) = multi_return( 3, 56 ); 
 
 Function with variable number of parameters: doesn't exist. 
 Alternative: builder pattern, different named functions. 
 https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optional_arguments/
-
 ```
 
 ### Functions As Values And Closures
@@ -237,18 +244,6 @@ func adder(args ...int) int {
 	}
 	return total
 }
-```
-### Loops
-```go
-    // There's only `for`, no `while`, no `until`
-    for i := 1; i < 10; i++ {
-    }
-    for ; i < 10;  { // while - loop
-    }
-    for i < 10  { // you can omit semicolons if there is only a condition
-    }
-    for { // you can omit the condition ~ while (true)
-    }
 ```
 
 ### Switch
