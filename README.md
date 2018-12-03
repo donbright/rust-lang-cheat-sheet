@@ -87,6 +87,12 @@ let numz: i32 = x as i32; // cast to signed 32 bit integer
 
 static FOOBY: i32 = 5;    // static, global-ish variable
 
+// temporary mutability
+let mut point = 6;
+point = 5;
+let point = point; // now immutable
+point = 6; // this causes an error
+
 ```
 
 ## Operators
@@ -168,6 +174,19 @@ https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optiona
 ```
 
 ### Ownership, borrowing, references, lifetimes, scope, mutability, movement
+
+Only one of these can be true:
+* one or more references (&T) to a resource,
+* exactly one mutable reference (&mut T).
+Not both.
+
+```rust
+struct Point {
+    x: i32,
+    mut y: i32, // nope
+}
+```
+
 
 ```rust
 
