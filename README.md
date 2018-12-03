@@ -10,9 +10,11 @@ unfinished, has not been quality checked
 * Ownership of memory enforced at compile time
 * Statically linked
 * Functional language influences
-* Integrated package manager and tester: cargo
+* Packages: 'cargo' command
+* Testing: builtin, also 'cargo test'
+* Repository of packages: https://crates.io 
 * Concurrency: Rayon package
-* formatter: rustfmt filename.rs
+* formatter: rustfmt filename.rs (in place)
 * compiler engine is LLVM
 
 ## Hello World
@@ -24,17 +26,17 @@ fn main() {
 ```
 
 ```bash
-$ rustc main.rs
+$ rustc main.rs   # creates 'main' executable
 ```
 
 ## Hello Packages, Tests, Dependencies
 
 ```bash
 $ cargo new bin   # start new executable project
-$ ls -lR          # creates skeleton of files
-src/main.rs       # main executable, main()
-Cargo.toml        # Cargo.toml defines packaging and
-$ cat Cargo.toml  # also dependencies and other details
+$ ls -lR          # list our skeleton of files
+src/main.rs       # main.rs, has main() entry point
+Cargo.toml        # Cargo.toml defines packaging
+$ $EDITOR Cargo.toml  # add dependencies and other details
 [package]
 name = "helloworld"
 version = "0.1.0"
@@ -43,7 +45,7 @@ authors = ["ada astra <ada@astra.moon>"]
 [dependencies]
 serde = "1.0.80"
 
-$ cargo build     # downloads dependencies from crates.io 
+$ cargo build     # downloads dependencies + builds main.rs 
 $ cargo run       # runs program created from main.rs
 $ cargo test      # runs tests (in parallel by default)
 $ cargo test -- --test-threads=1  # run tests one at a time
@@ -194,17 +196,19 @@ https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optiona
 
 ### Ownership, borrowing, references, lifetimes, scope, mutability, movement
 
+Limitations of mut and references:
+
 Only one of these can be true:
 * The program has one or more references (&T) to a resource,
 * The program has exactly one mutable reference (&mut T).
 Not both can be true.
 
-Cannot have a struct with mixed mutability in members:
+Limits of Struct mut: Cannot have a struct with mixed mutability in members:
 
 ```rust
 struct Point {
     x: i32,
-    mut y: i32, // nope
+    mut y: i32, // error
 }
 ```
 
