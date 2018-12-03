@@ -131,6 +131,18 @@ point = 5;
 let point = point; // now point is immutable
 point = 6; // error
 
+// structs
+```rust
+struct Bowl { r: i32, mut h: i32, }; // error
+let w = Bowl{0,0};
+w.r=4;
+
+struct Wheel { r: i32, h: i32 };
+let mut w = Wheel{0,0); // ok
+w.r=4;
+
+```
+
 // scope
 see below in 'functions'
 
@@ -207,14 +219,7 @@ Only one of these can be true:
 * The program has exactly one mutable reference (&mut T).
 Not both can be true.
 
-Limits of Struct mut: Cannot have a struct with mixed mutability in members:
 
-```rust
-struct Point {
-    x: i32,
-    mut y: i32, // error
-}
-```
 
 Calling and returning from functions (applies to other scopes too)
 ```rust
