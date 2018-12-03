@@ -53,15 +53,15 @@ $ cargo test -- --nocapture       # run tests, show output
 ## types, variables, declarations, initialization
 ```rust
 let x: bool = false; // let keyword
-let k = false;       // compiler can determine some types
+let k = false;       // rustc can determine some types
 let y: char = 'n';   // chars are 4 bytes
-let z = x;           // rust figures out type
 let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
 let n: f32 = 0.32;   // 32 bit float, also f64 for 64 bit           
 let r: [u8;3] = [3,4,5];      // array of 3 int, cannot grow
 let v:Vec<u8> = Vec::new();   // vector of int, can grow
-let vs = v.len();             // length
+v.push( 2 );                  // append item to vector
+let vs = v.len();             // length of vector
 let (p,d,q) = (4,5,6) ;       // tuple is a way to assign multiple variables
 print("{}",p);                // you can use the after assignment
 let m = (4,5,6);              // another tuple
