@@ -139,7 +139,16 @@ w.r=4;
 
 struct Wheel { r: i32, h: i32 };
 let mut w = Wheel{0,0); // ok
-w.r=4;
+w.r = 4;
+
+// vector of struct
+let v:Vec<Wheel> = Vec::new();
+v.push(Wheel{0,0});
+v[0].r = 4;   // cannot mutably borrow field of immutable binding, error
+
+let mut v:Vec<Wheel> = &mut Vec::new();
+v.push(Wheel{0,0});
+v[0].r = 4;   // ok
 
 ```
 
