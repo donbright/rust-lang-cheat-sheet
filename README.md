@@ -1,7 +1,7 @@
 
 ## WARNING very unfinished
 
-unfinished
+unfinished, has not been quality checked
 
 
 ## Rust in a Nutshell
@@ -13,7 +13,7 @@ unfinished
 * Integrated package manager and tester: cargo
 * Concurrency: Rayon package
 * formatter: rustfmt filename.rs
-* back end is LLVM
+* compiler engine is LLVM
 
 ## Hello World
 
@@ -90,7 +90,7 @@ let _ = expr; // determine the type of expression expr by looking at rustc error
 
 ```
 
-## Mutability
+## Mutability - basics
 
 ```rust
 let x = false;           // all vars are immutable by default
@@ -99,21 +99,18 @@ let mut p: bool = false; // "mut" allows variables to change
 p = true;                // ok
 
 // mut x=5 vs x=mut 5
-let mut v = 2;
-v = 3;
-let u = 4;
-let w = &mut 2;
-*w = 3;
-w = &u; // error, w is not mutable, even tho it points to something mutable
-
-let val2 = &2;
-*val2 = 3; // error: cannot assign to immutable borrowed content
+let mut v = 2;  // v itself is mutable, bound to 2, which is immutable
+v = 3;  // v re-bound to 3, 3 is also immutable
+let u = 4;  // u is immutable
+let w = &mut 7;  // w is immutable, but its bound to a mutable place, holding 7
+*w = 3;  // the mutable place w was pointing to can be changed, because its mutable
+w = &u; // error, w is not mutable, even though it points to something mutable
 
 // temporary mutability
-let mut point = 6;
+let mut point = 6;  // point is mutable
 point = 5;
-let point = point; // now immutable
-point = 6; // this causes an error
+let point = point; // now point is immutable
+point = 6; // error
 
 ```
 
@@ -198,9 +195,11 @@ https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optiona
 ### Ownership, borrowing, references, lifetimes, scope, mutability, movement
 
 Only one of these can be true:
-* one or more references (&T) to a resource,
-* exactly one mutable reference (&mut T).
-Not both.
+* The program has one or more references (&T) to a resource,
+* The program has exactly one mutable reference (&mut T).
+Not both can be true.
+
+Cannot have a struct with mixed mutability in members:
 
 ```rust
 struct Point {
@@ -209,7 +208,7 @@ struct Point {
 }
 ```
 
-
+Calling and returning from functions (applies to other scopes too)
 ```rust
 
 --------- example 1, move error
@@ -239,16 +238,26 @@ let mut v=vec![1,2,3];
 f(&v);  // let function borrow vector
 v[0]=1;  // ownership returned after borrow
 
+--------- example 4, take mutable ownership
+
+fn f2(v: mut Vec<i8>)  { // function takes ownership
+	let l = v.len(); 
+	v[0] = 1     // v will be freed, destructed
+}                    // there's no return ownership
+let mut v=vec![1,2,3];
+f(&v);  // function takes ownership
+v[0] = 2;  // error... v was 'moved' by function, ownership lost
 
 --------- example 4, take and return mutable ownership
 
-fn f2(mut v: Vec<i8>) -> Vec<i8> { // borrow ownership
+fn f2(v: mut Vec<i8>) -> mut Vec<i8> { // take ownership
 	let l = v.len(); 
 	v[0] = 1;
-	v
-}                    // return ownership
+	v                // return ownership
+}                    
 let mut v=vec![1,2,3];
-v = f(&v);  // let function borrow vector
+v = f(&v);  // let function own vector, it is returned to us
+v[0] = 2;
 
 --------- example 5, borrow mutable ownership with reference (&mut)
 
@@ -257,7 +266,7 @@ fn f(v: &mut Vec<i8>) { // borrow ownership
 }                    // v is left alive, when function ends
 let mut v=vec![1,2,3];
 f(&v);  // let function borrow vector
-v[0]=1;  // ownership returned after borrow
+v[0]=2;  // ownership returned after borrow
 
 
 
