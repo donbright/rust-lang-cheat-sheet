@@ -7,13 +7,13 @@ unfinished
 ## Rust in a Nutshell
 
 * Syntax tokens similar to C
-* Variables default to immutable
 * Ownership of memory enforced at compile time
 * Statically linked
 * Functional language influences
 * Integrated package manager and tester: cargo
 * Concurrency: Rayon package
 * formatter: rustfmt filename.rs
+* back end is LLVM
 
 ## Hello World
 
@@ -50,31 +50,40 @@ $ cargo test -- --test-threads=1  # run tests one at a time
 $ cargo test -- --nocapture       # run tests, show output
 ```
 
-## types, declarations, initialization
+## types, variables, declarations, initialization
 ```rust
-
 let x: bool = false; // let keyword
+x = true;            // error. all variables immutable by default
+let mut p: bool = false; // "mut" allows variables to change
+let mut k = false;   // compiler can determine some types
 let y: char = 'n';   // chars are 4 bytes
 let z = x;           // rust figures out type
 let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
 let n: f32 = 0.32;   // 32 bit float, also f64 for 64 bit           
-let r: [int;3] = [3,4,5];    // array of 3 int, cannot grow
-let v:Vec<int> = Vec::new(); // vector of int, can grow
-let (p,d,q) = (4,5,6)        // tuple
-print("{}",p)                // tuple is a way to assign multiple variables
-let m = (4,5,6)              // another tuple
-let t,s = (2,"two")          // tuple can have different types
-let o = String::from(" hello "); // String
+let r: [u8;3] = [3,4,5];      // array of 3 int, cannot grow
+let v:Vec<u8> = Vec::new();   // vector of int, can grow
+let vs = v.len();             // length
+let (p,d,q) = (4,5,6) ;       // tuple is a way to assign multiple variables
+print("{}",p);                // you can use the after assignment
+let m = (4,5,6);              // another tuple
+let t,s = (2,"two");          // tuple items can have different types
+
+let s = String::from("上善若水"); // String
+let hellomsg = r###"             // Multi-line string
+ "Hello" in Chinese is 你好 ('Ni Hao')
+ "Hello" in Hindi is नमस्ते ('Namaste')
+"###;
+
 , slice, str
 usize, isize       
 
 struct X { a: int, b: int };
 let x = X{ 5, 6 };
 
-let numx: u16 = 42;       // 16 bit unsigned int value to be casted
-let numy: u8 = x as u8;   // casting to 8 bits
-let numz: i32 = x as i32; // casting to signed 32 bit
+let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
+let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
+let numz: i32 = x as i32; // cast to signed 32 bit integer
 ```
 
 ## Operators
@@ -92,9 +101,6 @@ let b = &a;        // &a is 'address of a'
 let c = *b;        // *b is contents of memory at address in b (dereference)
 print("{}",c);     // 5
 
-let s = String::from("上善若水");
-println!("{} {} {}",s.as_ptr(), s.len(), s.capacity());
-
 ```
 
 ### Printing
@@ -111,10 +117,7 @@ let s = format!( "My point: {} x coord={}", p, p.X )
 println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0));
 s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // formatted print to string variable
 
-let hellomsg = r###" 
- "Hello" in Chinese is 你好 ('Ni Hao')
- "Hello" in Hindi is नमस्ते ('Namaste')
-"###;
+
 
 println!(" {:>4} {:>4} ", 232, 8 );   // pad to 4 spaces, align right
 
@@ -129,47 +132,21 @@ if x == 4 {
     println!("x is something else");
 }
 
-```go
-func main() {
-	// Basic one
-	if x > 10 {
-		return x
-	} else if x == 10 {
-		return 10
-	} else {
-		return -x
-	}
-
-	// You can put one statement before the condition
-	if a := b + c; a < 42 {
-		return a
-	} else {
-		return a - 42
-	}
-
-	// Type assertion inside if
-	var val interface{}
-	val = "foo"
-	if str, ok := val.(string); ok {
-		fmt.Println(str)
-	}
-}
-```
-
 
 ### loop, for, while
 ```rust
-for i in 0..10 { print!("{} ",x) };               // 0 to 10
+for i in 0..10 { print!("{} ",x) };               // 0,1,2,...10
 for i in (0..10).rev() { print!("{} ",x) };       // 10 down to 0
-for i in (0..10).step_by(2) { print!("{} ",x) };  // skip every other item
+for i in (0..10).step_by(2) { print!("{} ",x) };  // 0,2,4,6,8
 
-let v = vec![1, 35, 64, 36, 26];	// vector iterate
-for n in v { println!("{}",n) }		// ordinary
-for (i, n) in v.iter().enumerate() {	// use index and item 
-	println!("{},{}", i, n); }
+let v = vec![1, 35, 64, 36, 26];	// vector to iterate
+for n in v { println!("{}",n) }		// ordinary vector iterate
+for (i, n) in v.iter().enumerate() {	// iterate with index and item 
+	println!("{},{} ", i, n);
+}
 
-done = false;
-loop { if done { break; } }		// loop
+done = false;                           // infinite loop
+loop { if done { break; } }		
 
 let i = 10;				// while
 while i > 0; {
@@ -180,9 +157,9 @@ while i > 0; {
 
 ## Functions
 ```rust
-fn adder( a:i8, b:i32) -> i32 { b + a }
+fn adder( a:i8, b:i32) -> i32 { b + a }  // 'return' keyword optional
 fn multi_return( a:i8, b:i32) -> (char,i32) { ('s',a+b) }
-let (x, s) = multi_return( 3, 56 ); 
+let (x, s) = multi_return( 3, 56 );   // multi return via tuples
 
 Function with variable number of parameters: doesn't exist. 
 Alternative: builder pattern, different named functions. 
@@ -193,33 +170,56 @@ https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optiona
 
 ```rust
 
+--------- example 1, move error
 fn f(v: Vec<i8>) { 
 	let l = v.len(); // take ownership.
-}                        // v destroyed when function ends
+}                        // v memory freed and v destroyed at }
 let v = mut vec!(1,2,3);
 foo(v); // lose ownership in call, never get it back
 v[0] = 1; // this will give a 'value moved' error
 
----------
+--------- example 2, take and return ownership
 
 fn f(v: Vec<i8>) -> Vec<i8> { // take ownership
 	let l = v.len();
 	return v // give back ownership
 } 
 let v = mut vec!(1,2,3);
-v = foo(v); // lose ownership in call, but get it back on return
+v = f(v); // lose ownership in call, but get it back on return
 v[0] = 1
 
----------
+--------- example 3, borrow ownership with reference (&)
 
-fn f2(v: &Vec<i8>) { // borrow ownership
+fn f(v: &Vec<i8>) { // borrow ownership
 	let l = v.len(); 
-}                    // v is left alive, when function ends
+}                    // v is left unfreed, when function ends
 let mut v=vec![1,2,3];
-f2(&v);  // let function borrow vector
+f(&v);  // let function borrow vector
 v[0]=1;  // ownership returned after borrow
 
----------
+
+--------- example 4, take and return mutable ownership
+
+fn f2(mut v: Vec<i8>) -> Vec<i8> { // borrow ownership
+	let l = v.len(); 
+	v[0] = 1;
+	v
+}                    // return ownership
+let mut v=vec![1,2,3];
+v = f(&v);  // let function borrow vector
+
+--------- example 5, borrow mutable ownership with reference (&mut)
+
+fn f(v: &mut Vec<i8>) { // borrow ownership
+	v[0] = 1;
+}                    // v is left alive, when function ends
+let mut v=vec![1,2,3];
+f(&v);  // let function borrow vector
+v[0]=1;  // ownership returned after borrow
+
+
+
+
 
 ```
 
