@@ -1,7 +1,7 @@
 
 ## WARNING very unfinished
 
-unfinished, has not been quality checked
+unfinished, has not been quality checkedm contains errrors
 
 
 ## Rust in a Nutshell
@@ -64,11 +64,10 @@ let r: [u8;3] = [3,4,5];      // array of 3 int, cannot grow
 let v:Vec<u8> = Vec::new();   // vector of int, can grow
 v.push( 2 );                  // append item to vector
 let vs = v.len();             // length of vector
-let (p,d,q) = (4,5,6) ;       // tuple is a way to assign multiple variables
-print("{}",p);                // you can use the after assignment
-let m = (4,5,6);              // another tuple
-let t,s = (2,"two");          // tuple items can have different types
-let (a,b) = m.1, m.2;         // refer to items using .1, .2, ....
+let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
+print("{}",p);                // you can use them alone after assignment
+let m = (4,5,"a");            // tuples can mix types
+let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
 
 let s = String::from("上善若水"); // String
 let hellomsg = r###"             // Multi-line string
@@ -92,29 +91,6 @@ let _ = expr; // determine the type of expression expr by looking at rustc error
 
 ```
 
-## Mutability - basics
-
-```rust
-let x = false;           // all vars are immutable by default
-x = true;                // error. can't change an immutable var
-let mut p: bool = false; // "mut" allows variables to change
-p = true;                // ok
-
-// mut x=5 vs x=mut 5
-let mut v = 2;  // v itself is mutable, bound to 2, which is immutable
-v = 3;  // v re-bound to 3, 3 is also immutable
-let u = 4;  // u is immutable
-let w = &mut 7;  // w is immutable, but its bound to a mutable place, holding 7
-*w = 3;  // the mutable place w was pointing to can be changed, because its mutable
-w = &u; // error, w is not mutable, even though it points to something mutable
-
-// temporary mutability
-let mut point = 6;  // point is mutable
-point = 5;
-let point = point; // now point is immutable
-point = 6; // error
-
-```
 
 ## Operators
 
@@ -132,6 +108,34 @@ let c = *b;        // *b is contents of memory at address in b (dereference)
 print("{}",c);     // 5
 
 ```
+
+## Mutability - basics
+
+```rust
+let x = false;           // all vars are immutable by default
+x = true;                // error. can't change an immutable var
+let mut p: bool = false; // "mut" allows variables to change
+p = true;                // ok
+
+// mut x=5 vs x=mut 5
+let mut v = 2;  // v itself is mutable, bound to location holding 2, which is immutable
+v = 3;  // v re-bound to 3, 3 is also immutable
+let u = 4;  // u is immutable, bound to space holding 4, also immutable
+let w = &mut 7;  // w is immutable, but its bound to a mutable place, which is holding 7
+*w = 3;  // the mutable place w was pointing to can be changed, because its mutable
+w = &u;  // error, w cannot be bound to an immutable space, by definition it points to mutable
+
+// temporary mutability
+let mut point = 6;  // point is mutable
+point = 5;
+let point = point; // now point is immutable
+point = 6; // error
+
+// scope
+see below in 'functions'
+
+```
+
 
 ### Printing
 
