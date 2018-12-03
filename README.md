@@ -324,10 +324,11 @@ func outer() (func() int, int) {
 ```rust
 
 use std::cmp
-let a = cmp::max(5,3); // maximum value
+let a = cmp::max(5,3); // maximum value (non-floats only)
 let b = -5;
 let c = b.abs();       // absolute value 
-
+let d = 0.3;
+let e = d.round();     // round floating point
 ```
 
 ### Variadic Functions
