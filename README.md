@@ -53,9 +53,7 @@ $ cargo test -- --nocapture       # run tests, show output
 ## types, variables, declarations, initialization
 ```rust
 let x: bool = false; // let keyword
-x = true;            // error. all variables immutable by default
-let mut p: bool = false; // "mut" allows variables to change
-let mut k = false;   // compiler can determine some types
+let k = false;       // compiler can determine some types
 let y: char = 'n';   // chars are 4 bytes
 let z = x;           // rust figures out type
 let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
@@ -68,6 +66,7 @@ let (p,d,q) = (4,5,6) ;       // tuple is a way to assign multiple variables
 print("{}",p);                // you can use the after assignment
 let m = (4,5,6);              // another tuple
 let t,s = (2,"two");          // tuple items can have different types
+let (a,b) = m.1, m.2;         // refer to items using .1, .2, ....
 
 let s = String::from("上善若水"); // String
 let hellomsg = r###"             // Multi-line string
@@ -86,6 +85,29 @@ let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
 let numz: i32 = x as i32; // cast to signed 32 bit integer
 
 static FOOBY: i32 = 5;    // static, global-ish variable
+
+let _ = expr; // determine the type of expression expr by looking at rustc error
+
+```
+
+## Mutability
+
+```rust
+let x = false;           // all vars are immutable by default
+x = true;                // error. can't change an immutable var
+let mut p: bool = false; // "mut" allows variables to change
+p = true;                // ok
+
+// mut x=5 vs x=mut 5
+let mut v = 2;
+v = 3;
+let u = 4;
+let w = &mut 2;
+*w = 3;
+w = &u; // error, w is not mutable, even tho it points to something mutable
+
+let val2 = &2;
+*val2 = 3; // error: cannot assign to immutable borrowed content
 
 // temporary mutability
 let mut point = 6;
