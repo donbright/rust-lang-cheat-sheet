@@ -7,9 +7,10 @@ unfinished
 ## Rust in a Nutshell
 
 * Syntax tokens similar to C
+* Variables default to immutable
 * Ownership of memory enforced at compile time
 * Statically linked
-* Functional influences, lots of ()(),{},();
+* Functional language influences
 * Integrated package manager and tester: cargo
 * Concurrency: Rayon package
 * formatter: rustfmt filename.rs
@@ -186,6 +187,40 @@ let (x, s) = multi_return( 3, 56 );
 Function with variable number of parameters: doesn't exist. 
 Alternative: builder pattern, different named functions. 
 https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optional_arguments/
+```
+
+### Ownership, borrowing, references, mutability, movement
+
+```rust
+
+fn f(v: Vec<i8>) { 
+	let l = v.len(); // take ownership.
+}                        // v destroyed when function ends
+let v = mut vec!(1,2,3);
+foo(v); // lose ownership in call, never get it back
+v[0] = 1; // this will give a 'value moved' error
+
+---------
+
+fn f(v: Vec<i8>) -> Vec<i8> { // take ownership
+	let l = v.len();
+	return v // give back ownership
+} 
+let v = mut vec!(1,2,3);
+v = foo(v); // lose ownership in call, but get it back on return
+v[0] = 1
+
+---------
+
+fn f2(v: &Vec<i8>) { // borrow ownership
+	let l = v.len(); 
+}                    // v is left alive, when function ends
+let mut v=vec![1,2,3];
+f2(&v);  // let function borrow vector
+v[0]=1;  // ownership returned after borrow
+
+---------
+
 ```
 
 ### Functions As Values And Closures
