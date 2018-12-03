@@ -137,29 +137,29 @@ print("{}",c);     // 5
 
 ```rust
 println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
-print!("Hi, the answer is {} ",42);
-println!();
+print!("Hi, the answer is {} ",42);           // variables replace {}
 
 p := struct { X, Y int }{ 17, 2 }
-println!( "My point: {} x coord={}", p, p.X )
-let s = format!( "My point: {} x coord={}", p, p.X )
+println!( "My point: {:?} x coord={}", p, p.X )  // {:} prints types that implement propr trait
+let s = format!( "x coord={}", p.X )             // print to string 
 
-println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0));
-s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // formatted print to string variable
+println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0)); // C-ish formatting
+s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // another way to print to string
 
-println!(" {:>4} {:>4} ", 232, 8 );   // pad to columns of 4 spaces, align right
+println!(" {:>4} {:>4} ", 232, 8 );   // pad as columns, width 4 spaces, align right
   
 ```
 ## If, conditionals, controls
 
-if x == 4 {
-    println!("x is four");
-} else if x == 3 {
-    println!("x is three");
+```rust
+if you_like_it() {
+	put_a_ring();
+} else if you_dont_like() {
+	movin_on();
 } else {
-    println!("x is something else");
+	therapy();
 }
-
+```
 
 ### loop, for, while
 ```rust
