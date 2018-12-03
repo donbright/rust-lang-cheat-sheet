@@ -84,6 +84,9 @@ let x = X{ 5, 6 };
 let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
 let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
 let numz: i32 = x as i32; // cast to signed 32 bit integer
+
+static FOOBY: i32 = 5;    // static, global-ish variable
+
 ```
 
 ## Operators
@@ -117,10 +120,8 @@ let s = format!( "My point: {} x coord={}", p, p.X )
 println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0));
 s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // formatted print to string variable
 
-
-
-println!(" {:>4} {:>4} ", 232, 8 );   // pad to 4 spaces, align right
-
+println!(" {:>4} {:>4} ", 232, 8 );   // pad to columns of 4 spaces, align right
+  
 ```
 ## If, conditionals, controls
 
@@ -166,7 +167,7 @@ Alternative: builder pattern, different named functions.
 https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optional_arguments/
 ```
 
-### Ownership, borrowing, references, mutability, movement
+### Ownership, borrowing, references, lifetimes, scope, mutability, movement
 
 ```rust
 
