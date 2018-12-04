@@ -70,7 +70,9 @@ let m = (4,5,"a");            // tuples can mix types
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
 
 let s = String::from("上善若水"); // String
-let hellomsg = r###"             // Multi-line string
+let s2 = "水善利萬物而不爭";       // string literal, type is &str
+let s3 = format!("{}{}",s2,s3); // concatenate
+let hellomsg = r###"            // Multi-line string
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
 "###;
@@ -132,13 +134,16 @@ let point = point; // now point is immutable
 point = 6; // error
 
 // structs
-```rust
-struct Bowl { r: i32, mut h: i32, }; // error
+struct Bowl { r: i32, mut h: i32, }; // error, cant mix member mutability
 let w = Bowl{0,0};
 w.r=4;
 
 struct Wheel { r: i32, h: i32 };
-let mut w = Wheel{0,0); // ok
+let mut w = Wheel{0,0); // ok, all members same mutability
+w.r = 4;
+
+struct Wheel { mut r: i32, mut h: i32 };
+let w = Wheel{0,0); // ok, all members same mutability
 w.r = 4;
 
 // vector of struct
@@ -150,7 +155,6 @@ let mut v:Vec<Wheel> = &mut Vec::new();
 v.push(Wheel{0,0});
 v[0].r = 4;   // ok
 
-```
 
 // scope
 see below in 'functions'
@@ -158,7 +162,7 @@ see below in 'functions'
 ```
 
 
-### Printing
+## Printing
 
 ```rust
 println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
@@ -172,6 +176,11 @@ println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0)); // C-ish 
 s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // another way to print to string
 
 println!(" {:>4} {:>4} ", 232, 8 );   // pad as columns, width 4 spaces, align right
+
+let mut s=String::new();              // build string, concatenate over lines 
+s.push_str(&format!("{} {} ",1,2));
+s.push_str(&format!("{} {} ",3,4));
+println!("{}",s);
   
 ```
 ## If, conditionals, controls
@@ -227,8 +236,6 @@ Only one of these can be true:
 * The program has one or more references (&T) to a resource,
 * The program has exactly one mutable reference (&mut T).
 Not both can be true.
-
-
 
 Calling and returning from functions (applies to other scopes too)
 ```rust
@@ -286,8 +293,8 @@ v[0] = 2;
 fn f(v: &mut Vec<i8>) { // borrow ownership
 	v[0] = 1;
 }                    // v is left alive, when function ends
-let mut v=vec![1,2,3];
-f(&v);  // let function borrow vector
+let v=vec![1,2,3];
+f(&v); // let function borrow vector
 v[0]=2;  // ownership returned after borrow
 
 
