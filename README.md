@@ -771,7 +771,13 @@ func main() {
 	do(true)
 }
 
-// Credits
+##
+
+Interface to other languages:
+
+c++ - https://hsivonen.fi/modern-cpp-in-rust/
+
+## Credits
 
 /*
 Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
