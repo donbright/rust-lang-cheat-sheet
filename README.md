@@ -181,8 +181,7 @@ let b = m['a'];                 // this crashes at runtime if 'a' is not in map
 
 ```
 
-There are no hashmap literals, but you can make your own macro [ike Shepmaster, on StackOverflow, click this link]
-(https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
+There are no hashmap literals, but you can make your own macro [ike Shepmaster, on StackOverflow, click this link](https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
 
 ## Ownership
 
@@ -430,8 +429,9 @@ Rust has an excellent crafting and building system. The character models are a b
 - carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
 - c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
 - codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
-- rust-lang.org, rust book, https://doc.rust-lang.org/book/second-edition
-- rust-lang.org, rust reference, https://doc.rust-lang.org
-- Adam Leventhal, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
-- Shepmaster https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
+- rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
+- rust-lang.org, Rust reference, https://doc.rust-lang.org
+- rust-lang.org, Rust by example, https://doc.rust-lang.org/rust-by-example/
+- Adam Leventhal post here, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
+- Shepmaster posts, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
 
