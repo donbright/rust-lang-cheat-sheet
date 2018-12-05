@@ -221,7 +221,7 @@ fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument.
 let fp = addtwo;          // fp = function pointer to addtwo function
 fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) } 
 // 'where F:Fn' lets us build a function that can accept another function as an argument
-f(fp);  // call function f, passing a pointer to the 'adder' function. result=3
+f(fp);  // call function f, passing a pointer to the 'addtwo' function. result=3
 
 // closures
 let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
