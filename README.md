@@ -178,9 +178,10 @@ let mut m = HashMap::new();
 m.insert('a', 1);               // key is 'a', value is 1
 let b = m['a'];                 // this crashes at runtime if 'a' is not in map
 *m.get_mut('a').unwrap() += 2;  // changing value inside a map
+
 ```
 
-
+There are no hashmap literals, but you can make your own macro [https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal](like Shepmaster, on StackOverflow, click this link)
 
 
 ## Ownership
@@ -363,34 +364,9 @@ todo, create, concatenate, cut, strings,
 x := [3]string{"Лайка", "Белка", "Стрелка"}
 
 
-## Maps
-
-```go
-var m map[string]int
-m = make(map[string]int)
-m["key"] = 42
-fmt.Println(m["key"])
-
-delete(m, "key")
-
-elem, ok := m["key"] // test if key "key" is present and retrieve it, if so
-
-// map literal
-var m = map[string]Vertex{
-    "Bell Labs": {40.68433, -74.39967},
-    "Google":    {37.42202, -122.08408},
-}
-
-// iterate over map content
-for key, value := range m {
-}
-
-```
-
-
 ## subclass, inheritance
 
-
+todo
 
 ## Concurrency, parallel processing
 
