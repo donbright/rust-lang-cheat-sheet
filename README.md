@@ -280,7 +280,7 @@ point = 6; // error
 ## Ownership, Borrowing, References, Lifetimes
 
 Resources have exactly one owner. They can be 'moved' from one owner to another.
-
+ 
 ```rust
 // stack memory, no moves, only copies
 let a = 5;
@@ -335,7 +335,9 @@ let c = &mut a;
 
 Lifetimes: todo
 
-Resources are destroyed, (their heap memory is freed), at the end of a 'scope'
+Resources are destroyed, (their heap memory is freed), at the end of a 'scope'. Their owners are also destroyed. That is the point of ownership - so that resources won't be accessed after they are destroyed, which is the source of a huge number of errors in C programs.
+
+Borrowed resources are not destroyed when the borrowed reference itself goes out of scope. However the borrow cannot "outlive" the destruction of the original resource nor it's owner.
 
 ## Structs
 
