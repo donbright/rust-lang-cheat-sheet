@@ -14,7 +14,7 @@ Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
 * Statically linked
 * Functional language influences
 * Control flow using patterns, 'match' keyword
-* Packages: 'cargo', https://crates.io
+* Packages: 'cargo' command, https://crates.io
 * Testing: cargo test, #[test]
 * Concurrency: Rayon package
 * formatter: rustfmt filename.rs (in place)
@@ -134,114 +134,6 @@ $ export RUST_BACKTRACE=1
 $ cargo run    # will tell you exact line where panic occured, with call stack trace
 ```
 
-## Mutability basics
-
-```rust
-let x = false;           // all variable bindings are immutable by default
-x = true;                // error. can't change an immutable var
-let mut p: bool = false; // "mut" designates a binding as mutable
-p = true;                // ok, mutable binding can change;
-
-// temporary mutability
-let mut point = 6;  // point is mutable
-point = 5;
-let point = point; // now point is immutable
-point = 6; // error
-```
-
-## Structs
-
-```rust
-struct Wheel{ r:i8, s:i8};  // basic struct, like C, pascal, etc
-struct badWheel{ mut r: i8, mut h: i8, }; // error, mut keyword doesnt work inside struct
-let w = Wheel{r:5,s:7};   // new wheel, radius 5, spokes 7, immutable binding
-w.r = 6; // error, cannot mutably borrow field of immutable binding
-let mut mw = Wheel{r:5,s:7}; //  new mutable wheel. fields inherit mutability of struct;
-mw.r = 6;  // ok
-
-impl Wheel {              // impl -> implement methods for struct, kinda like a class
-        fn dump(    &self) { println!("{} {}",self.r,self.s); }  // immutable self
-	fn badgrow(    &self) { self.s += 4; } // error, cannot mutably borrow field of immutable binding
-        fn  okgrow(&mut self) { self.s += 4; } // ok, mutable self
-};
-w.dump(); // ok , w is immutable, self inside dump() is immutable
-w.okgrow(); // error, cannot borrow immutable local variable `w` as mutable
-mw.dump(); // ok 
-mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
-```
-
-
-## HashMap, aka associative array / key-value / map 
-```rust
-use std::collections::HashMap;
-let mut m = HashMap::new();   
-m.insert('a', 1);               // key is 'a', value is 1
-let b = m['a'];                 // this crashes at runtime if 'a' is not in map
-*m.get_mut('a').unwrap() += 2;  // changing value inside a map
-
-```
-
-There are no hashmap literals, but you can make your own macro [ike Shepmaster, on StackOverflow, click this link](https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
-
-## Ownership, Borrowing, References, Lifetimes
-
-Resources have exactly one owner. They can be 'moved' from one owner to another.
-
-```rust
-// stack memory, no moves, only copies
-let a = 5;
-let b = a;
-let c = a;
-
-// heap memory
-let a = String::new(); 
-let b = a;  // 'move' of ownership from a to b
-let c = a;  // error. cannot "move" a again, b already owns it
-
-// heap memory + function call
-let a = String::new();
-let b = a;  // 'move' of ownership from a to b
-fn f(t:String) { } // function takes ownership of the variable passed as t
-f(a); // error. cannot 'move' a again, and calling f(a) alread moved a into f
-```
-
-Borrowing is an alternative to moving. It is done with References & (memory addresses)
-
-```rust
-// heap memory, using borrows and references instead of moves
-let a = String::from("☪☮︎ॐ✡γ☯✝");
-let b = &a;  // this is borrowing, not moving, a to b
-let c = &a;  // it is OK to have more than one borrower
-println!("{}",a);    // ☪☮︎ॐ✡γ☯✝
-println!("{:p}",&a); // 0x7ffcffb6b278
-println!("{:p}",b);  // 0x7ffcffb6b278  // b and c hold the address of a
-println!("{:p}",c);  // 0x7ffcffb6b278
-println!("{:p}",&b); // 0x7ffcffb6b290  // b and c are distinct variables
-println!("{:p}",&c); // 0x7ffcffb6b298  // with their own addresses
-```
-
-In a block, only one of these statements can be true for a given resource R
-* The program has one or more references to R
-* The program has exactly one mutable reference to R 
-
-```rust
-
-// example error[E0502]: cannot borrow `a` as mutable because `a` is also borrowed as immutable
-let mut a = 5;
-let b = &a;
-let c = &mut a;
-
-// example error[E0499]: cannot borrow `a` as mutable more than once at a time
-let mut a = 5;
-let b = &mut a;
-let c = &mut a;
-```
-
-Lifetimes: todo
-
-Resources are destroyed, (their heap memory is freed), at the end of a 'scope'
-
-
 ## Printing
 
 ```rust
@@ -285,6 +177,32 @@ while i > 0 {
 	println("{}",i);
 	i -= 2;
 }
+```
+
+
+## Concurrency, parallel processing
+
+```rust
+extern crate rayon;
+use rayon::prelude::*;
+fn main() {
+    let mut v = Vec::new();  // create a vector of floats, to multiply each by 0.9
+    for i in 0..1024*1280 { v.push(i as f32); }
+    v.iter_mut().for_each(     |x| *x = *x * 0.9 ); // single thread version 
+    v.par_iter_mut().for_each( |x| *x = *x * 0.9 ); // multiple threads version
+}
+```
+
+```bash
+$ $EDITOR Cargo.toml  # add rayon dependency
+[package]
+name = "beatrixpotter"
+version = "0.1.1"
+authors = ["flopsy mopsy <ra@bb.it>"]
+[dependencies]
+rayon = "1.0.0"
+
+$ cargo run          # installs rayon, runs program
 ```
 
 ## Functions and closures
@@ -343,6 +261,116 @@ let y = match x {                     // match can 'return a result' to y
 println!("{}",y);                     // "ends with 2"
 ```
 
+
+## Mutability basics
+
+```rust
+let x = false;           // all variable bindings are immutable by default
+x = true;                // error. can't change an immutable var
+let mut p: bool = false; // "mut" designates a binding as mutable
+p = true;                // ok, mutable binding can change;
+
+// temporary mutability
+let mut point = 6;  // point is mutable
+point = 5;
+let point = point; // now point is immutable
+point = 6; // error
+```
+
+## Ownership, Borrowing, References, Lifetimes
+
+Resources have exactly one owner. They can be 'moved' from one owner to another.
+
+```rust
+// stack memory, no moves, only copies
+let a = 5;
+let b = a;  // ok
+let c = a;  // ok
+
+// heap memory
+let a = String::new(); 
+let b = a;  // 'move' of ownership from a to b
+let c = a;  // error. cannot "move" a again, b already owns it
+
+// heap memory + function call
+let a = String::new();
+let b = a;  // 'move' of ownership from a to b
+fn f(t:String) { } // function takes ownership of the variable passed as t
+f(a); // error. f(a) would move a into f(), but a was already moved into b
+```
+
+Borrowing is an alternative to moving. It is done with References & (memory addresses)
+
+```rust
+// heap memory, using borrows and references instead of moves
+let a = String::from("☪☮︎ॐ✡γ☯✝");
+let b = &a;  // this is borrowing, not moving, a to b
+let c = &a;  // it is OK to have more than one borrower
+println!("{}",a);    // ☪☮︎ॐ✡γ☯✝
+println!("{:p}",&a); // 0x7ffcffb6b278
+println!("{:p}",b);  // 0x7ffcffb6b278  // b and c hold the address of a
+println!("{:p}",c);  // 0x7ffcffb6b278
+println!("{:p}",&b); // 0x7ffcffb6b290  // b and c are distinct variables
+println!("{:p}",&c); // 0x7ffcffb6b298  // with their own addresses
+```
+
+However borrowing has special rules regarding mutability. 
+
+In a block, only one of these statements can be true for a given resource R
+* The program has one or more references to R
+* The program has exactly one mutable reference to R 
+
+```rust
+
+// example error[E0502]: cannot borrow `a` as mutable because `a` is also borrowed as immutable
+let mut a = 5;
+let b = &a;
+let c = &mut a;
+
+// example error[E0499]: cannot borrow `a` as mutable more than once at a time
+let mut a = 5;
+let b = &mut a;
+let c = &mut a;
+```
+
+Lifetimes: todo
+
+Resources are destroyed, (their heap memory is freed), at the end of a 'scope'
+
+## Structs
+
+```rust
+struct Wheel{ r:i8, s:i8};  // basic struct, like C, pascal, etc
+struct badWheel{ mut r: i8, mut h: i8, }; // error, mut keyword doesnt work inside struct
+let w = Wheel{r:5,s:7};   // new wheel, radius 5, spokes 7, immutable binding
+w.r = 6; // error, cannot mutably borrow field of immutable binding
+let mut mw = Wheel{r:5,s:7}; //  new mutable wheel. fields inherit mutability of struct;
+mw.r = 6;  // ok
+
+impl Wheel {              // impl -> implement methods for struct, kinda like a class
+        fn dump(    &self) { println!("{} {}",self.r,self.s); }  // immutable self
+	fn badgrow(    &self) { self.s += 4; } // error, cannot mutably borrow field of immutable binding
+        fn  okgrow(&mut self) { self.s += 4; } // ok, mutable self
+};
+w.dump(); // ok , w is immutable, self inside dump() is immutable
+w.okgrow(); // error, cannot borrow immutable local variable `w` as mutable
+mw.dump(); // ok 
+mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
+```
+
+
+## HashMap, aka associative array / key-value / map 
+```rust
+use std::collections::HashMap;
+let mut m = HashMap::new();   
+m.insert('a', 1);               // key is 'a', value is 1
+let b = m['a'];                 // this crashes at runtime if 'a' is not in map
+*m.get_mut('a').unwrap() += 2;  // changing value inside a map
+
+```
+
+There are no hashmap literals, but you can make your own macro [like Shepmaster, on StackOverflow, click here](https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
+
 ## Macros
 
 Does not act like a preprocessor. It replaces items in the abstract syntax tree
@@ -392,31 +420,6 @@ x := [3]string{"Лайка", "Белка", "Стрелка"}
 ## subclass, inheritance
 
 todo
-
-## Concurrency, parallel processing
-
-```rust
-extern crate rayon;
-use rayon::prelude::*;
-fn main() {
-    let mut v = Vec::new();  // create a vector of floats, to multiply each by 0.9
-    for i in 0..1024*1280 { v.push(i as f32); }
-    v.iter_mut().for_each(     |x| *x = *x * 0.9 ); // single thread version 
-    v.par_iter_mut().for_each( |x| *x = *x * 0.9 ); // multiple threads version
-}
-```
-
-```bash
-$ $EDITOR Cargo.toml  # add rayon dependency
-[package]
-name = "beatrixpotter"
-version = "0.1.1"
-authors = ["flopsy mopsy <ra@bb.it>"]
-[dependencies]
-rayon = "1.0.0"
-
-$ cargo run          # installs rayon, runs program
-```
 
 ### Files
 
