@@ -183,11 +183,9 @@ let b = m['a'];                 // this crashes at runtime if 'a' is not in map
 
 There are no hashmap literals, but you can make your own macro [ike Shepmaster, on StackOverflow, click this link](https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
 
-## Ownership
+## Ownership, Borrowing, References, Lifetimes
 
 Resources have exactly one owner. They can be 'moved' from one owner to another.
-
-Resources are destroyed, (their heap memory is freed), at the end of a 'scope'
 
 ```rust
 // stack memory, no moves, only copies
@@ -198,18 +196,50 @@ let c = a;
 // heap memory
 let a = String::new(); 
 let b = a;  // 'move' of ownership from a to b
-let c = a;  // error. cannot "move" a again, b owns it
+let c = a;  // error. cannot "move" a again, b already owns it
 
 // heap memory + function call
 let a = String::new();
 let b = a;  // 'move' of ownership from a to b
 fn f(t:String) { } // function takes ownership of the variable passed as t
-f(a); // error. cannot 'move' a again, and calling f(a) moves a into f
-
+f(a); // error. cannot 'move' a again, and calling f(a) alread moved a into f
 ```
 
+Borrowing is an alternative to moving. It is done with References & (memory addresses)
 
+```rust
+// heap memory, using borrows and references instead of moves
+let a = String::from("☪☮︎ॐ✡γ☯✝");
+let b = &a;  // this is borrowing, not moving, a to b
+let c = &a;  // it is OK to have more than one borrower
+println!("{}",a);    // ☪☮︎ॐ✡γ☯✝
+println!("{:p}",&a); // 0x7ffcffb6b278
+println!("{:p}",b);  // 0x7ffcffb6b278  // b and c hold the address of a
+println!("{:p}",c);  // 0x7ffcffb6b278
+println!("{:p}",&b); // 0x7ffcffb6b290  // b and c are distinct variables
+println!("{:p}",&c); // 0x7ffcffb6b298  // with their own addresses
+```
 
+In a block, only one of these statements can be true for a given resource R
+* The program has one or more references to R
+* The program has exactly one mutable reference to R 
+
+```rust
+
+// example error[E0502]: cannot borrow `a` as mutable because `a` is also borrowed as immutable
+let mut a = 5;
+let b = &a;
+let c = &mut a;
+
+// example error[E0499]: cannot borrow `a` as mutable more than once at a time
+let mut a = 5;
+let b = &mut a;
+let c = &mut a;
+```
+
+Lifetimes: todo
+
+Resources are destroyed, (their heap memory is freed), at the end of a 'scope'
 
 
 ## Printing
@@ -277,6 +307,7 @@ f(fp);  // call function f, passing a pointer to the 'adder' function. result=3
 
 // closures
 let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
+fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }  // f takes a function as an argument 
 f(c);                 // a closure can be passed, like a function pointer, result = 3
 let value = 5;        // a closure can also read values outside its scope
 f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
@@ -314,7 +345,7 @@ println!("{}",y);                     // "ends with 2"
 
 ## Macros
 
-Does not act like a preprocessor. It reaplces items in the abstract syntax tree
+Does not act like a preprocessor. It replaces items in the abstract syntax tree
 
 ```rust
 
@@ -327,11 +358,6 @@ maximum(1,2,3,4);   // 4
 
 ```
 
-## References
-
-In a block, only one of these statements can be true for a given resource R
-* The program has one or more references to R
-* The program has exactly one mutable reference to R 
 
 
 ### Math
