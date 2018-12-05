@@ -135,9 +135,9 @@ mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
 
 ## Ownership
 
-Resources can only have one owner. They can be 'moved' from one owner to another.
+Resources have exactly one owner. They can be 'moved' from one owner to another.
 
-Variables are destroyed, (their heap memory is freed), at the end of a 'scope'
+Resources are destroyed, (their heap memory is freed), at the end of a 'scope'
 
 ```rust
 // stack memory, no moves, only copies
@@ -157,8 +157,6 @@ fn f(t:String) { } // function takes ownership of the variable passed as t
 f(a); // error. cannot 'move' a again, and calling f(a) moves a into f
 
 ```
-
-
 
 
 ## Operators
@@ -201,17 +199,7 @@ s.push_str(&format!("{} {} ",3,4));
 println!("{}",s);
   
 ```
-## If, conditionals, controls
 
-```rust
-if you_like_it() {
-	put_a_ring();
-} else if you_dont_like() {
-	movin_on();
-} else {
-	therapy();
-}
-```
 
 ### loop, for, while
 ```rust
@@ -249,19 +237,63 @@ f(fp);  // call function f, passing a pointer to the 'adder' function. result=3
 
 let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
 f(c);                 // a closure can be passed, like a function pointer, result = 3
-let value = 5;        // a closure however can also read values outside its scope
+let value = 5;        // a closure can also read values outside its scope
 f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
 
-Function with variable number of parameters: doesn't exist. 
-Alternative: builder pattern, different named functions. 
-https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optional_arguments/
+fn f(t:i8) {          // nesting functions is OK
+  fn g(u:i8) { u*5 }
+  let a = t + g(2);
+}
+
+fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see Macros! below
+
+```
+
+## If, conditionals, patterns, match, control flow
+
+```rust
+if you_like_it() {                   // normal if else, like C, Pascal, etc
+	put_a_ring();
+} else if you_dont_like() {
+	movin_on();
+} else {
+	therapy();
+}
+
+match boo {                            // match a variable
+	if liked(boo) => put_a_ring(), // => signifies a branch or leg of the match
+	if notliked(boo) => move_on(), // have as many => legs as you want
+	_ => therapy();                // _ will match anything not previously matched
+}
+
+let x = [1i8,2i8];                    // match patterns can be structs, enums, arrays, etc
+let y = match x {                     // match can 'return a result' to y
+        [1,0] => "1,0",               // match a specific array
+        [2,0]|[4,0] => "2,0 or 4,0",  // |, binary or, can be used in patterns
+        [_,2] => "ends with 2",       // [_,2] will match [0,2] [1,2] [2,2], [3,2], etc
+        _ => "other"
+};
+println!("{}",y);                     // "ends with 2"
+```
+
+## Macros
+
+```rust
+
+
+macro_rules! maximum {   
+    ($x:expr) => ($x);
+    ($x:expr, $($y:expr),+) => ( std::cmp::max($x, maximum!($($y),+)) )
+}
+maximum(1,2,3,4);   // 4
+
 ```
 
 ## References
 
-Only one of these can be true:
-* The program has one or more references (&T) to a resource,
-* The program has exactly one mutable reference (&mut T).
+In a block, only one of these statements can be true for a given resource R
+* The program has one or more references to R
+* The program has exactly one mutable reference to R 
 
 
 ### Math
@@ -270,71 +302,17 @@ Only one of these can be true:
 use std::cmp
 let a = cmp::max(5,3); // maximum value (non-floats only)
 let b = -5;
-let c = b.abs();       // absolute value 
-let d = 42.3;
-let e = d.round();     // round floating point
-let f = d.sqrt();      // floating point square root approximation
-
+let c = b.abs();       // error, abs not defined on generic integer
+let b = -5i32;
+let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
+42.25f32.round();      // can also call functions on float literals    
+9.0f32.sqrt();         // square root approximation
+9.sqrt()               // error, sqrt only for floats
+let x = 3/4;           // 0
+let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
+let z = 3.0/4.0;       // 0.75
 ```
 
-### Variadic Functions
-```go
-func main() {
-	fmt.Println(adder(1, 2, 3)) 	// 6
-	fmt.Println(adder(9, 9))	// 18
-
-	nums := []int{10, 20, 30}
-	fmt.Println(adder(nums...))	// 60
-}
-
-// By using ... before the type name of the last parameter you can indicate that it takes zero or more of those parameters.
-// The function is invoked like any other function except we can pass as many arguments as we want.
-func adder(args ...int) int {
-	total := 0
-	for _, v := range args { // Iterates over the arguments whatever the number.
-		total += v
-	}
-	return total
-}
-```
-
-### Switch
-```go
-    // switch statement
-    switch operatingSystem {
-    case "darwin":
-        fmt.Println("Mac OS Hipster")
-        // cases break automatically, no fallthrough by default
-    case "linux":
-        fmt.Println("Linux Geek")
-    default:
-        // Windows, BSD, ...
-        fmt.Println("Other")
-    }
-
-    // as with for and if, you can have an assignment statement before the switch value
-    switch os := runtime.GOOS; os {
-    case "darwin": ...
-    }
-
-    // you can also make comparisons in switch cases
-    number := 42
-    switch {
-        case number < 42:
-            fmt.Println("Smaller")
-        case number == 42:
-            fmt.Println("Equal")
-        case number > 42:
-            fmt.Println("Greater")
-    }
-
-    // cases can be presented in comma-separated lists
-    var char byte = '?'
-    switch char {
-        case ' ', '?', '&', '=', '#', '+', '%':
-            fmt.Println("Should escape")
-    }
-```
 
 ## Arrays, Slices, Ranges
 
@@ -373,31 +351,6 @@ x := [3]string{"Лайка", "Белка", "Стрелка"}
 s := x[:] // a slice referencing the storage of x
 ```
 
-### Operations on Arrays and Slices
-`len(a)` gives you the length of an array/a slice. It's a built-in function, not a attribute/method on the array.
-
-```go
-// loop over an array/a slice
-for i, e := range a {
-    // i is the index, e the element
-}
-
-// if you only need e:
-for _, e := range a {
-    // e is the element
-}
-
-// ...and if you only need the index
-for i := range a {
-}
-
-// In Go pre-1.4, you'll get a compiler error if you're not using i and e.
-// Go 1.4 introduced a variable-free form, so that you can do this
-for range time.Tick(time.Second) {
-    // do it once a sec
-}
-
-```
 
 ## Maps
 
@@ -423,234 +376,35 @@ for key, value := range m {
 
 ```
 
-## Structs
 
-There are no classes, only structs. Structs can have methods.
-```go
-// A struct is a type. It's also a collection of fields
+## subclass, inheritance
 
-// Declaration
-type Vertex struct {
-    X, Y int
-}
 
-// Creating
-var v = Vertex{1, 2}
-var v = Vertex{X: 1, Y: 2} // Creates a struct by defining values with keys
-var v = []Vertex{{1,2},{5,2},{5,5}} // Initialize a slice of structs
+## Errors, panics, unwrap, except
 
-// Accessing members
-v.X = 4
-
-// You can declare methods on structs. The struct you want to declare the
-// method on (the receiving type) comes between the the func keyword and
-// the method name. The struct is copied on each method call(!)
-func (v Vertex) Abs() float64 {
-    return math.Sqrt(v.X*v.X + v.Y*v.Y)
-}
-
-// Call method
-v.Abs()
-
-// For mutating methods, you need to use a pointer (see below) to the Struct
-// as the type. With this, the struct value is not copied for the method call.
-func (v *Vertex) add(n float64) {
-    v.X += n
-    v.Y += n
-}
-
-```
-**Anonymous structs:**
-Cheaper and safer than using `map[string]interface{}`.
-```go
-point := struct {
-	X, Y int
-}{1, 2}
-```
-
-## Pointers
-```go
-p := Vertex{1, 2}  // p is a Vertex
-q := &p            // q is a pointer to a Vertex
-r := &Vertex{1, 2} // r is also a pointer to a Vertex
-
-// The type of a pointer to a Vertex is *Vertex
-
-var s *Vertex = new(Vertex) // new creates a pointer to a new struct instance
-```
-
-## Interfaces
-```go
-// interface declaration
-type Awesomizer interface {
-    Awesomize() string
-}
-
-// types do *not* declare to implement interfaces
-type Foo struct {}
-
-// instead, types implicitly satisfy an interface if they implement all required methods
-func (foo Foo) Awesomize() string {
-    return "Awesome!"
-}
-```
-
-## Embedding
-
-There is no subclassing in Go. Instead, there is interface and struct embedding.
-
-```go
-// ReadWriter implementations must satisfy both Reader and Writer
-type ReadWriter interface {
-    Reader
-    Writer
-}
-
-// Server exposes all the methods that Logger has
-type Server struct {
-    Host string
-    Port int
-    *log.Logger
-}
-
-// initialize the embedded type the usual way
-server := &Server{"localhost", 80, log.New(...)}
-
-// methods implemented on the embedded struct are passed through
-server.Log(...) // calls server.Logger.Log(...)
-
-// the field name of the embedded type is its type name (in this case Logger)
-var logger *log.Logger = server.Logger
-```
-
-## Errors
-There is no exception handling. Functions that might produce an error just declare an additional return value of type `Error`. This is the `Error` interface:
-```go
-type error interface {
-    Error() string
-}
-```
-
-A function that might return an error:
-```go
-func doStuff() (int, error) {
-}
-
-func main() {
-    result, err := doStuff()
-    if err != nil {
-        // handle error
-    } else {
-        // all is good, use result
-    }
-}
-```
-
-# Concurrency
-
-## Goroutines
-Goroutines are lightweight threads (managed by Go, not OS threads). `go f(a, b)` starts a new goroutine which runs `f` (given `f` is a function).
-
-```go
-// just a function (which can be later started as a goroutine)
-func doStuff(s string) {
-}
-
-func main() {
-    // using a named function in a goroutine
-    go doStuff("foobar")
-
-    // using an anonymous inner function in a goroutine
-    go func (x int) {
-        // function body goes here
-    }(42)
-}
-```
-
-## Channels
-```go
-ch := make(chan int) // create a channel of type int
-ch <- 42             // Send a value to the channel ch.
-v := <-ch            // Receive a value from ch
-
-// Non-buffered channels block. Read blocks when no value is available, write blocks until there is a read.
-
-// Create a buffered channel. Writing to a buffered channels does not block if less than <buffer size> unread values have been written.
-ch := make(chan int, 100)
-
-close(ch) // closes the channel (only sender should close)
-
-// read from channel and test if it has been closed
-v, ok := <-ch
-
-// if ok is false, channel has been closed
-
-// Read from channel until it is closed
-for i := range ch {
-    fmt.Println(i)
-}
-
-// select blocks on multiple channel operations, if one unblocks, the corresponding case is executed
-func doStuff(channelOut, channelIn chan int) {
-    select {
-    case channelOut <- 42:
-        fmt.Println("We could write to channelOut!")
-    case x := <- channelIn:
-        fmt.Println("We could read from channelIn")
-    case <-time.After(time.Second * 1):
-        fmt.Println("timeout")
-    }
-}
-```
-
-### Channel Axioms
-- A send to a nil channel blocks forever
-
-  ```go
-  var c chan string
-  c <- "Hello, World!"
-  // fatal error: all goroutines are asleep - deadlock!
-  ```
-- A receive from a nil channel blocks forever
-
-  ```go
-  var c chan string
-  fmt.Println(<-c)
-  // fatal error: all goroutines are asleep - deadlock!
-  ```
-- A send to a closed channel panics
-
-  ```go
-  var c = make(chan string, 1)
-  c <- "Hello, World!"
-  close(c)
-  c <- "Hello, Panic!"
-  // panic: send on closed channel
-  ```
-- A receive from a closed channel returns the zero value immediately
-
-  ```go
-  var c = make(chan int, 2)
-  c <- 1
-  c <- 2
-  close(c)
-  for i := 0; i < 3; i++ {
-      fmt.Printf("%d ", <-c)
-  }
-  // 1 2 0
-  ```
-
-### Ownership, Borrowing, Movement
-
+## Concurrency, parallel processing
 
 ```rust
-// variables have one owner at a time. trying to have two owners
-// is called "moving", and causes a compile time error.
+extern crate rayon;
+use rayon::prelude::*;
+fn main() {
+    let mut v = Vec::new();  // create a vector of floats, to multiply each by 0.9
+    for i in 0..1024*1280 { v.push(i as f32); }
+    v.iter_mut().for_each(     |x| *x = *x * 0.9 ); // single thread version 
+    v.par_iter_mut().for_each( |x| *x = *x * 0.9 ); // multiple threads version
+}
+```
 
-let s1 = String::from("hello");
-let s2 = s1; // s1 "moved" to s2, which is new owner
-println!("{}, world!", s1); // error, s1, as String, has no 'Copy' trait
-println!("{}, world!", s1.clone()); // OK, copy of s1 made, s1 itself is not 'moved'
+```bash
+$ $EDITOR Cargo.toml  # add rayon dependency
+[package]
+name = "beatrixpotter"
+version = "0.1.1"
+authors = ["flopsy mopsy <ra@bb.it>"]
+[dependencies]
+rayon = "1.0.0"
+
+$ cargo run          # installs rayon, runs program
 ```
 
 ### Files
@@ -658,16 +412,14 @@ println!("{}, world!", s1.clone()); // OK, copy of s1 made, s1 itself is not 'mo
 ```rust
 use std::fs::File;
 use std::io::Read;
-
-let filename = "test.txt";
-match File::open(filename) {
-	Err(why) => panic!("failed to open file '{}': {}", filename, why),
+match File::open("test.txt") {
+	Err(why) => println!("failed to open file '{}': {}", filename, why),
         Ok(mut f) => {
         	println!("ok, opened {}",filename);
                 let mut data = String::new();
                 match f.read_to_string( &mut data ) {
-                	Err(why) => panic!("failed to read {}, {}",filename,why),
-                        Ok(s) => println!("read {} bytes",s),
+                	Err(why) => println!("failed to read {}, {}",filename,why),
+                        Ok(n) => println!("read {} bytes",n),
                 };
 	},
 }
@@ -676,29 +428,8 @@ match File::open(filename) {
 
 
 ## Reflection
-### Type Switch
-A type switch is like a regular switch statement, but the cases in a type switch specify types (not values), and those values are compared against the type of the value held by the given interface value.
-```go
-func do(i interface{}) {
-	switch v := i.(type) {
-	case int:
-		fmt.Printf("Twice %v is %v\n", v, v*2)
-	case string:
-		fmt.Printf("%q is %v bytes long\n", v, len(v))
-	default:
-		fmt.Printf("I don't know about type %T!\n", v)
-	}
-}
 
-func main() {
-	do(21)
-	do("hello")
-	do(true)
-}
-
-##
-
-Interface to other languages:
+## Interface to other languages, FFI
 
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
