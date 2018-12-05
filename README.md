@@ -1,13 +1,14 @@
 
 ## WARNING very unfinished
 
-unfinished, has not been quality checkedm contains errrors
+very raw, has not been quality checkedm , contains errrors
 
 Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
 
 
 ## Rust in a Nutshell
 
+* A survivial horror game where griefing is ... oops wrong Rust
 * Syntax tokens similar to C
 * Ownership of memory enforced at build time
 * Statically linked
@@ -229,21 +230,23 @@ fn adder( a:i8, b:i8) -> i32 { b + a }  // 'return' keyword optional
 fn multi_return( a:i8, b:i32) -> (char,i32) { return ('s',a+b); }
 let (x, s) = multi_return( 3, 56 );   // multi return via tuples
 
-fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
-let fp = addtwo;          // fp = function pointer to addtwo function
-fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) } 
-// ^^^ define a function using 'where' to accept another function as argument
-f(fp);  // call function f, passing a pointer to the 'adder' function. result=3
-
-let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
-f(c);                 // a closure can be passed, like a function pointer, result = 3
-let value = 5;        // a closure can also read values outside its scope
-f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
-
 fn f(t:i8) {          // nesting functions is OK
   fn g(u:i8) { u*5 }
   let a = t + g(2);
 }
+
+// function pointers
+fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
+let fp = addtwo;          // fp = function pointer to addtwo function
+fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) } 
+// 'where F:Fn' lets us build a function that can accept another function as an argument
+f(fp);  // call function f, passing a pointer to the 'adder' function. result=3
+
+// closures
+let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
+f(c);                 // a closure can be passed, like a function pointer, result = 3
+let value = 5;        // a closure can also read values outside its scope
+f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
 
 fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see Macros! below
 
@@ -277,6 +280,8 @@ println!("{}",y);                     // "ends with 2"
 ```
 
 ## Macros
+
+Does not act like a preprocessor. It reaplces items in the abstract syntax tree
 
 ```rust
 
@@ -316,40 +321,13 @@ let z = 3.0/4.0;       // 0.75
 
 ## Arrays, Slices, Ranges
 
-### Arrays
-```go
-var a [10]int // declare an int array with length 10. Array length is part of the type!
-a[3] = 42     // set elements
-i := a[3]     // read elements
-
-// declare and initialize
-var a = [2]int{1, 2}
-a := [2]int{1, 2} //shorthand
-a := [...]int{1, 2} // elipsis -> Compiler figures out array length
-```
+todo
 
 ### Slices
-```go
-var a []int                              // declare a slice - similar to an array, but length is unspecified
-var a = []int {1, 2, 3, 4}               // declare and initialize a slice (backed by the array given implicitly)
-a := []int{1, 2, 3, 4}                   // shorthand
-chars := []string{0:"a", 2:"c", 1: "b"}  // ["a", "b", "c"]
 
-var b = a[lo:hi]	// creates a slice (view of the array) from index lo to hi-1
-var b = a[1:4]		// slice from index 1 to 3
-var b = a[:3]		// missing low index implies 0
-var b = a[3:]		// missing high index implies len(a)
-a =  append(a,17,3)	// append items to slice a
-c := append(a,b...)	// concatenate slices a and b
+todo, create, concatenate, cut, strings,
 
-// create a slice with make
-a = make([]byte, 5, 5)	// first arg length, second capacity
-a = make([]byte, 5)	// capacity is optional
-
-// create a slice from an array
 x := [3]string{"Лайка", "Белка", "Стрелка"}
-s := x[:] // a slice referencing the storage of x
-```
 
 
 ## Maps
@@ -429,19 +407,33 @@ match File::open("test.txt") {
 
 ## Reflection
 
+todo
+
+
 ## Interface to other languages, FFI
 
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
+## Crashing, panic, except, unwrap
+
+```rust
+panic!("oops");                         // instantly crashes program
+let f = File::open("test.txt").unwrap(); // calls panic! if there's an error
+// note - this deisgn makes it hard/impossible, to accidentally access an unopened file
+let f = File::open("test.txt").except("cain't open file"); // panic with custom error message
+```
+
+## Metacritic rating ...
+
+Character models are not that good, combat feels a little dated, the graphics are nice but it doesn't entirely make up for a .. oops, wrong Rust again
+
 ## Credits
 
-/*
-carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
-c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
-codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
-rust-lang.org, rust book, https://doc.rust-lang.org/book/second-edition
-rust-lang.org, rust reference, https://doc.rust-lang.org
-Adam Leventhal, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
-Shepmaster https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
-*/
+- carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
+- c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
+- codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
+- rust-lang.org, rust book, https://doc.rust-lang.org/book/second-edition
+- rust-lang.org, rust reference, https://doc.rust-lang.org
+- Adam Leventhal, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
+- Shepmaster https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
 
