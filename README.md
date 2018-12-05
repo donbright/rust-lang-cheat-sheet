@@ -96,6 +96,24 @@ let _ = expr; // determine the type of expression expr by looking at rustc error
 
 ```
 
+## Operators
+
+```rust
+1 + 2 - 3 * 4 / 5  // arithmetic add, minus, multiply, divide
+7 % 5              // modulo (remainder)
+& | ^ << >>        // bitwise and, or, xor, leftshift, rightshift
+&^                 // bitwise andnot
+a == b != c < d <= e > f >= g  // logical comparison
+a && b || c ! d    // logical boolean , and, or, not
+
+let a = 5;         // pointer + dereference example
+let b = &a;        // &a is 'address of a' in computers memory
+let c = *b;        // *b is contents of memory at address in b (dereference)
+print("{}",c);     // 5
+
+
+```
+
 ## Run time errors, Crashing, panic, except, unwrap, Option
 
 ```rust
@@ -191,23 +209,7 @@ f(a); // error. cannot 'move' a again, and calling f(a) moves a into f
 ```
 
 
-## Operators
 
-```rust
-1 + 2 - 3 * 4 / 5  // arithmetic add, minus, multiply, divide
-7 % 5              // modulo (remainder)
-& | ^ << >>        // bitwise and, or, xor, leftshift, rightshift
-&^                 // bitwise andnot
-a == b != c < d <= e > f >= g  // logical comparison
-a && b || c ! d    // logical boolean , and, or, not
-
-let a = 5;         // pointer + dereference example
-let b = &a;        // &a is 'address of a'
-let c = *b;        // *b is contents of memory at address in b (dereference)
-print("{}",c);     // 5
-
-
-```
 
 
 ## Printing
