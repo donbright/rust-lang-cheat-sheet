@@ -3,19 +3,22 @@
 
 unfinished, has not been quality checkedm contains errrors
 
+Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
+
 
 ## Rust in a Nutshell
 
 * Syntax tokens similar to C
-* Ownership of memory enforced at compile time
+* Ownership of memory enforced at build time
 * Statically linked
 * Functional language influences
-* Packages: 'cargo' command
-* Testing: builtin, also 'cargo test'
-* Repository of packages: https://crates.io 
+* Control flow using patterns, 'match' keyword
+* Packages: 'cargo', https://crates.io
+* Testing: cargo test, #[test]
 * Concurrency: Rayon package
 * formatter: rustfmt filename.rs (in place)
-* compiler engine is LLVM
+* compiler engine: LLVM
+* Unsafe Rust: pointers, C-ish things
 
 ## Hello World
 
@@ -56,12 +59,15 @@ $ cargo test -- --nocapture       # run tests, show output
 ```rust
 let x: bool = false; // let keyword
 let k = false;       // rustc can determine some types
-let y: char = 'n';   // chars are 4 bytes
+let y: char = '上';  // all chars are 4 bytes
+let 上 = 5;          // error. identifiers must be ASCII characters 
 let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
-let n: f32 = 0.32;   // 32 bit float, also f64 for 64 bit           
+let n: f32 = 0.45;   // 32 bit float           
+let n = 42.01f64;  c // special syntax. numberf64 gives a 64 bit float. n is 64bit
 let r: [u8;3] = [3,4,5];      // array of 3 int, cannot grow
 let v:Vec<u8> = Vec::new();   // vector of int, can grow
+let v = vec![3,4,5];          // initialize vector using vec! macro
 v.push( 2 );                  // append item to vector
 let vs = v.len();             // length of vector
 let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
@@ -71,17 +77,13 @@ let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
 
 let s = String::from("上善若水"); // String
 let s2 = "水善利萬物而不爭";       // string literal, type is &str
-let s3 = format!("{}{}",s2,s3); // concatenate
-let hellomsg = r###"            // Multi-line string
+let s3 = format!("{}{}",s2,s3); // concatenate strings
+let hellomsg = r###"            // Multi-line with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
 "###;
 
-, slice, str
-usize, isize       
-
-struct X { a: int, b: int };
-let x = X{ 5, 6 };
+usize, isize              // for loops, vector length, etc
 
 let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
 let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
@@ -92,6 +94,71 @@ static FOOBY: i32 = 5;    // static, global-ish variable
 let _ = expr; // determine the type of expression expr by looking at rustc error
 
 ```
+
+## Mutability basics
+
+```rust
+let x = false;           // all variable bindings are immutable by default
+x = true;                // error. can't change an immutable var
+let mut p: bool = false; // "mut" designates a binding as mutable
+p = true;                // ok, mutable binding can change;
+
+// temporary mutability
+let mut point = 6;  // point is mutable
+point = 5;
+let point = point; // now point is immutable
+point = 6; // error
+```
+
+
+## Structs
+
+```rust
+struct Wheel{ r:i8, s:i8};  // basic struct, like C, pascal, etc
+struct badWheel{ mut r: i8, mut h: i8, }; // error, mut keyword doesnt work inside struct
+let w = Wheel{r:5,s:7};   // new wheel, radius 5, spokes 7, immutable binding
+w.r = 6; // error, cannot mutably borrow field of immutable binding
+let mut mw = Wheel{r:5,s:7}; //  new mutable wheel. fields inherit mutability of struct;
+mw.r = 6;  // ok
+
+impl Wheel {              // impl -> implement methods for struct, kinda like a class
+        fn dump(    &self) { println!("{} {}",self.r,self.s); }  // immutable self
+	fn badgrow(    &self) { self.s += 4; } // error, cannot mutably borrow field of immutable binding
+        fn  okgrow(&mut self) { self.s += 4; } // ok, mutable self
+};
+w.dump(); // ok , w is immutable, self inside dump() is immutable
+w.okgrow(); // error, cannot borrow immutable local variable `w` as mutable
+mw.dump(); // ok 
+mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
+
+```
+
+## Ownership
+
+Resources can only have one owner. They can be 'moved' from one owner to another.
+
+Variables are destroyed, (their heap memory is freed), at the end of a 'scope'
+
+```rust
+// stack memory, no moves, only copies
+let a = 5;
+let b = a;
+let c = a;
+
+// heap memory
+let a = String::new(); 
+let b = a;  // 'move' of ownership from a to b
+let c = a;  // error. cannot "move" a again, b owns it
+
+// heap memory + function call
+let a = String::new();
+let b = a;  // 'move' of ownership from a to b
+fn f(t:String) { } // function takes ownership of the variable passed as t
+f(a); // error. cannot 'move' a again, and calling f(a) moves a into f
+
+```
+
+
 
 
 ## Operators
@@ -109,55 +176,6 @@ let b = &a;        // &a is 'address of a'
 let c = *b;        // *b is contents of memory at address in b (dereference)
 print("{}",c);     // 5
 
-```
-
-## Mutability - basics
-
-```rust
-let x = false;           // all vars are immutable by default
-x = true;                // error. can't change an immutable var
-let mut p: bool = false; // "mut" allows variables to change
-p = true;                // ok
-
-// mut x=5 vs x=mut 5
-let mut v = 2;  // v itself is mutable, bound to location holding 2, which is immutable
-v = 3;  // v re-bound to 3, 3 is also immutable
-let u = 4;  // u is immutable, bound to space holding 4, also immutable
-let w = &mut 7;  // w is immutable, but its bound to a mutable place, which is holding 7
-*w = 3;  // the mutable place w was pointing to can be changed, because its mutable
-w = &u;  // error, w cannot be bound to an immutable space, by definition it points to mutable
-
-// temporary mutability
-let mut point = 6;  // point is mutable
-point = 5;
-let point = point; // now point is immutable
-point = 6; // error
-
-// structs
-struct Bowl { r: i32, mut h: i32, }; // error, cant mix member mutability
-let w = Bowl{0,0};
-w.r=4;
-
-struct Wheel { r: i32, h: i32 };
-let mut w = Wheel{0,0); // ok, all members same mutability
-w.r = 4;
-
-struct Wheel { mut r: i32, mut h: i32 };
-let w = Wheel{0,0); // ok, all members same mutability
-w.r = 4;
-
-// vector of struct
-let v:Vec<Wheel> = Vec::new();
-v.push(Wheel{0,0});
-v[0].r = 4;   // cannot mutably borrow field of immutable binding, error
-
-let mut v:Vec<Wheel> = &mut Vec::new();
-v.push(Wheel{0,0});
-v[0].r = 4;   // ok
-
-
-// scope
-see below in 'functions'
 
 ```
 
@@ -197,8 +215,8 @@ if you_like_it() {
 
 ### loop, for, while
 ```rust
-for i in 0..10 { print!("{} ",x) };               // 0,1,2,...10
-for i in (0..10).rev() { print!("{} ",x) };       // 10 down to 0
+for i in 0..10 { print!("{},",x) };               // 0,1,2,3,4,5,6,7,8,9
+for i in (0..10).rev() { print!("{} ",x) };       // 9,8,7,6,5,4,3,2,1,0
 for i in (0..10).step_by(2) { print!("{} ",x) };  // 0,2,4,6,8
 
 let v = vec![1, 35, 64, 36, 26];	// vector to iterate
@@ -207,149 +225,56 @@ for (i, n) in v.iter().enumerate() {	// iterate with index and item
 	println!("{},{} ", i, n);
 }
 
-done = false;                           // infinite loop
+done = false;                           // loop
 loop { if done { break; } }		
 
 let i = 10;				// while
-while i > 0; {
+while i > 0 {
 	println("{}",i);
 	i -= 2;
 }
 ```
 
-## Functions
+## Functions and closures
 ```rust
-fn adder( a:i8, b:i32) -> i32 { b + a }  // 'return' keyword optional
-fn multi_return( a:i8, b:i32) -> (char,i32) { ('s',a+b) }
+fn adder( a:i8, b:i8) -> i32 { b + a }  // 'return' keyword optional
+fn multi_return( a:i8, b:i32) -> (char,i32) { return ('s',a+b); }
 let (x, s) = multi_return( 3, 56 );   // multi return via tuples
+
+fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
+let fp = addtwo;          // fp = function pointer to addtwo function
+fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) } 
+// ^^^ define a function using 'where' to accept another function as argument
+f(fp);  // call function f, passing a pointer to the 'adder' function. result=3
+
+let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
+f(c);                 // a closure can be passed, like a function pointer, result = 3
+let value = 5;        // a closure however can also read values outside its scope
+f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
 
 Function with variable number of parameters: doesn't exist. 
 Alternative: builder pattern, different named functions. 
 https://www.reddit.com/r/rust/comments/4jgvho/idiomatic_way_to_implement_optional_arguments/
 ```
 
-### Ownership, borrowing, references, lifetimes, scope, mutability, movement
-
-Limitations of mut and references:
+## References
 
 Only one of these can be true:
 * The program has one or more references (&T) to a resource,
 * The program has exactly one mutable reference (&mut T).
-Not both can be true.
-
-Calling and returning from functions (applies to other scopes too)
-```rust
-
---------- example 1, move error
-fn f(v: Vec<i8>) { 
-	let l = v.len(); // take ownership.
-}                        // v memory freed and v destroyed at }
-let v = mut vec!(1,2,3);
-foo(v); // lose ownership in call, never get it back
-v[0] = 1; // this will give a 'value moved' error
-
---------- example 2, take and return ownership
-
-fn f(v: Vec<i8>) -> Vec<i8> { // take ownership
-	let l = v.len();
-	return v // give back ownership
-} 
-let v = mut vec!(1,2,3);
-v = f(v); // lose ownership in call, but get it back on return
-v[0] = 1
-
---------- example 3, borrow ownership with reference (&)
-
-fn f(v: &Vec<i8>) { // borrow ownership
-	let l = v.len(); 
-}                    // v is left unfreed, when function ends
-let mut v=vec![1,2,3];
-f(&v);  // let function borrow vector
-v[0]=1;  // ownership returned after borrow
-
---------- example 4, take mutable ownership
-
-fn f2(v: mut Vec<i8>)  { // function takes ownership
-	let l = v.len(); 
-	v[0] = 1     // v will be freed, destructed
-}                    // there's no return ownership
-let mut v=vec![1,2,3];
-f(&v);  // function takes ownership
-v[0] = 2;  // error... v was 'moved' by function, ownership lost
-
---------- example 4, take and return mutable ownership
-
-fn f2(v: mut Vec<i8>) -> mut Vec<i8> { // take ownership
-	let l = v.len(); 
-	v[0] = 1;
-	v                // return ownership
-}                    
-let mut v=vec![1,2,3];
-v = f(&v);  // let function own vector, it is returned to us
-v[0] = 2;
-
---------- example 5, borrow mutable ownership with reference (&mut)
-
-fn f(v: &mut Vec<i8>) { // borrow ownership
-	v[0] = 1;
-}                    // v is left alive, when function ends
-let v=vec![1,2,3];
-f(&v); // let function borrow vector
-v[0]=2;  // ownership returned after borrow
 
 
-
-
-
-```
-
-### Functions As Values And Closures
-```go
-func main() {
-    // assign a function to a name
-    add := func(a, b int) int {
-        return a + b
-    }
-    // use the name to call the function
-    fmt.Println(add(3, 4))
-}
-
-// Closures, lexically scoped: Functions can access values that were
-// in scope when defining the function
-func scope() func() int{
-    outer_var := 2
-    foo := func() int { return outer_var}
-    return foo
-}
-
-func another_scope() func() int{
-    // won't compile because outer_var and foo not defined in this scope
-    outer_var = 444
-    return foo
-}
-
-
-// Closures
-func outer() (func() int, int) {
-    outer_var := 2
-    inner := func() int {
-        outer_var += 99 // outer_var from outer scope is mutated.
-        return outer_var
-    }
-    inner()
-    return inner, outer_var // return inner func and mutated outer_var 101
-}
-```
 ### Math
 
 ```rust
-
 use std::cmp
 let a = cmp::max(5,3); // maximum value (non-floats only)
 let b = -5;
 let c = b.abs();       // absolute value 
-let d = 0.3;
+let d = 42.3;
 let e = d.round();     // round floating point
+let f = d.sqrt();      // floating point square root approximation
+
 ```
 
 ### Variadic Functions
@@ -780,7 +705,6 @@ c++ - https://hsivonen.fi/modern-cpp-in-rust/
 ## Credits
 
 /*
-Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
 carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
 c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
 codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
