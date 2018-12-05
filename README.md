@@ -181,8 +181,8 @@ let b = m['a'];                 // this crashes at runtime if 'a' is not in map
 
 ```
 
-There are no hashmap literals, but you can make your own macro [https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal](like Shepmaster, on StackOverflow, click this link)
-
+There are no hashmap literals, but you can make your own macro [ike Shepmaster, on StackOverflow, click this link]
+(https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
 
 ## Ownership
 
