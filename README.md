@@ -75,7 +75,7 @@ let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
 print("{}",p);                // you can use them alone after assignment
 let m = (4,5,"a");            // tuples can mix types
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
-
+    
 let s = String::from("上善若水"); // String
 let s2 = "水善利萬物而不爭";       // string literal, type is &str
 let s3 = format!("{}{}",s2,s3); // concatenate strings
@@ -84,7 +84,7 @@ let hellomsg = r###"            // Multi-line with embedded quotes
  "Hello" in Hindi is नमस्ते ('Namaste')
 "###;
 
-usize, isize              // for loops, vector length, etc
+usize, isize              // this is the pointer size. used in loops, vector length, etc
 
 let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
 let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
@@ -94,6 +94,26 @@ static FOOBY: i32 = 5;    // static, global-ish variable
 
 let _ = expr; // determine the type of expression expr by looking at rustc error
 
+```
+
+## Run time errors, Crashing, panic, except, unwrap, Option
+
+```rust
+panic!("oops");             // panic!() instantly crashes program
+let v = vec![3,4,5];
+let a = v[0];               // ok, normal lookup, a is 3
+let b = v[12];              // will call panic! at runtime, v[12] doesn't exist
+let c = v.get(12);          // this will not crash, it will instead create an Option
+print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
+print!("{:?}",v.get(0));    // prints the word "Some(2)"
+let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
+let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None option will call panic!
+
+```
+
+```bash
+$ export RUST_BACKTRACE=1
+$ cargo run    # will tell you exact line where panic occured, with call stack trace
 ```
 
 ## Mutability basics
@@ -110,7 +130,6 @@ point = 5;
 let point = point; // now point is immutable
 point = 6; // error
 ```
-
 
 ## Structs
 
@@ -131,8 +150,20 @@ w.dump(); // ok , w is immutable, self inside dump() is immutable
 w.okgrow(); // error, cannot borrow immutable local variable `w` as mutable
 mw.dump(); // ok 
 mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
-
 ```
+
+
+## HashMap, aka associative array / key-value / map 
+```rust
+use std::collections::HashMap;
+let mut m = HashMap::new();   
+m.insert('a', 1);               // key is 'a', value is 1
+let b = m['a'];                 // this crashes at runtime if 'a' is not in map
+*m.get_mut('a').unwrap() += 2;  // changing value inside a map
+```
+
+
+
 
 ## Ownership
 
@@ -358,7 +389,6 @@ for key, value := range m {
 ## subclass, inheritance
 
 
-## Errors, panics, unwrap, except
 
 ## Concurrency, parallel processing
 
@@ -409,23 +439,13 @@ match File::open("test.txt") {
 
 todo
 
-
 ## Interface to other languages, FFI
 
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
-## Crashing, panic, except, unwrap
+## Metacritic rating
 
-```rust
-panic!("oops");                         // instantly crashes program
-let f = File::open("test.txt").unwrap(); // calls panic! if there's an error
-// note - this deisgn makes it hard/impossible, to accidentally access an unopened file
-let f = File::open("test.txt").except("cain't open file"); // panic with custom error message
-```
-
-## Metacritic rating ...
-
-Character models are not that good, combat feels a little dated, the graphics are nice but it doesn't entirely make up for a .. oops, wrong Rust again
+Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
 
 ## Credits
 
