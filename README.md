@@ -303,10 +303,10 @@ Borrowing is an alternative to moving. It is done with References & (memory addr
 
 ```rust
 // heap memory, using borrows and references instead of moves
-let a = String::from("☪☮︎ॐ✡γ☯✝");
+let a = String::from("☪☯ॐ✡γ⚕✝");
 let b = &a;  // this is borrowing, not moving, a to b
 let c = &a;  // it is OK to have more than one borrower
-println!("{}",a);    // ☪☮︎ॐ✡γ☯✝
+println!("{}",a);    // ☪☯ॐ✡γ⚕✝
 println!("{:p}",&a); // 0x7ffcffb6b278
 println!("{:p}",b);  // 0x7ffcffb6b278  // b and c hold the address of a
 println!("{:p}",c);  // 0x7ffcffb6b278
