@@ -5,10 +5,12 @@ very raw, has not been quality checkedm , contains errrors
 
 Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
-- [Hello world](#hello-world)
-- #types, variables, declarations, initialization
-- #Operators
-- #Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option
+| Tables        | Are           | Cool  |
+| ------------- |:-------------:| -----:|
+| [Hello world](#hello-world)      |  |  |
+| #[variables etc](#types,-variables,-declarations,-initialization)      |       |    |
+| [operators](#operators)  |     |     |
+| [runtime errors]#Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option | | |
 
 ## Rust in a Nutshell
 
