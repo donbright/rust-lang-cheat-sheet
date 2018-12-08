@@ -5,14 +5,6 @@ very raw, has not been quality checkedm , contains errrors
 
 Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
-|Table|of|contents|
-| --------- |:---------:| -----:|
-| [Hello world](#hello-world)      |  [print](#Printing)|  |
-| [variables etc](#types,-variables,-declarations,-initialization)      | [loops](#loop--for--while)      | [struct](#Structs)   |
-| [operators](#Operators)  | [concurrency](#Concurrency,-parallel-processing)    |  [if-then, match](#If,-conditionals,-patterns,-match,-control-flow)   |
-| [runtime errors](#Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option) | [functions](#functions-and-closures) | |
-| [mutable](#Mutability-basics) | [own,borrow,refs](#Ownership,-Borrowing,-References,-Lifetimes)|
-
 ## Rust in a Nutshell
 
 * A survivial horror game where griefing is ... oops wrong Rust
@@ -435,6 +427,8 @@ todo
 ```rust
 use std::fs::File;
 use std::io::Read;
+
+// non-crashing example
 match File::open("test.txt") {
 	Err(why) => println!("failed to open file '{}': {}", filename, why),
         Ok(mut f) => {
@@ -446,6 +440,11 @@ match File::open("test.txt") {
                 };
 	},
 }
+
+// crashing example ( unwrap() calls panic! on error, crashes the program )
+let mut s = String::new();
+File::open("test.txt").unwrap().read_to_string(&mut s).unwrap();
+
 ```
 
 
@@ -459,9 +458,6 @@ todo
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
 ## Iterators, functional style programming
-
-Iterators provide many useful ways to interact with data in containers.
-See https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
 
 ```rust
     use itertools::Itertools;
@@ -495,12 +491,13 @@ Rust has an excellent crafting and building system. The character models are a b
 
 ## Credits
 
-- carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
-- c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
-- codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
 - rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
 - rust-lang.org, Rust reference, https://doc.rust-lang.org
 - rust-lang.org, Rust by example, https://doc.rust-lang.org/rust-by-example/
+- Itertools docs https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
+- carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
+- c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
+- codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
 - Adam Leventhal post here, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
 - Shepmaster posts, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
 
