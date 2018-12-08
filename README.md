@@ -85,13 +85,6 @@ let hellomsg = r###"            // Multi-line with embedded quotes
 
 usize, isize              // this is the pointer size. used in loops, vector length, etc
 
-let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
-let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
-let numz: i32 = x as i32; // cast to signed 32 bit integer
-
-let s = format!("{:e}",0.0f32);    // float to string (scientific format)
-let n = s.parse::<f32>().unwrap(); // string to float, will panic!/crash if invalid
-
 static FOOBY: i32 = 5;    // static, global-ish variable
 
 let _ = expr; // determine the type of expression expr by looking at rustc error
@@ -407,6 +400,18 @@ let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
 let x = 3/4;           // 0
 let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
 let z = 3.0/4.0;       // 0.75
+
+let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
+let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
+let numz: i32 = x as i32; // cast to signed 32 bit integer
+
+let s = format!("{:e}",0.0f32);    // convert float32 to base-10 decimal string (scientific format)
+let n = s.parse::<f32>().unwrap(); // parse float from string, panic/crash if theres an error
+let mut n = 0.0f32;                // parse float from string, without panic/crashing
+match s.parse::<f32>() {
+	Err(e)=>println!("bad parse of {}, because {}",s,e),
+	Ok(x)=>n=x
+}
 ```
 
 
@@ -457,6 +462,9 @@ std::env::args().for_each(|x| print!("{} ",x)); // main arguments as iterator, p
 for arg in std::env::args().collect::<Vec<String>>() { print!("{} ",arg); }; // same, as vector
 if std::env::args().any(|x| x=="--help") {help()};            // if called with --help, run help()
 ```
+
+packages: docopt, clap, getopts, structopt
+
 
 ## Reflection
 
