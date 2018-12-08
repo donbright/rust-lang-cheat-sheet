@@ -139,16 +139,16 @@ $ cargo run    # will tell you exact line where panic occured, with call stack t
 println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
 print!("Hi, the answer is {} ",42);           // variables replace {}
 
-p := struct { X, Y int }{ 17, 2 }
-println!( "My point: {:?} x coord={}", p, p.X )  // {:} prints types that implement propr trait
-let s = format!( "x coord={}", p.X )             // print to string 
+let v = vec![1,2,3];
+println!( "v[0] is {:?} {}", v, v[0] )        // {:?} can print lots of special types
+let s = format!( "x coord={}", p.X )          // print to string 
 
 println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0)); // C-ish formatting
 s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // another way to print to string
 
-println!(" {:>4} {:>4} ", 232, 8 );   // pad as columns, width 4 spaces, align right
+println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
 
-let mut s=String::new();              // build string, concatenate over lines 
+let mut s=String::new();               // build string, concatenate over lines 
 s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
 println!("{}",s);
