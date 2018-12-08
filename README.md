@@ -5,7 +5,7 @@ very raw, has not been quality checkedm , contains errrors
 
 Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
-- #hello-world
+- (#hello-world)
 - #types, variables, declarations, initialization
 - #Operators
 - #Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option
