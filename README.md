@@ -450,7 +450,13 @@ File::open("test.txt").unwrap().read_to_string(&mut s).unwrap();
 
 ```
 
+## System, arguments
 
+```rust
+std::env::args().for_each(|x| print!("{} ",x)); // main arguments as iterator, print each one 
+for arg in std::env::args().collect::<Vec<String>>() { print!("{} ",arg); }; // same, as vector
+if std::env::args.any(|x| x=="--help") {help()};            // if called with --help, run help()
+```
 
 ## Reflection
 
