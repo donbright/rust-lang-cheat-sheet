@@ -3,7 +3,7 @@
 
 very raw, has not been quality checkedm , contains errrors
 
-Based on a8m's go-lang-cheat-sheet, github.com/a8m/go-lang-cheat-sheet
+Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
 
 ## Rust in a Nutshell
@@ -464,7 +464,7 @@ See https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
     (1..4).interleave(6..9).collect_vec(); // 1,6,2,7,3,8
     " 十是十 ".chars().intersperse('四').collect::<String>(); // "四十四是四十四"
     "az".chars().merge("lm".chars()).collect::<String>(); // "almz"
-    "za".chars().merge_by("lm".chars(),|x,y| x>y ).collect::<String>(); // "zmla"
+    "za".chars().merge_by("ml".chars(),|x,y| x>y ).collect::<String>(); // "zmla"
     vec!["az".chars(),"lm".chars()].into_iter().kmerge().collect::<String>(); //"almz"
     "ab".chars().cartesian_product("cd".chars()).collect_vec() ; // [(a,b),(a,d),(b,c),(b,d)]
     "bananas".chars().coalesce(|x,y| if x=='a'{Ok('z')}else{Err((x,y))}).collect::<String>(); // bzzz
