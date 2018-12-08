@@ -7,10 +7,10 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
 | Tables        | Are           | Cool  |
 | ------------- |:-------------:| -----:|
-| [Hello world](#hello-world)      |  |  |
-| #[variables etc](#types,-variables,-declarations,-initialization)      |       |    |
-| [operators](#operators)  |     |     |
-| [runtime errors]#Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option | | |
+| [Hello world](#hello-world)      |  [print](#Printing)|  |
+| [variables etc](#types,-variables,-declarations,-initialization)      | [loops]#(loop, for, while)      |    |
+| [operators](#Operators)  | [concurrency](#Concurrency, parallel processing)    |     |
+| [runtime errors]#(Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option) | [functions](#functions and closures) | |
 
 ## Rust in a Nutshell
 
