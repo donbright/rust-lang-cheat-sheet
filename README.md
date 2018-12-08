@@ -483,6 +483,8 @@ c++ - https://hsivonen.fi/modern-cpp-in-rust/
     vec![vec![12,1,13], vec![4,5,3]].into_iter().concat() ; // [12,1,13,4,5,3]
     let mut s=['.';3];s.iter_mut().set_from("abcdefgh".chars()); s.iter().collect::<String>(); // "abc"
     (1..4).fold1(|x,y| x*y).unwrap_or(0)); // 6   // 6 is 1*2*3
+    [1,5,10].iter().minmax().into_option().unwrap() // (1,10) // faster than min() then max()
+    (0..3).zip_eq("abc".chars()).collect_vec(); // [(0,'a'), (1,'b'), (2,'c')]
 ```
 
 ## Metacritic rating
