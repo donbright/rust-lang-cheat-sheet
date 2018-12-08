@@ -89,6 +89,9 @@ let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
 let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
 let numz: i32 = x as i32; // cast to signed 32 bit integer
 
+let s = format!("{:e}",0.0f32);    // float to string (scientific format)
+let n = s.parse::<f32>().unwrap(); // string to float, will panic!/crash if invalid
+
 static FOOBY: i32 = 5;    // static, global-ish variable
 
 let _ = expr; // determine the type of expression expr by looking at rustc error
