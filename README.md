@@ -451,6 +451,37 @@ todo
 
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
+## Iterators, functional style programming
+
+Iterators provide many useful ways to interact with data in containers.
+See https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
+
+```rust
+    use itertools::Itertools;
+    vec![13,1,12].into_iter().sorted(); // [1,12,13]
+    vec![(3,13),(4,1),(5,12)].into_iter().sorted_by(|x,y| Ord::cmp(&x.1,&y.1)); // [(4,1),(5,12),(3,13)]            
+    "四四".chars().join("十")); // 四十四
+    (1..4).interleave(6..9).collect_vec(); // 1,6,2,7,3,8
+    " 十是十 ".chars().intersperse('四').collect::<String>(); // "四十四是四十四"
+    "az".chars().merge("lm".chars()).collect::<String>(); // "almz"
+    "za".chars().merge_by("lm".chars(),|x,y| x>y ).collect::<String>(); // "zmla"
+    vec!["az".chars(),"lm".chars()].into_iter().kmerge().collect::<String>(); //"almz"
+    "ab".chars().cartesian_product("cd".chars()).collect_vec() ; // [(a,b),(a,d),(b,c),(b,d)]
+    "bananas".chars().coalesce(|x,y| if x=='a'{Ok('z')}else{Err((x,y))}).collect::<String>(); // bzzz
+    "Mississippi".chars().dedup().collect::<String>(); // Misisipi
+    "agcatcagcta".chars().unique().collect::<String>(); // agct
+    (1..=3).combinations(2).collect_vec(); // [[1,2], [1,3], [2,3]]
+    "愛".chars().pad_using(4,|_| '.').collect::<String>(); // "愛..."
+    Itertools::flatten( vec![vec![12,1,13], vec![4,5,3]].iter() ).collect_vec(); // [12,1,13,4,5,3]
+    "Go raibh maith agat".chars().positions(|c| c=='a').collect_vec();// [4, 10, 15, 17]
+    vec![1,2,3].into_iter().update(|n| *n *= *n).collect_vec(); // [1,4,9]
+    ("四十四是四十四".chars().all_equal(), "謝謝".chars().all_equal()); // (false, true)
+    vec![1,2,3].iter().foreach(|n| {print!("{},",n)}; // 1,2,3
+    vec![vec![12,1,13], vec![4,5,3]].into_iter().concat() ; // [12,1,13,4,5,3]
+    let mut s=['.';3];s.iter_mut().set_from("abcdefgh".chars()); s.iter().collect::<String>(); // "abc"
+    (1..4).fold1(|x,y| x*y).unwrap_or(0)); // 6   // 6 is 1*2*3
+```
+
 ## Metacritic rating
 
 Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
