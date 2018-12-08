@@ -8,7 +8,7 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 |Table|of|contents|
 | --------- |:---------:| -----:|
 | [Hello world](#hello-world)      |  [print](#Printing)|  |
-| [variables etc](#types,-variables,-declarations,-initialization)      | [loops](#loop,-for,-while)      | [struct](#Structs)   |
+| [variables etc](#types,-variables,-declarations,-initialization)      | [loops](#loop--for--while)      | [struct](#Structs)   |
 | [operators](#Operators)  | [concurrency](#Concurrency,-parallel-processing)    |  [if-then, match](#If,-conditionals,-patterns,-match,-control-flow)   |
 | [runtime errors](#Run-time-errors,-Crashing,-panic,-except,-unwrap,-Option) | [functions](#functions-and-closures) | |
 | [mutable](#Mutability-basics) | [own,borrow,refs](#Ownership,-Borrowing,-References,-Lifetimes)|
