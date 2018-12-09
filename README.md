@@ -469,7 +469,11 @@ match File::open("test.txt") {
 let mut s = String::new();
 File::open("test.txt").unwrap().read_to_string(&mut s).unwrap();    // read into s
 File::create("output.txt").unwrap().write(s.to_bytes()).unwrap();   // write string
-f = File::create("output.txt").unwrap(); write!(f,"{}",s).unwrap(); // write formatted string
+f = File::create("output.txt").unwrap();                            // create if doesnt exist
+f = OpenOptions::new().create(true).open("out.txt").unwrap();       // create if doesnt exist
+f = OpenOptions::new().append(true).open("out.txt").unwrap();       // append
+f = OpenOptions::new().append(true).create(true).open("out.txt").unwrap(); // append + create
+write!(f,"{}",s).unwrap(); // write formatted string, given file object f
 ```
 
 ## System, arguments
