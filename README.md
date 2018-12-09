@@ -452,7 +452,7 @@ todo
 use std::fs::File;
 use std::io::Read;
 
-// non-crashing example
+// read file, non-crashing example
 match File::open("test.txt") {
 	Err(why) => println!("failed to open file '{}': {}", filename, why),
         Ok(mut f) => {
@@ -465,10 +465,11 @@ match File::open("test.txt") {
 	},
 }
 
-// crashing example ( unwrap() calls panic! on error, crashes the program )
+// crash-on-error examples ( unwrap() calls panic! on error, crashes the program )
 let mut s = String::new();
-File::open("test.txt").unwrap().read_to_string(&mut s).unwrap();
-
+File::open("test.txt").unwrap().read_to_string(&mut s).unwrap();    // read into s
+File::create("output.txt").unwrap().write(s.to_bytes()).unwrap();   // write string
+f = File::create("output.txt").unwrap(); write!(f,"{}",s).unwrap(); // write formatted string
 ```
 
 ## System, arguments
