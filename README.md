@@ -388,8 +388,13 @@ maximum(1,2,3,4);   // 4
 ### Math
 
 ```rust
-use std::cmp
-let a = cmp::max(5,3); // maximum value (non-floats only)
+
+let x=250u8;           // addition can crash, max value of u8 is 255
+println!("{}",x+10);   // crashes, attempt to add with overflow
+println!("{}",x.wrapping_add(10));   // wraps around, result: 5
+println!("{}",x.saturating_add(10)); // stays at max, result: 255
+println!("{}",x.wrapping_sub(u8::MAX)); // wraparound subtraction
+
 let b = -5;
 let c = b.abs();       // error, abs not defined on generic integer
 let b = -5i32;
@@ -412,6 +417,17 @@ match s.parse::<f32>() {
 	Err(e)=>println!("bad parse of {}, because {}",s,e),
 	Ok(x)=>n=x
 }
+
+use std::cmp           // max/min of values
+let a = cmp::max(5,3); // maximum value of 2 integers
+let b = cmp::max(5.0,3.0); // build error, floats cant compare b/c of NaN,Inf
+let v = vec![1,2,3,4,5];   // list, to find max of
+let m = v.iter.max().unwrap(); // max of numbers in a list, crash on error
+match v.iter().max() { // max of numbers in a list, don't crash
+    Some(n)=>println!("max {}",n), // do stuff with max value n
+    None=>println!("vector was empty")
+}
+
 ```
 
 
