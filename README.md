@@ -89,6 +89,7 @@ static FOOBY: i32 = 5;    // static, global-ish variable
 
 let _ = expr; // determine the type of expression expr by looking at rustc error
 
+type Valid = bool;        // typedef ( make your own type names ) 
 ```
 
 ## Operators
