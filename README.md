@@ -106,7 +106,7 @@ let b = &a;        // &a is 'address of a' in computers memory
 let c = *b;        // *b is contents of memory at address in b (dereference)
 print("{}",c);     // 5
 
-
+overloading: see struct
 ```
 
 ## Run time errors, Crashing, panic, except, unwrap, Option
@@ -353,6 +353,11 @@ w.dump(); // ok , w is immutable, self inside dump() is immutable
 w.okgrow(); // error, cannot borrow immutable local variable `w` as mutable
 mw.dump(); // ok 
 mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
+
+// operator overloading for ==, !=
+impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
+
+
 ```
 
 
