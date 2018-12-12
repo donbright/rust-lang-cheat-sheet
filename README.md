@@ -174,14 +174,15 @@ for (i, n) in v.iter().enumerate() {	// iterate with index and item
 	println!("{},{} ", i, n);
 }
 
-done = false;                           // loop
-loop { if done { break; } }		
-
-let i = 10;				// while
+let mut i = 10;				// while
 while i > 0 {
 	println("{}",i);
 	i -= 2;   // if i actually goes negative, it will panic, subtraction overflow
 }
+
+let mut i = 0;                          // loop
+loop { i=i+1; if i<10 { break; } };	// plain loop
+let x = loop { i=i+1; if i>=10 { break i; } } // loop that returns value, x = 10
 
 ```
 
