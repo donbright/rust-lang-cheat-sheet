@@ -32,7 +32,7 @@ fn main() {
 $ rustc main.rs   # creates 'main' executable
 ```
 
-## Hello Packages, Tests, Dependencies
+## Hello Packages, Hello Tests, Hello Dependencies
 
 ```bash
 $ cargo new bin   # start new executable project
@@ -237,6 +237,44 @@ f(|x| x * value);     // and a closure can be anonymous, without a name. result 
 fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see Macros! below
 
 ```
+
+## Unit tests, integration tests
+
+Unit tests, placed in the same file as the code being tested
+
+```rust
+./src/lib.rs:
+
+pub fn process(v:&mut Vec<u8>){ v.update(|x| f(x)); } // main function called by users
+fn f(x:u8)->u8 { x*x }   // small piece of our code, to test in unit testing
+
+#[cfg(test)]        // cfg -> section will only compiled during 'cargo test'
+mod tests {         // namespace helper
+    use super::*;   // bring in our functions above
+    #[test]         // next function will be a single test
+    fn test_f() { assert!(f(4)==16); } // test f() by itself (unit)
+}
+```
+
+Integration tests, for overall crate, lives under ./tests/*.rs
+
+```rust
+./tests/file.rs:         // will only be built dring 'cargo test'
+extern crate mypackage;  // include package we are testing
+#test                    // treat next function as a test
+fn bigtest() {           // not a unit test. instead, test overall code
+	let mut d = vec![1,2,3];               // set up some typical data users would have
+	let expected_results = vec![1,4,9];    // some results we expect
+	assert!(process(d)==expected_results); // test what a user would typically call, process()
+}
+```
+
+```bash
+$ cargo test          # test build, will include cfg(test) sections
+# test_f passed       # reports on passed tests
+# test_f2 failed      # reports on failed tests
+```
+
 
 ## If, conditionals, patterns, match, control flow
 
