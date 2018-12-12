@@ -156,8 +156,13 @@ println!("{}",s);
 ### loop, for, while
 ```rust
 for i in 0..10 { print!("{},",x) };               // 0,1,2,3,4,5,6,7,8,9
-for i in (0..10).rev() { print!("{} ",x) };       // 9,8,7,6,5,4,3,2,1,0
-for i in (0..10).step_by(2) { print!("{} ",x) };  // 0,2,4,6,8
+for i in 0..10.rev() { print!("{},",x) };         // 9,8,7,6,5,4,3,2,1,0
+for i in (0..10).step_by(2)      ;  // 0 2 4 6 8 
+for i in (0..10).rev().step_by(2);  // 9 7 5 3 1 
+for i in (0..=10).rev().step_by(2); // 10 8 6 4 2 0 
+for i in (0..=10).step_by(2)     ;  // 0 2 4 6 8 10 
+for i in (0..9).rev().step_by(2) ;  // 8 6 4 2 0 
+for i in (0..9).step_by(2)       ;  // 0 2 4 6 8 
 
 let v = vec![1, 35, 64, 36, 26];	// vector to iterate
 for n in v { println!("{}",n) }		// ordinary vector iterate
@@ -171,8 +176,9 @@ loop { if done { break; } }
 let i = 10;				// while
 while i > 0 {
 	println("{}",i);
-	i -= 2;
+	i -= 2;   // if i actually goes negative, it will panic, subtraction overflow
 }
+
 ```
 
 
@@ -540,6 +546,7 @@ Rust has an excellent crafting and building system. The character models are a b
 - rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
 - rust-lang.org, Rust reference, https://doc.rust-lang.org
 - rust-lang.org, Rust by example, https://doc.rust-lang.org/rust-by-example/
+- rust playground, from integer32, https://play.integer32.com//
 - Itertools docs https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
 - carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
 - c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
