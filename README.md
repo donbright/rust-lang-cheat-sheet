@@ -69,6 +69,8 @@ let r: [u8;3] = [3,4,5];      // array of 3 int, cannot grow
 let v:Vec<u8> = Vec::new();   // vector of int, can grow
 let v = vec![3,4,5];          // initialize vector using vec! macro
 v.push( 2 );                  // append item to vector
+v.contains(&3);               // true if vector contains value
+v.remove(1);                  // remove the nth item from a vector...
 let vs = v.len();             // length of vector
 let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
 print("{}",p);                // you can use them alone after assignment
