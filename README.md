@@ -245,7 +245,7 @@ Unit tests, placed in the same file as the code being tested
 ```rust
 ./src/lib.rs:
 
-pub fn process(v:&mut Vec<u8>){ v.update(|x| f(x)); } // main function called by users
+pub fn process(v:&mut Vec<u8>)->&Vec<u8>{ v.update(|x| f(x)) } // main function called by users
 fn f(x:u8)->u8 { x*x }   // small piece of our code, to test in unit testing
 
 #[cfg(test)]        // cfg -> section will only compiled during 'cargo test'
@@ -270,9 +270,9 @@ fn bigtest() {           // not a unit test. instead, test overall code
 ```
 
 ```bash
-$ cargo test          # test build, will include cfg(test) sections
-# test_f passed       # reports on passed tests
-# test_f2 failed      # reports on failed tests
+$ cargo test           # test build, will include cfg(test) sections
+-> test_f passed       # cargo reports on passed tests
+-> test_bigtest failed # cargo reports on failed tests
 ```
 
 
