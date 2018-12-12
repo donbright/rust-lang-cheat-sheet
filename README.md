@@ -586,7 +586,8 @@ Rust has an excellent crafting and building system. The character models are a b
 - rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
 - rust-lang.org, Rust reference, https://doc.rust-lang.org
 - rust-lang.org, Rust by example, https://doc.rust-lang.org/rust-by-example/
-- rust playground, from integer32, https://play.integer32.com//
+- rust playground, from integer32, https://play.integer32.com/
+- Phil Opp builds an OS in rust, https://os.phil-opp.com/unit-testing/
 - Itertools docs https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
 - carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
 - c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
