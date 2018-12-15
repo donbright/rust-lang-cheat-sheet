@@ -449,6 +449,8 @@ println!("{}",x+10);   // crashes, attempt to add with overflow
 println!("{}",x.wrapping_add(10));   // wraps around, result: 5
 println!("{}",x.saturating_add(10)); // stays at max, result: 255
 println!("{}",x.wrapping_sub(u8::MAX)); // wraparound subtraction
+std::f32::MIN;         // minimum binary floating point 32 bit value
+std::i32::MAX;         // maximum 32 bit integer value
 
 let b = -5;
 let c = b.abs();       // error, abs not defined on generic integer
