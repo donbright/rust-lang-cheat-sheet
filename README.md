@@ -485,6 +485,23 @@ match v.iter().max() { // max of numbers in a list, don't crash
     None=>println!("vector was empty")
 }
 
+
+v = vec![1,3,2];                               // sort integers
+v.sort();                                      
+
+v = vec![1.0,3.0,2.0];                         // sort floats
+v.sort();                                      // error, float's NaN can't be compared
+v.sort_by(|a, b| a.partial_cmp(b).unwrap());   // sort using closure
+
+struct Wheel{ r:i8, s:i8};                     // sort struct Wheel by field r
+let mut v = vec![Wheel{r:1,s:2},Wheel{r:3,s:2},Wheel{r:2,s:2}];
+v.sort_by(|a, b| a.r.cmp(&b.r));               // sort using closure
+v.sort_by(|a, b| a.r.cmp(&(&b.r*2)));          // sort using closure that multiplies r by 2
+
+fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering
+{ a.s.partial_cmp(&b.s).unwrap_or(std::cmp::Ordering::Equal); }
+v.sort_by( compare_s );                        // sort using a function
+
 ```
 
 
@@ -593,10 +610,11 @@ Rust has an excellent crafting and building system. The character models are a b
 - rust-lang.org, Rust by example, https://doc.rust-lang.org/rust-by-example/
 - rust playground, from integer32, https://play.integer32.com/
 - Phil Opp builds an OS in rust, https://os.phil-opp.com/unit-testing/
+- Rust Cookbook, Language Nursery https://rust-lang-nursery.github.io/rust-cookbook/algorithms/sorting.html
 - Itertools docs https://docs.rs/itertools/*/itertools/trait.Itertools.html for more details
 - carols10cent's js-rust cheatsheet, https://gist.github.com/carols10cents/65f5744b9099eb1c3a6f
 - c0g https://stackoverflow.com/questions/29483365/what-is-the-syntax-for-a-multiline-string-literal
 - codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
 - Adam Leventhal post here, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
-- Shepmaster posts, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
-
+- Shepmaster, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
+- user4815162342, https://stackoverflow.com/questions/26836488/how-to-sort-a-vector-in-rust
