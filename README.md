@@ -429,7 +429,10 @@ There are no hashmap literals, but you can make your own macro [like Shepmaster,
 Does not act like a preprocessor. It replaces items in the abstract syntax tree
 
 ```rust
-
+macro_rules! hello {
+    ($a:ident) => $a = 5;
+}
+hello!(a);    // a = 5
 
 macro_rules! maximum {   
     ($x:expr) => ($x);
@@ -437,9 +440,13 @@ macro_rules! maximum {
 }
 maximum(1,2,3,4);   // 4
 
+designators: 
+block   // rust block, like {}.        expr    // expressions
+ident   // variable/function names.    item    // 
+pat     // pattern.                    path    // rust path
+stmt    // statement.                  tt      // token tree
+ty      // type.                       vis     // visibility qualifier
 ```
-
-
 
 ### Math
 
