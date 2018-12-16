@@ -449,12 +449,14 @@ macro_rules! dlog {
 let DLOG_LEVEL=5;
 dlog!(4,"program is running, dlog:{}",DLOG_LEVEL);  // "program is running, dlog:5"
 
+/*
 designators: 
 block   // rust block, like {}.        expr    // expressions
 ident   // variable/function names.    item    // 
 pat     // pattern.                    path    // rust path
 stmt    // statement.                  tt      // token tree
 ty      // type.                       vis     // visibility qualifier
+*/
 ```
 
 ### Math
