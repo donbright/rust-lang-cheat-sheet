@@ -73,6 +73,7 @@ v.contains(&3);               // true if vector contains value
 v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes [], both mutable)
 v.extend(u);                  // extend v with u (v owns u, u can be immut)
+v.resize(200,0);              // make vector have 200 elements, set them to 0
 let vs = v.len();             // length of vector
 let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
 print("{}",p);                // you can use them alone after assignment
