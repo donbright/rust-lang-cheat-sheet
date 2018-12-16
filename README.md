@@ -438,7 +438,7 @@ macro_rules! maximum {
     ($x:expr) => ($x);
     ($x:expr, $($y:expr),+) => ( std::cmp::max($x, maximum!($($y),+)) )
 }
-maximum(1,2,3,4);   // 4
+maximum!(1,2,3,4);   // 4
 
 designators: 
 block   // rust block, like {}.        expr    // expressions
