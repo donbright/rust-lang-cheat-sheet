@@ -147,6 +147,7 @@ let s = format!( "x coord={}", p.X )          // print to string
 
 println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0)); // C-ish formatting
 s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // another way to print to string
+println!(" {:.40} ", 1.0f32/3.0f32 );  // print 40 digits of precision for floating point
 
 println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
 
@@ -441,8 +442,7 @@ macro_rules! maximum {
 maximum!(1,2,3,4);   // 4
 
 macro_rules! dlog {
-    ($loglevel:expr, $s:expr) => ($s);
-    ($loglevel:expr, $($s:expr),+) => (
+    ($loglevel:expr, $($s:expr),*) => (
         if DLOG_LEVEL>=$loglevel { println!($($s),+); }
     )
 }
