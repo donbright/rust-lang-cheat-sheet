@@ -440,6 +440,15 @@ macro_rules! maximum {
 }
 maximum!(1,2,3,4);   // 4
 
+macro_rules! dlog {
+    ($loglevel:expr, $s:expr) => ($s);
+    ($loglevel:expr, $($s:expr),+) => (
+        if DLOG_LEVEL>=$loglevel { println!($($s),+); }
+    )
+}
+let DLOG_LEVEL=5;
+dlog!(4,"program is running, dlog:{}",DLOG_LEVEL);  // "program is running, dlog:5"
+
 designators: 
 block   // rust block, like {}.        expr    // expressions
 ident   // variable/function names.    item    // 
