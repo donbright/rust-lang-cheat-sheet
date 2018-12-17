@@ -494,6 +494,12 @@ match s.parse::<f32>() {
 	Ok(x)=>n=x
 }
 
+let a = "537629.886026485"                            // decimal floating point parsing to binary
+print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.875000000000000000000000000000000 
+let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
+let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
+let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
+
 use std::cmp           // max/min of values
 let a = cmp::max(5,3); // maximum value of 2 integers
 let b = cmp::max(5.0,3.0); // build error, floats cant compare b/c of NaN,Inf
