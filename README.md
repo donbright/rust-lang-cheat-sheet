@@ -1,7 +1,7 @@
 
-## WARNING very unfinished
+## Warning
 
-This is in a reasonably useful state for basic things, but it may contain some errors.
+This cheat sheet is in a reasonably useful state for basic things, but it may contain some errors.
 
 Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
@@ -124,9 +124,10 @@ let a = v[0];               // ok, normal lookup, a is 3
 let b = v[12];              // will call panic! at runtime, v[12] doesn't exist
 let c = v.get(12);          // this will not crash, it will instead create an Option
 print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
-print!("{:?}",v.get(0));    // prints the word "Some(2)"
+print!("{:?}",v.get(0));    // prints the word "Some(3)"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
-let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None option will call panic!
+let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
+let f = v.get(5).unwrap_or(&0); // unwrap_or won't crash, it can return a value for you (f = 0)
 
 ```
 
