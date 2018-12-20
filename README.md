@@ -594,7 +594,19 @@ todo
 
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
+## Traits
+
+todo
+
 ## Iterators, functional style programming
+
+- iter()       iterates over &T.
+- iter_mut()   iterates over &mut T.
+- into_iter()  iterates over T.
+
+iterators are implemented as 'traits' which means you can create your own for your own types
+
+itertools has special gadgets:
 
 ```rust
     use itertools::Itertools;
