@@ -147,8 +147,8 @@ println!( "v[0] is {:?} {}", v, v[0] )             // {:?} can print lots of spe
 let s = format!( "x coord={}", p.X )               // print to string 
 s2 := fmt.Sprintf( "{e}", 17.0 )                   // another way to print to string
 println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); // C-ish, hex:11 bin:10001 sci:1.7e1
-println!("hex:{:#04} hex:{:#06x} bin:{:08b} sci:{:09e}",17,17,17,17.0); 
-// Same as line above, with 0 padding: hex:0017 hex:0x0011 bin:00010001 sci:00001.7e1
+println!("dec:{:#04} hex:{:#06x} bin:{:08b} sci:{:09e}",17,17,17,17.0); 
+// Same as line above, with 0 padding: dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1
 println!(" {:.40} ", 1.0f32/3.0f32 );  // print 40 digits of precision for floating point
 
 println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
