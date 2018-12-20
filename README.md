@@ -1,7 +1,7 @@
 
 ## WARNING very unfinished
 
-very raw, has not been quality checkedm , contains errrors
+This is in a reasonably useful state for basic things, but it may contain some errors.
 
 Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
@@ -142,11 +142,12 @@ println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ");
 print!("Hi, the answer is {} ",42);           // variables replace {}
 
 let v = vec![1,2,3];
-println!( "v[0] is {:?} {}", v, v[0] )        // {:?} can print lots of special types
-let s = format!( "x coord={}", p.X )          // print to string 
-
-println!(format!("%d hex:%x bin:%b fp:%f sci:%e",17,17,17,17.0,17.0)); // C-ish formatting
-s2 := fmt.Sprintf( "%d %f", 17, 17.0 ) // another way to print to string
+println!( "v[0] is {:?} {}", v, v[0] )             // {:?} can print lots of special types
+let s = format!( "x coord={}", p.X )               // print to string 
+s2 := fmt.Sprintf( "{e}", 17.0 )                   // another way to print to string
+println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); // C-ish, hex:11 bin:10001 sci:1.7e1
+println!("hex:{:#04} hex:{:#06x} bin:{:08b} sci:{:09e}",17,17,17,17.0); 
+// Same as line above, with 0 padding: hex:0017 hex:0x0011 bin:00010001 sci:00001.7e1
 println!(" {:.40} ", 1.0f32/3.0f32 );  // print 40 digits of precision for floating point
 
 println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
