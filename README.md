@@ -7,18 +7,18 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
 ## Rust in a Nutshell
 
-* A survivial horror game where griefing is ... oops wrong Rust
 * Syntax tokens similar to C
 * Ownership of memory enforced at build time
 * Statically linked
-* Functional language influences
+* Functional-ish: iterators, closures, blocks are expressions
 * Control flow using patterns, 'match' keyword
 * Packages: 'cargo' command, https://crates.io
 * Testing: cargo test, #[test]
-* Concurrency: Rayon package
+* Concurrency: based on ownership, also see Rayon package
 * formatter: rustfmt filename.rs (in place)
 * compiler engine: LLVM
-* Unsafe Rust: pointers, C-ish things
+* raw pointers, low level: unsafe{} keyword
+* A survivial horror game where griefing is ... oops wrong Rust
 
 ## Hello World
 
