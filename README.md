@@ -399,14 +399,15 @@ impl Wheel {              // impl -> implement methods for struct, kinda like a 
 	fn badgrow(    &self) { self.s += 4; } // error, cannot mutably borrow field of immutable binding
         fn  okgrow(&mut self) { self.s += 4; } // ok, mutable self
 };
-w.dump(); // ok , w is immutable, self inside dump() is immutable
-w.okgrow(); // error, cannot borrow immutable local variable `w` as mutable
-mw.dump(); // ok 
-mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable
+w.dump();    // ok , w is immutable, self inside dump() is immutable
+w.okgrow();  // error, w is immutable, self inside okgrow() is mutable
+             //  cannot borrow immutable local variable `w` as mutable
+mw.dump();   // ok, mw is mutable, self inside dump is immutable.  
+mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable.
 
 // operator overloading for ==, !=
 impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
-
+if mw == w { print!("equal wheels"); }
 
 ```
 
@@ -497,7 +498,7 @@ match s.parse::<f32>() {
 	Err(e)=>println!("bad parse of {}, because {}",s,e),
 	Ok(x)=>n=x
 }
-let a = "537629.886026485"                            // decimal floating point parsing to binary
+let a = "537629.886026485"                            // base-10 decimal string to binary float pt
 print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.875000000000000000000000000000000 
 let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
 let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
@@ -524,27 +525,28 @@ v = vec![1.0,3.0,2.0];                         // sort floats
 v.sort();                                      // error, float's NaN can't be compared
 v.sort_by(|a, b| a.partial_cmp(b).unwrap());   // sort using closure
 
-struct Wheel{ r:i8, s:i8};                     // sort struct Wheel by field r
-let mut v = vec![Wheel{r:1,s:2},Wheel{r:3,s:2},Wheel{r:2,s:2}];
-v.sort_by(|a, b| a.r.cmp(&b.r));               // sort using closure
-v.sort_by(|a, b| a.r.cmp(&(&b.r*2)));          // sort using closure that multiplies r by 2
+struct Wheel{ r:i8, s:i8};                     // sort a vector that holds a struct
+let mut v = vec![Wheel{r:1,s:2},Wheel{r:3,s:2},Wheel{r:-2,s:2}];
+v.sort_by(|a, b| a.r.cmp(&b.r));               // sort using closure, based on value of field 'r'
+v.sort_by(|a, b| a.r.cmp(&(&b.r.abs())));      // sort using closure, based on abs value of r
 
-fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering
-{ a.s.partial_cmp(&b.s).unwrap_or(std::cmp::Ordering::Equal); }
-v.sort_by( compare_s );                        // sort using a function
+fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering {      // sort using a function
+     a.s.partial_cmp(&b.s).unwrap_or(std::cmp::Ordering::Equal)
+}
+v.sort_by( compare_s );                        
 
 ### Hashing
 ```rust
 use std::collections::hash_map::DefaultHasher; 
 use std::hash::{Hash, Hasher};
-let mut hasher = DefaultHasher::new();         // hashing is done through a hashing object, which holds state
+let mut hasher = DefaultHasher::new(); // hashing, via a Hasher object, which holds state
 let x = 1729u32;
 let y = 137u32;
-hasher.write_u32( x );                         // input x to hash function, store output inside hasher object
-hasher.write_u32( y );                         // input y to hash function, combine with existing state, store in hasher
-println!("{:x}", hasher.finish());             // .finish() function of hasher object shows current state hash value
-345.hash(&mut hasher);                         // we can also update hasher's state using '.hash()' trait
-println!("{:x}", hasher.finish());             // .finish() does not 'reset' hasher objects, in fact they cannot be.
+hasher.write_u32( x );                 // input x to hash func, store output in hasher 
+hasher.write_u32( y );                 // input y, combine w existing state, store in hasher
+println!("{:x}", hasher.finish());     // .finish() function Hasher gives current state
+345.hash(&mut hasher);                 // update hasher's state using '.hash()' trait
+println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher objects
 
 ```
 
