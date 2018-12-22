@@ -461,7 +461,9 @@ ty      // type.                       vis     // visibility qualifier
 */
 ```
 
-### Math
+## Math
+
+### arithmetic
 
 ```rust
 
@@ -483,7 +485,11 @@ let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
 let x = 3/4;           // 0
 let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
 let z = 3.0/4.0;       // 0.75
+```
 
+### number conversion
+
+```rust
 let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
 let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
 let numz: i32 = x as i32; // cast to signed 32 bit integer
@@ -495,27 +501,29 @@ match s.parse::<f32>() {
 	Err(e)=>println!("bad parse of {}, because {}",s,e),
 	Ok(x)=>n=x
 }
-
 let a = "537629.886026485"                            // decimal floating point parsing to binary
 print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.875000000000000000000000000000000 
 let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
 let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
 let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
+```
 
-use std::cmp           // max/min of values
-let a = cmp::max(5,3); // maximum value of 2 integers
-let b = cmp::max(5.0,3.0); // build error, floats cant compare b/c of NaN,Inf
-let v = vec![1,2,3,4,5];   // list, to find max of
-let m = v.iter.max().unwrap(); // max of numbers in a list, crash on error
-match v.iter().max() { // max of numbers in a list, don't crash
-    Some(n)=>println!("max {}",n), // do stuff with max value n
+### comparison and sorting
+
+```rust
+
+use std::cmp           			// max/min of values
+let a = cmp::max(5,3); 			// maximum value of 2 integers
+let b = cmp::max(5.0,3.0); 		// build error, floats cant compare b/c of NaN,Inf
+let v = vec![1,2,3,4,5];   		// list, to find max of
+let m = v.iter.max().unwrap(); 		// max of numbers in a list, crash on error
+match v.iter().max() { 			// max of numbers in a list, don't crash
+    Some(n)=>println!("max {}",n), 	// do stuff with max value n
     None=>println!("vector was empty")
 }
 
-
-v = vec![1,3,2];                               // sort integers
-v.sort();                                      
-
+v = vec![1,3,2];                               
+v.sort();                                      // sort integers
 v = vec![1.0,3.0,2.0];                         // sort floats
 v.sort();                                      // error, float's NaN can't be compared
 v.sort_by(|a, b| a.partial_cmp(b).unwrap());   // sort using closure
@@ -528,6 +536,19 @@ v.sort_by(|a, b| a.r.cmp(&(&b.r*2)));          // sort using closure that multip
 fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering
 { a.s.partial_cmp(&b.s).unwrap_or(std::cmp::Ordering::Equal); }
 v.sort_by( compare_s );                        // sort using a function
+
+### Hashing
+```rust
+use std::collections::hash_map::DefaultHasher; 
+use std::hash::{Hash, Hasher};
+let mut hasher = DefaultHasher::new();         // hashing is done through a hashing object, which holds state
+let x = 1729u32;
+let y = 137u32;
+hasher.write_u32( x );                         // input x to hash function, store output inside hasher object
+hasher.write_u32( y );                         // input y to hash function, combine with existing state, store in hasher
+println!("{:x}", hasher.finish());             // .finish() function of hasher object shows current state hash value
+345.hash(&mut hasher);                         // we can also update hasher's state using '.hash()' trait
+println!("{:x}", hasher.finish());             // .finish() does not 'reset' hasher objects, in fact they cannot be.
 
 ```
 
