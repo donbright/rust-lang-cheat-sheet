@@ -306,8 +306,8 @@ if you_like_it() {                   // normal if else, like C, Pascal, etc
 }
 
 match boo {                            // match a variable
-	if liked(boo) => put_a_ring(), // => signifies a branch or leg of the match
-	if notliked(boo) => move_on(), // have as many=> legs as you want
+	liked(boo) => put_a_ring(),    // => signifies a branch or leg of the match
+	notliked(boo) => move_on(),    // have as many=> legs as you want
 	_ => therapy();                // _ will match anything not previously matched
 }
 
