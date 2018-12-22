@@ -35,6 +35,7 @@ $ rustc main.rs   # creates 'main' executable
 ## Hello Packages, Hello Tests, Hello Dependencies
 
 ```bash
+$ rustup.sh       # install rust, see rust-lang.org for details
 $ cargo new bin   # start new executable project
 $ ls -lR          # list our skeleton of files
 src/main.rs       # main.rs, has main() entry point
@@ -55,6 +56,15 @@ $ cargo test -- --test-threads=1  # run tests one at a time
 $ cargo test -- --nocapture       # run tests, show output
 ```
 
+## Mutability
+
+```rust
+let x = false;           // all variable bindings are immutable by default
+x = true;                // compile error. can't change an immutable binding
+let mut p = false;       // "mut" designates a binding as mutable
+p = true;                // ok, mutable binding can change;
+```
+
 ## types, variables, declarations, initialization
 ```rust
 let x: bool = false; // let keyword
@@ -63,16 +73,17 @@ let y: char = '上';  // all chars are 4 bytes
 let 上 = 5;          // error. identifiers must be ASCII characters 
 let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
-let n: f32 = 0.45;   // 32 bit float           
-let n = 42.01f64;  c // special syntax. numberf64 gives a 64 bit float. n is 64bit
-let r: [u8;3] = [3,4,5];      // array of 3 int, cannot grow
-let v:Vec<u8> = Vec::new();   // vector of int, can grow
-let v = vec![3,4,5];          // initialize vector using vec! macro
-v.push( 2 );                  // append item to vector
+let n: f32 = 0.45;   // 32 bit float (automatcally converted+rounded from decimal to binary)
+let n = 42.01f64;  c // 64 bit float literal of the number 42.01 (approximately)
+let r: [u8;3] = [3,4,5];          // array of 3 int, cannot grow
+let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, can grow
+let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
+let w = vec![1,12,13];            // vectors can be immutable too
+u.push( 2 );                      // append item to vector
 v.contains(&3);               // true if vector contains value
 v.remove(1);                  // remove the nth item from a vector...
-v.append(u);                  // append v with u (u becomes [], both mutable)
-v.extend(u);                  // extend v with u (v owns u, u can be immut)
+v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
+v.extend(w);                  // extend v with w (v owns w, w can be immutable)
 v.resize(200,0);              // make vector have 200 elements, set them to 0
 let vs = v.len();             // length of vector
 let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
@@ -310,21 +321,6 @@ let y = match x {                     // match can 'return a result' to y
 println!("{}",y);                     // "ends with 2"
 ```
 
-
-## Mutability basics
-
-```rust
-let x = false;           // all variable bindings are immutable by default
-x = true;                // error. can't change an immutable var
-let mut p: bool = false; // "mut" designates a binding as mutable
-p = true;                // ok, mutable binding can change;
-
-// temporary mutability
-let mut point = 6;  // point is mutable
-point = 5;
-let point = point; // now point is immutable
-point = 6; // error
-```
 
 ## Ownership, Borrowing, References, Lifetimes
 
