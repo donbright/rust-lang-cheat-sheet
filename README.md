@@ -179,6 +179,7 @@ println!("{}",s);
 for i in 0..10 { print!("{},",x) };               // 0,1,2,3,4,5,6,7,8,9
 for i in 0..10.rev() { print!("{},",x) };         // 9,8,7,6,5,4,3,2,1,0
 for i in (0..10).step_by(2)      ;  // 0 2 4 6 8 
+for i in (0..10).skip(1).step_by(2);// 1 3 5 7 9
 for i in (0..10).rev().step_by(2);  // 9 7 5 3 1 
 for i in (0..=10).rev().step_by(2); // 10 8 6 4 2 0 
 for i in (0..=10).step_by(2)     ;  // 0 2 4 6 8 10 
@@ -623,13 +624,24 @@ todo
 
 ## Iterators, functional style programming
 
+The 'for' statements, above, were done with iterators. 0..10 is an iterator. Some more examples:
+
+```rust
+let v = vec![1,2,3];
+let biggest = v.iter().max();  // maximum value of 1 2 3 (its 3)
+
+let vf = vec![1.,2.,3.];       // floating point maximum is a little more work
+let biggest = vf.iter().cloned().fold(std::f64::MAX, f64::max);
+let smallest = vf.iter().cloned().fold(std::f64::MIN, f64::min);
+```
+
 - iter()       iterates over &T.
 - iter_mut()   iterates over &mut T.
 - into_iter()  iterates over T.
 
 iterators are implemented as 'traits' which means you can create your own for your own types
 
-itertools has special gadgets:
+the itertools library has special features:
 
 ```rust
     use itertools::Itertools;
@@ -678,3 +690,4 @@ Rust has an excellent crafting and building system. The character models are a b
 - Adam Leventhal post here, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
 - Shepmaster, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
 - user4815162342, https://stackoverflow.com/questions/26836488/how-to-sort-a-vector-in-rust
+- mbrubek, https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/
