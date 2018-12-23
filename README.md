@@ -10,17 +10,19 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 * Syntax tokens similar to C
 * Ownership of memory enforced at build time
 * Statically linked
-* Functional-ish: iterators, closures, blocks are expressions
+* Functionalish, objectish, genericish
 * Control flow using patterns, 'match' keyword
 * Packages: 'cargo' command, https://crates.io
 * Testing: cargo test, #[test]
 * Concurrency: based on ownership, also see Rayon package
-* Auto formatter: cargo install rustfmt; rustfmt filename.rs (in place)
+* Auto formatter: rustfmt filename.rs (see rust-lang.org for installation)
 * compiler engine: LLVM
 * raw pointers, low level: unsafe{} keyword
 * A survivial horror game where griefing is ... oops wrong Rust
 
 ## Hello World
+
+& see https://www.rust-lang.org for installation details
 
 ```rust
 fn main() {
