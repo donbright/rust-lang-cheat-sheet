@@ -624,11 +624,13 @@ todo
 
 ## Iterators, functional style programming
 
-The 'for' statements, above, were done with iterators. 0..10 is an iterator. Some more examples:
+The 'for' statements, above, were done with iterators. 0..10 is a Range that gets iterated on. Some more examples:
 
 ```rust
 let v = vec![1,2,3];
 let biggest = v.iter().max();  // maximum value of 1 2 3 (its 3)
+let hasle2 = v.iter().any(|x| x<=2);  // true if any element is less than or equal to 2
+let biggest = v[0..1].iter().max(); // will return 2, not 3, b/c we took a slice of the vector
 
 let vf = vec![1.,2.,3.];       // floating point maximum is a little more work
 let biggest = vf.iter().cloned().fold(std::f64::MAX, f64::max);
@@ -641,7 +643,7 @@ let smallest = vf.iter().cloned().fold(std::f64::MIN, f64::min);
 
 iterators are implemented as 'traits' which means you can create your own for your own types
 
-the itertools library has special features:
+the itertools library has special features, some of which get adopted into std over time:
 
 ```rust
     use itertools::Itertools;
