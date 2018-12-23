@@ -15,7 +15,7 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 * Packages: 'cargo' command, https://crates.io
 * Testing: cargo test, #[test]
 * Concurrency: based on ownership, also see Rayon package
-* formatter: rustfmt filename.rs (in place)
+* Auto formatter: cargo install rustfmt; rustfmt filename.rs (in place)
 * compiler engine: LLVM
 * raw pointers, low level: unsafe{} keyword
 * A survivial horror game where griefing is ... oops wrong Rust
