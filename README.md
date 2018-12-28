@@ -58,7 +58,7 @@ $ cargo test -- --test-threads=1  # run tests one at a time
 $ cargo test -- --nocapture       # run tests, show output
 ```
 
-## Mutability
+## Mutability basic
 
 ```rust
 let x = false;           // all variable bindings are immutable by default
@@ -387,6 +387,8 @@ Lifetimes: todo
 Resources are destroyed, (their heap memory is freed), at the end of a 'scope'. Their owners are also destroyed. That is the point of ownership - so that resources won't be accessed after they are destroyed, which is the source of a huge number of errors in C programs.
 
 Borrowed resources are not destroyed when the borrowed reference itself goes out of scope. However the borrow cannot "outlive" the destruction of the original resource nor it's owner.
+
+https://medium.com/@jordan_98525/reference-iterators-in-rust-5603a51b5192
 
 ## Structs
 
