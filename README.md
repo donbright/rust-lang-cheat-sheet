@@ -145,7 +145,7 @@ print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Som
 print!("{:?}",v.get(0));    // prints the word "Some(3)"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
-let f = v.get(5).unwrap_or(&0); // unwrap_or won't crash, it can return a value for you (f = 0)
+let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
 
 ```
 
@@ -261,6 +261,9 @@ fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }  // f takes a functi
 f(c);                 // a closure can be passed, like a function pointer, result = 3
 let value = 5;        // a closure can also read values outside its scope
 f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
+
+for i in 0..4.filter(|x| x>1) // closures are used often with iterators (see below) 
+print!("{} ",i)               // 2 3
 
 fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see Macros! below
 
