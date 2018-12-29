@@ -14,7 +14,7 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 * Control flow using patterns, 'match' keyword
 * Packages: 'cargo' command, https://crates.io
 * Testing: cargo test, #[test]
-* Concurrency: based on ownership, also see Rayon package
+* Concurrency: ownership, mutability, channels, mutex, crossbeam + Rayon packages
 * Auto formatter: rustfmt filename.rs (see rust-lang.org for installation)
 * compiler engine: LLVM
 * raw pointers, low level: unsafe{} keyword
@@ -106,9 +106,13 @@ usize, isize              // this is the pointer size. used in loops, vector len
 
 static FOOBY: i32 = 5;    // static, global-ish variable
 
-let _ = expr; // determine the type of expression expr by looking at rustc error
-
 type Valid = bool;        // typedef ( make your own type names ) 
+
+let mut v = vec![1u8,2u8,3u8];  // determine the type of expression expr by looking at rustc error
+println!("{}",v.iter_mut());
+12 |     println!("{}",v.iter_mut());   // type of v.iter_mut() is std::slice::IterMut<'_, u8>`
+   |                   ^^^^^^^^^^^^ `std::slice::IterMut<'_, u8>` 
+                         cannot be formatted with the default formatter
 ```
 
 ## Operators
