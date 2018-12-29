@@ -172,8 +172,10 @@ s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
 println!("{}",s);
   
+#[derive(Debug)]                       // derive Debug is a simple way to make your own
+struct W{x:i8}                         // structs printable
+println!("{:?}",vec![W{x:4},W{x:3},W{x:2}]); // [W { x: 4 }, W { x: 3 }, W { x: 2 }]
 ```
-
 
 ### loop, for, while
 ```rust
