@@ -479,98 +479,7 @@ ty      // type.                       vis     // visibility qualifier
 */
 ```
 
-## Math
 
-### arithmetic
-
-```rust
-
-let x=250u8;           // addition can crash, max value of u8 is 255
-println!("{}",x+10);   // crashes, attempt to add with overflow
-println!("{}",x.wrapping_add(10));   // wraps around, result: 5
-println!("{}",x.saturating_add(10)); // stays at max, result: 255
-println!("{}",x.wrapping_sub(u8::MAX)); // wraparound subtraction
-std::f32::MIN;         // minimum binary floating point 32 bit value
-std::i32::MAX;         // maximum 32 bit integer value
-
-let b = -5;
-let c = b.abs();       // error, abs not defined on generic integer
-let b = -5i32;
-let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
-42.25f32.round();      // can also call functions on float literals    
-9.0f32.sqrt();         // square root approximation
-9.sqrt()               // error, sqrt only for floats
-let x = 3/4;           // 0
-let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
-let z = 3.0/4.0;       // 0.75
-```
-
-### number conversion
-
-```rust
-let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
-let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
-let numz: i32 = x as i32; // cast to signed 32 bit integer
-
-let s = format!("{:e}",0.0f32);    // convert float32 to base-10 decimal string (scientific format)
-let n = s.parse::<f32>().unwrap(); // parse float from string, panic/crash if theres an error
-let mut n = 0.0f32;                // parse float from string, without panic/crashing
-match s.parse::<f32>() {
-	Err(e)=>println!("bad parse of {}, because {}",s,e),
-	Ok(x)=>n=x
-}
-let a = "537629.886026485"                            // base-10 decimal string to binary float pt
-print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.875000000000000000000000000000000 
-let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
-let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
-let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
-```
-
-### comparison and sorting
-
-```rust
-
-use std::cmp           			// max/min of values
-let a = cmp::max(5,3); 			// maximum value of 2 integers
-let b = cmp::max(5.0,3.0); 		// build error, floats cant compare b/c of NaN,Inf
-let v = vec![1,2,3,4,5];   		// list, to find max of
-let m = v.iter.max().unwrap(); 		// max of numbers in a list, crash on error
-match v.iter().max() { 			// max of numbers in a list, don't crash
-    Some(n)=>println!("max {}",n), 	// do stuff with max value n
-    None=>println!("vector was empty")
-}
-let m = v.iter.max().unwrap_or(0);      // max of numbers in a list, or 0 if list empty
-
-v = vec![1,3,2];                               
-v.sort();                                      // sort integers
-v = vec![1.0,3.0,2.0];                         // sort floats
-v.sort();                                      // error, float's NaN can't be compared
-v.sort_by(|a, b| a.partial_cmp(b).unwrap());   // sort using closure
-
-struct Wheel{ r:i8, s:i8};                     // sort a vector that holds a struct
-let mut v = vec![Wheel{r:1,s:2},Wheel{r:3,s:2},Wheel{r:-2,s:2}];
-v.sort_by(|a, b| a.r.cmp(&b.r));               // sort using closure, based on value of field 'r'
-v.sort_by(|a, b| a.r.cmp(&(&b.r.abs())));      // sort using closure, based on abs value of r
-
-fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering {      // sort using a function
-     a.s.partial_cmp(&b.s).unwrap_or(std::cmp::Ordering::Equal)
-}
-v.sort_by( compare_s );                        
-
-### Hashing
-```rust
-use std::collections::hash_map::DefaultHasher; 
-use std::hash::{Hash, Hasher};
-let mut hasher = DefaultHasher::new(); // hashing, via a Hasher object, which holds state
-let x = 1729u32;
-let y = 137u32;
-hasher.write_u32( x );                 // input x to hash func, store output in hasher 
-hasher.write_u32( y );                 // input y, combine w existing state, store in hasher
-println!("{:x}", hasher.finish());     // .finish() function Hasher gives current state
-345.hash(&mut hasher);                 // update hasher's state using '.hash()' trait
-println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher objects
-
-```
 
 
 ## Arrays, Slices, Ranges
@@ -669,7 +578,6 @@ for i in vec![3,4,5].zip(vec![1,12,13]) {print!("{} ",i);} // (3,1) (4,12) (5,13
 print!("{:?}",vec![3,4,5].into_iter().map(|x| 2 * x).collect::<Vec<u8>>()); // 6 8 10
 vec![3,4,5].iter().for_each(|x| print!("{} ",x)); // 3 4 5
 for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{}",i);} // 3 4
-iter().filter_map(|x| func(x)) // if func(x) returns None, it's skipped 
 for (i,n) in vec![3,4,5].iter().enumerate() {print!("{}:{} ",i,n);} // 0:3 1:4 2:5
 for i in vec![4,5,3,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,3
 for i in vec![3,4,5,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,4,5,3
@@ -677,11 +585,35 @@ for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{},",i);} // 4
 for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{},",i);} //   (nothing) 
 for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{}",i)} // 3,7,12
 print!("{}",vec![3,4,5].iter().fold(0, |a, x| a + x)); // 12
+vec![3,4,5].iter().sum() // 12
+vec![3,4,5].iter().product() // 12*5, 60
 println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // 3
 println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // 1
 print!("{:?}",vec![vec![3,4],vec![5,1]].iter().flatten().collect::<Vec<_>>()); // 3,4,5,1
 for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
+let (a,b): (Vec<_>, Vec<_>) = vec![3,4,5].into_iter().partition(|x| x>&4);
+println!("{:?} {:?}",a,b); // [5] [3,4]
+vec![3,4,5].iter().all(|x| x>2) // true
+vec![3,4,5].iter().all(|x| x>4) // false
+vec![3,4,5].iter().any(|x| x<4) // true
+vec![3,4,5].iter().any(|x| x<2) // false
+vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
+vec![3,4,5].iter().position(|&&x| x == 5) // 2
 
+
+iter().cycle() // never ends, never returns None
+cloned() // clones each element
+unzip() // backwards of zip()
+rev() // reverse iterator
+rposition() // combine reverse and position
+max_by_key() // max using single func on each item
+max_by()    // max using compare closure |x,y| f(x,y)
+find_map() // combine find and map 
+flat_map() // combine flatten and map 
+filter_map() // combine filter and map
+
+// comparisons: cmp, le, eq, ne, lt, etc
+print!("{}",vec![3,4,5].iter().eq(vec![1,3,4,5].iter().skip(1))); // true
 
 ```
 
@@ -716,6 +648,102 @@ Itertools library: more adapters
     (0..3).zip_eq("abc".chars()).collect_vec(); // [(0,'a'), (1,'b'), (2,'c')]
 ```
 
+## Math
+
+### arithmetic
+
+```rust
+
+let x=250u8;           // addition can crash, max value of u8 is 255
+println!("{}",x+10);   // crashes, attempt to add with overflow
+println!("{}",x.wrapping_add(10));   // wraps around, result: 5
+println!("{}",x.saturating_add(10)); // stays at max, result: 255
+println!("{}",x.wrapping_sub(u8::MAX)); // wraparound subtraction
+std::f32::MIN;         // minimum binary floating point 32 bit value
+std::i32::MAX;         // maximum 32 bit integer value
+
+let b = -5;
+let c = b.abs();       // error, abs not defined on generic integer
+let b = -5i32;
+let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
+42.25f32.round();      // can also call functions on float literals    
+9.0f32.sqrt();         // square root approximation
+9.sqrt()               // error, sqrt only for floats
+let x = 3/4;           // 0
+let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
+let z = 3.0/4.0;       // 0.75
+```
+
+### number conversion
+
+```rust
+let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
+let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
+let numz: i32 = x as i32; // cast to signed 32 bit integer
+
+let s = format!("{:e}",0.0f32);    // convert float32 to base-10 decimal string (scientific format)
+let n = s.parse::<f32>().unwrap(); // parse float from string, panic/crash if theres an error
+let mut n = 0.0f32;                // parse float from string, without panic/crashing
+match s.parse::<f32>() {
+	Err(e)=>println!("bad parse of {}, because {}",s,e),
+	Ok(x)=>n=x
+}
+let a = "537629.886026485"                            // base-10 decimal string to binary float pt
+print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.875000000000000000000000000000000 
+let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
+let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
+let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
+```
+
+### comparison and sorting
+
+```rust
+
+use std::cmp           			// max/min of values
+let a = cmp::max(5,3); 			// maximum value of 2 integers
+let b = cmp::max(5.0,3.0); 		// build error, floats cant compare b/c of NaN,Inf
+let v = vec![1,2,3,4,5];   		// list, to find max of
+let m = v.iter.max().unwrap(); 		// max of numbers in a list, crash on error
+match v.iter().max() { 			// max of numbers in a list, don't crash
+    Some(n)=>println!("max {}",n), 	// do stuff with max value n
+    None=>println!("vector was empty")
+}
+let m = v.iter.max().unwrap_or(0);      // max of numbers in a list, or 0 if list empty
+
+v = vec![1,3,2];                               
+v.sort();                                      // sort integers
+v = vec![1.0,3.0,2.0];                         // sort floats
+v.sort();                                      // error, float's NaN can't be compared
+v.sort_by(|a, b| a.partial_cmp(b).unwrap());   // sort using closure
+println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // 3
+println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // 1
+
+struct Wheel{ r:i8, s:i8};                     // sort a vector that holds a struct
+let mut v = vec![Wheel{r:1,s:2},Wheel{r:3,s:2},Wheel{r:-2,s:2}];
+v.sort_by(|a, b| a.r.cmp(&b.r));               // sort using closure, based on value of field 'r'
+v.sort_by(|a, b| a.r.cmp(&(&b.r.abs())));      // sort using closure, based on abs value of r
+
+fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering {      // sort using a function
+     a.s.partial_cmp(&b.s).unwrap_or(std::cmp::Ordering::Equal)
+}
+v.sort_by( compare_s );                        
+```
+
+### Hashing
+
+```rust
+use std::collections::hash_map::DefaultHasher; 
+use std::hash::{Hash, Hasher};
+let mut hasher = DefaultHasher::new(); // hashing, via a Hasher object, which holds state
+let x = 1729u32;
+let y = 137u32;
+hasher.write_u32( x );                 // input x to hash func, store output in hasher 
+hasher.write_u32( y );                 // input y, combine w existing state, store in hasher
+println!("{:x}", hasher.finish());     // .finish() function Hasher gives current state
+345.hash(&mut hasher);                 // update hasher's state using '.hash()' trait
+println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher objects
+
+```
 ## Metacritic rating
 
 Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
