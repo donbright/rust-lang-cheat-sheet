@@ -237,6 +237,12 @@ rayon = "1.0.0"
 $ cargo run          # installs rayon, runs program
 ```
 
+```rust 
+channels: todo
+mutex: todo
+ARC: todo
+```
+
 ## Functions and closures
 ```rust
 fn adder( a:i8, b:i8) -> i32 { b + a }  // 'return' keyword optional
@@ -533,6 +539,7 @@ match v.iter().max() { 			// max of numbers in a list, don't crash
     Some(n)=>println!("max {}",n), 	// do stuff with max value n
     None=>println!("vector was empty")
 }
+let m = v.iter.max().unwrap_or(0);      // max of numbers in a list, or 0 if list empty
 
 v = vec![1,3,2];                               
 v.sort();                                      // sort integers
@@ -636,27 +643,51 @@ todo
 
 ## Iterators, functional style programming
 
-The 'for' statements, above, were done with iterators. 0..10 is a Range that gets iterated on. Some more examples:
-
 ```rust
-let v = vec![1,2,3];
-let biggest = v.iter().max();  // maximum value of 1 2 3 (its 3)
-let hasle2 = v.iter().any(|x| x<=2);  // true if any element is less than or equal to 2
-let biggest = v[0..1].iter().max(); // will return 2, not 3, b/c we took a slice of the vector
+let mut i = vec![3].iter();
+println!("{:?}",i.next());  // Some(3)
+println!("{:?}",i.next());  // None
+let v = vec![3];
+let mut i = v.iter().peekable();
+println!("{:?}",i.peek());  // Some(3)
+println!("{:?}",i.peek());  // Some(3)
+println!("{:?}",i.next());  // 3
+println!("{:?}",i.next());  // None
 
-let vf = vec![1.,2.,3.];       // floating point maximum is a little more work
-let biggest = vf.iter().cloned().fold(std::f64::MAX, f64::max);
-let smallest = vf.iter().cloned().fold(std::f64::MIN, f64::min);
+let v = vec![3,4,5];
+let it = v.iter(); // iterator as object
+print!("{:?}",i.collect::<Vec<_>>(); // iterator back to vector 
+for i in v.iter() {print!("{} ",i);} // 3 4 5 
+let biggest = v.iter().max();        // 5
+let hasle2 = v.iter().any(|x| x<=4); // true if any element is less than or equal to 2
+let biggest = v[0..1].iter().max();  // will return 4, not 5, b/c we took a slice of the vector
+for i in v.iter().step_by(2) {print!("{} ",i);} // 3 5 vec![
+for i in vec![3,4,5].iter().skip(1) {print("{}",i);} // 4, 5
+for i in vec![3,4,5].iter().take(2) {print("{}",i);} // 3, 4
+for i in vec![3,4,5].chain(vec![1,12,13]) {print!("{} ",i);} // 3 4 5 1 12 13
+for i in vec![3,4,5].zip(vec![1,12,13]) {print!("{} ",i);} // (3,1) (4,12) (5,13)
+print!("{:?}",vec![3,4,5].into_iter().map(|x| 2 * x).collect::<Vec<u8>>()); // 6 8 10
+vec![3,4,5].iter().for_each(|x| print!("{} ",x)); // 3 4 5
+for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{}",i);} // 3 4
+iter().filter_map(|x| func(x)) // if func(x) returns None, it's skipped 
+for (i,n) in vec![3,4,5].iter().enumerate() {print!("{}:{} ",i,n);} // 0:3 1:4 2:5
+for i in vec![4,5,3,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,3
+for i in vec![3,4,5,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,4,5,3
+for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{},",i);} // 4,5
+for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{},",i);} //   (nothing) 
+for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{}",i)} // 3,7,12
+print!("{}",vec![3,4,5].iter().fold(0, |a, x| a + x)); // 12
+println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // 3
+println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // 1
+print!("{:?}",vec![vec![3,4],vec![5,1]].iter().flatten().collect::<Vec<_>>()); // 3,4,5,1
+for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
+
+
 ```
 
-- iter()       iterates over &T.
-- iter_mut()   iterates over &mut T.
-- into_iter()  iterates over T.
 
-iterators are implemented as 'traits' which means you can create your own for your own types
 
-the itertools library has special features, some of which get adopted into std over time:
-
+Itertools library: more adapters
 ```rust
     use itertools::Itertools;
     vec![13,1,12].into_iter().sorted(); // [1,12,13]
