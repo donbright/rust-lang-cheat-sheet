@@ -612,6 +612,7 @@ rev() // reverse iterator
 rposition() // combine reverse and position
 max_by_key() // max using single func on each item
 max_by()    // max using compare closure |x,y| f(x,y)
+v.min_by(|a,b| a.x.partial_cmp(&b.x).unwrap_or(std::cmp::Ordering::Equal)); //min val,float
 find_map() // combine find and map 
 flat_map() // combine flatten and map 
 filter_map() // combine filter and map
@@ -719,6 +720,7 @@ v.sort();                                      // sort integers
 v = vec![1.0,3.0,2.0];                         // sort floats
 v.sort();                                      // error, float's NaN can't be compared
 v.sort_by(|a, b| a.partial_cmp(b).unwrap());   // sort using closure
+v.min_by(|a,b| a.x.partial_cmp(&b.x).unwrap_or(std::cmp::Ordering::Equal)); // minimum value
 println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // 3
 println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // 1
 
