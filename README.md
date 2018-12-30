@@ -587,10 +587,10 @@ for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{},",i);} // 4
 for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{},",i);} //   (nothing) 
 for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{}",i)} // 3,7,12
 print!("{}",vec![3,4,5].iter().fold(0, |a, x| a + x)); // 12
-vec![3,4,5].iter().sum() // 12
+vec![3,4,5].iter().sum() // 3+4+5, 12
 vec![3,4,5].iter().product() // 12*5, 60
-println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // 3
-println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // 1
+println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // max, 3
+println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // min, 1
 print!("{:?}",vec![vec![3,4],vec![5,1]].iter().flatten().collect::<Vec<_>>()); // 3,4,5,1
 for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
 let (a,b): (Vec<_>, Vec<_>) = vec![3,4,5].into_iter().partition(|x| x>&4);
@@ -602,8 +602,10 @@ vec![3,4,5].iter().any(|x| x<2) // false
 vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
 vec![3,4,5].iter().position(|&&x| x == 5) // 2
 
+let v =[3,4,5];
+let (i,j)=(v.iter(),v.iter().cycle().skip(2)); // cycle allows wraparound
+i.zip(j).for_each(|x| println!("{:?}",x));  // (3, 5)  (4, 3)  (5, 4)
 
-iter().cycle() // never ends, never returns None
 cloned() // clones each element
 unzip() // backwards of zip()
 rev() // reverse iterator
