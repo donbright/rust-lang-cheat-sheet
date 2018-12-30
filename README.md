@@ -553,9 +553,11 @@ todo
 ## Iterators, functional style programming
 
 ```rust
-let mut i = vec![3].iter();
-println!("{:?}",i.next());  // Some(3)
-println!("{:?}",i.next());  // None
+let v = vec![3,4,5];
+let it = v.iter(); // iterator as object
+println!("{:?} {:?} {:?}",it.next(),it.next(),it.next()); // consumed
+println!("{:?}",it.next()); // None
+
 let v = vec![3];
 let mut i = v.iter().peekable();
 println!("{:?}",i.peek());  // Some(3)
@@ -563,9 +565,9 @@ println!("{:?}",i.peek());  // Some(3)
 println!("{:?}",i.next());  // 3
 println!("{:?}",i.next());  // None
 
-let v = vec![3,4,5];
-let it = v.iter(); // iterator as object
+let mut i = v.iter();
 print!("{:?}",i.collect::<Vec<_>>(); // iterator back to vector 
+
 for i in v.iter() {print!("{} ",i);} // 3 4 5 
 let biggest = v.iter().max();        // 5
 let hasle2 = v.iter().any(|x| x<=4); // true if any element is less than or equal to 2
