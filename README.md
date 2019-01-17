@@ -600,7 +600,7 @@ vec![3,4,5].iter().all(|x| x>4) // false
 vec![3,4,5].iter().any(|x| x<4) // true
 vec![3,4,5].iter().any(|x| x<2) // false
 vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
-vec![3,4,5].iter().position(|&&x| x == 5) // 2
+vec![3,4,5].iter().position(|&&x| x == 5) // 2 // kind of like indexOf() in other langs
 
 let v =[3,4,5];
 let (i,j)=(v.iter(),v.iter().cycle().skip(2)); // cycle allows wraparound
