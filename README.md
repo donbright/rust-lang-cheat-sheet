@@ -702,6 +702,46 @@ Itertools library: more adapters
     (0..3).zip_eq("abc".chars()).collect_vec(); // [(0,'a'), (1,'b'), (2,'c')]
 ```
 
+## Implementing your own iterator for your own struct
+
+If you want to be able to use all the cool adapters like filter(), map(), fold(), etc, on your own cusom data structure you will need to implement the Iterator trait for your struct. Basically you need to create another struct called a "XIterator" that implements a 'next()' method. Then you create a method in your own struct called 'iter()' that returns a brand new XIterator struct.
+
+Here is a super simple example, all it does is iterate over a vector inside of custom data struct Mine.
+
+```rust
+#[derive(Debug)]
+struct Mine{
+    v:Vec<u8>
+}
+
+impl Mine{
+    fn iter(self:&Mine) -> MineIterator {
+        MineIterator {
+            v:&self.v, count:0,
+        }
+    }
+}
+
+struct MineIterator<'a> {
+    v: &'a Vec<u8>,
+    count: usize,
+}
+
+
+impl<'a> Iterator for MineIterator<'a> {
+    type Item = &'a u8;
+    fn next(&mut self) -> Option<Self::Item> {
+        self.count+=1;
+        if self.count<self.v.len() {Some(&self.v[self.count-1])} else {None}
+    }
+}
+
+fn main() {
+    let m=Mine{v:vec![3,4,5]};
+    m.iter().for_each(|i| print!("{:?} ",i));
+}
+```
+
 ## Math
 
 ### arithmetic
