@@ -183,19 +183,19 @@ println!("{:?}",vec![W{x:4},W{x:3},W{x:2}]); // [W { x: 4 }, W { x: 3 }, W { x: 
 
 ### loop, for, while
 ```rust
-for i in 0..10 { print!("{},",x) };               // 0,1,2,3,4,5,6,7,8,9
-for i in 0..10.rev() { print!("{},",x) };         // 9,8,7,6,5,4,3,2,1,0
-for i in (0..10).step_by(2)      ;  // 0 2 4 6 8 
-for i in (0..10).skip(1).step_by(2);// 1 3 5 7 9
-for i in (0..10).rev().step_by(2);  // 9 7 5 3 1 
-for i in (0..=10).rev().step_by(2); // 10 8 6 4 2 0 
-for i in (0..=10).step_by(2)     ;  // 0 2 4 6 8 10 
-for i in (0..9).rev().step_by(2) ;  // 8 6 4 2 0 
-for i in (0..9).step_by(2)       ;  // 0 2 4 6 8 
-
-let v = vec![1, 35, 64, 36, 26];	// vector to iterate
-for n in v { println!("{}",n) }		// ordinary vector iterate
-for (i, n) in v.iter().enumerate() {	// iterate with index and item 
+for i in 0..10 { print!("{},",x) };        // 0,1,2,3,4,5,6,7,8,9
+for i in 0..10.rev() { print!("{},",x) };  // 9,8,7,6,5,4,3,2,1,0
+for i in (0..10).step_by(2)      ;         // 0 2 4 6 8 
+for i in (0..10).skip(1).step_by(2);       // 1 3 5 7 9
+for i in (0..10).rev().step_by(2);         // 9 7 5 3 1 
+for i in (0..=10).rev().step_by(2);        // 10 8 6 4 2 0 
+for i in (0..=10).step_by(2)     ;         // 0 2 4 6 8 10 
+for i in (0..9).rev().step_by(2) ;         // 8 6 4 2 0 
+for i in (0..9).step_by(2)       ;         // 0 2 4 6 8 
+for i in (0..10).cycle().skip(5).take(10)  // 5 6 7 8 9 0 1 2 3 4 
+let v = vec![1, 35, 64, 36, 26];	   // vector to iterate
+for n in v { println!("{}",n) }		   // ordinary vector iterate
+for (i, n) in v.iter().enumerate() {       // iterate with index and item 
 	println!("{},{} ", i, n);
 }
 
@@ -226,7 +226,7 @@ fn main() {
     very_slow_function1(); // two single threaded functions that take a long time
     very_slow_function2(); 
     
-    rayon::join( || very_slow_function1()    // run them in parallel
+    rayon::join( || very_slow_function1()    // run them in parallel if appropriate
     		 || very_slow_function2() );
 }
 ```
