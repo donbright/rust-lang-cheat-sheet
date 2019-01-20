@@ -717,13 +717,12 @@ struct Mine{
 impl Mine{
     fn iter(self:&Mine) -> MineIterator {
         MineIterator {
-            v:&self.v, count:0,
+            m:&self, count:0,
         }
     }
 }
-
 struct MineIterator<'a> {
-    v: &'a Vec<u8>,
+    m: &'a Mine,
     count: usize,
 }
 
@@ -732,7 +731,7 @@ impl<'a> Iterator for MineIterator<'a> {
     type Item = &'a u8;
     fn next(&mut self) -> Option<Self::Item> {
         self.count+=1;
-        if self.count<self.v.len() {Some(&self.v[self.count-1])} else {None}
+        if self.count<self.m.v.len() {Some(&self.m.v[self.count-1])} else {None}
     }
 }
 
@@ -740,6 +739,7 @@ fn main() {
     let m=Mine{v:vec![3,4,5]};
     m.iter().for_each(|i| print!("{:?} ",i));
 }
+
 ```
 
 ## Math
