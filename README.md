@@ -222,6 +222,12 @@ fn main() {
     for i in 0..1024*1280 { v.push(i as f32); }
     v.iter_mut().for_each(     |x| *x = *x * 0.9 ); // single thread version 
     v.par_iter_mut().for_each( |x| *x = *x * 0.9 ); // multiple threads version
+    
+    very_slow_function1(); // two single threaded functions that take a long time
+    very_slow_function2(); 
+    
+    rayon::join( || very_slow_function1()    // run them in parallel
+    		 || very_slow_function2() );
 }
 ```
 
@@ -492,6 +498,49 @@ todo, create, concatenate, cut, strings,
 
 x := [3]string{"Лайка", "Белка", "Стрелка"}
 
+
+## Split_At_Mut - Mutability and References into a Vector
+
+For the special case for getting references to items within a vector:
+
+Imagine we have three Wheels (struct W) with radius (W.r) and they are inside
+a vector v. We start with wheels of radius 3,4,5 and want to change 
+it to be radiuses of 2, 4, 8.
+
+```
+
+    #[derive(Debug)]
+    struct W{ r:u32 }       // wheel struct
+    let mut v = vec![W{r:3},W{r:4},W{r:5}];   // vector of structs
+    let wheela = &mut v[0];      // mutable reference to Wheel with radius 3
+    let wheelb = &mut v[2];      // compile error! two mutables for one variable!
+    //  error[E0499]: cannot borrow `v` as mutable more than once at a time
+    wheela.r = 2;  // nope
+    wheelb.r = 8;  // nope
+```
+The borrow checker treats the entire vector as one gigantic variable, so
+you can't edit part of it with a mutable reference and then edit another part,
+because the parts aren't considered parts. They are considered as if you are
+editing the variable v. 
+
+But there is a workaround built into the language. It is called..
+
+split_at_mut
+
+It can create mutable slices, which allow mutable access to the vector.
+
+```
+     #[derive(Debug)]
+    struct W{ r:u32 }       // wheel struct
+    let mut v = vec![W{r:3},W{r:4},W{r:5}];   // vector of structs
+    let (l, r) = v.split_at_mut(2);  // split after the wheel with r4
+    let wheela = &mut l[0];  // first item of left part of split
+    let wheelb = &mut r[0];  // first item of right part of split
+    wheela.r = 2;       // no problem
+    wheelb.r = 8;       // no problem
+    println!("{:?} {:?}",l,r); // [W { r: 2 }, W { r: 4 }] [W { r: 8 }]
+    println!("{:?}",v); // [W { r: 2 }, W { r: 4 }, W { r: 8 }]
+```
 
 ## subclass, inheritance
 
