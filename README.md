@@ -704,11 +704,18 @@ Itertools library: more adapters
 
 ## Implementing your own iterator for your own struct
 
-If you want to be able to use all the cool adapters like filter(), map(), fold(), etc, on your own cusom data structure you will need to implement the Iterator trait for your struct. Basically you need to create another struct called a "XIterator" that implements a 'next()' method. Then you create a method in your own struct called 'iter()' that returns a brand new XIterator struct.
+If you want to be able to use all the cool adapters like filter(), map(), fold(), etc, 
+on your own cusom data structure you will need to implement the Iterator trait for your 
+struct. Basically you need to create another struct called a "XIterator" that implements 
+a 'next()' method. Then you create a method in your own struct called 'iter()' that returns 
+a brand new XIterator struct.
 
-Here is a super simple example, all it does is iterate over a vector inside of custom data struct Mine.
+Here is a super simple example, all it does is iterate over a data inside of custom 
+data struct Mine. The data is stored in a vector so it's pretty straightforward to access it.
+
 
 ```rust
+
 #[derive(Debug)]
 struct Mine{
     v:Vec<u8>
@@ -721,25 +728,76 @@ impl Mine{
         }
     }
 }
+
 struct MineIterator<'a> {
     m: &'a Mine,
     count: usize,
 }
 
-
 impl<'a> Iterator for MineIterator<'a> {
     type Item = &'a u8;
     fn next(&mut self) -> Option<Self::Item> {
         self.count+=1;
-        if self.count<self.m.v.len() {Some(&self.m.v[self.count-1])} else {None}
+        if self.count<=self.m.v.len() {
+		Some(&self.m.v[self.count-1])
+	} else {
+		None
+	}
     }
 }
 
 fn main() {
     let m=Mine{v:vec![3,4,5]};
-    m.iter().for_each(|i| print!("{:?} ",i));
+    m.iter().for_each(|i| print!("{:?} ",i));println!(""); // 3 4 5
+    m.iter().filter(|x|x>3).fold(0,|a,x| a+x); // 9 
 }
 
+```
+
+If you want to create a Mutable Iterator, you will (as of writing, 2018)
+have to use an unsafe code with a raw pointer. This is alot like what the
+standard library does. If you are not extremely careful, your program may
+exhibit bizarre behavior and have security bugs, which defeats the purpose
+of using Rust in the first place. 
+
+* https://gitlab.com/Boiethios/blog/snippets/1742789
+* https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html#dereferencing-a-raw-pointer
+
+```rust
+
+
+impl Mine{
+    fn iter_mut(self:&mut Mine) -> MineIterMut {
+            MineIterMut {
+            m:self, count:0,//_marker:std::marker::PhantomData,
+        }
+    }
+}
+
+pub struct MineIterMut<'a> {
+    m: &'a mut Mine,
+    count: usize,
+}
+
+impl<'a> Iterator for MineIterMut<'a> {
+    type Item = &'a mut u8;
+    fn next(&mut self) -> Option<&'a mut u8> {
+            if self.count == self.m.v.len() {
+                None
+            } else {
+                let ptr: *mut u8 = &mut self.m.v[self.count];	    
+                self.count += 1;
+		unsafe{ Some(&mut *ptr) }
+            }
+    }
+}
+
+fn main() {
+    let mut m=Mine{v:vec![3,4,5]};
+    m.iter().for_each(|i| print!("{:?} ",i));println!(""); // 3 4 5
+    m.iter_mut().for_each(|i| *i += 1);
+    m.iter().for_each(|i| print!("{:?} ",i));println!(""); // 4 5 6
+}
 ```
 
 ## Math
