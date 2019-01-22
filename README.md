@@ -850,7 +850,7 @@ let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.8860264850081875
 
 let x = '1'.to_digit(10);  // convert from char to integer, base 10
 let y = 'f'.to_digit(16);  // convert from char to integer, base 16
-let z = char::from_digit(x,10); // convert from integer to char, base 10. z is now '1'
+let z = std::char::from_digit(x,10).unwrap(); // convert from integer to char, base 10. z is now '1'
 ```
 
 ### comparison and sorting
