@@ -847,6 +847,9 @@ print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.8750000000000000
 let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
 let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
 let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
+
+let x = '1'.to_digit(10);  // convert from char to integer, base 10
+let y = 'f'.to_digit(16);  // convert from char to integer, base 16
 ```
 
 ### comparison and sorting
