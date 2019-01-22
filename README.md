@@ -262,7 +262,9 @@ fn f(t:i8) {          // nesting functions is OK
 
 // function pointers
 fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
+println!("{}",fp(5));     // prints 7
 let fp = addtwo;          // fp = function pointer to addtwo function
+println!("{}",fp(5));     // now we can call fp() just like we called addtwo
 fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) } 
 // 'where F:Fn' lets us build a function that can accept another function as an argument
 f(fp);  // call function f, passing a pointer to the 'addtwo' function. result=3
