@@ -888,6 +888,14 @@ fn compare_s( a:&Wheel, b:&Wheel ) -> std::cmp::Ordering {      // sort using a 
 v.sort_by( compare_s );                        
 ```
 
+### Pseudo randoms
+
+```rust
+extern crate rand;
+use rand::Rng;
+let x = rand::thread_rng().gen_range(0, 100); 
+```
+
 ### Hashing
 
 ```rust
@@ -923,3 +931,4 @@ Rust has an excellent crafting and building system. The character models are a b
 - Shepmaster, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
 - user4815162342, https://stackoverflow.com/questions/26836488/how-to-sort-a-vector-in-rust
 - mbrubek, https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/
+- https://stackoverflow.com/questions/19671845/how-can-i-generate-a-random-number-within-a-range-in-rust
