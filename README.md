@@ -911,11 +911,76 @@ println!("{:x}", hasher.finish());     // .finish() function Hasher gives curren
 println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher objects
 
 ```
+
+## Calling C functions
+
+layout
+```bash
+   src/lib.rs
+   src/ccode.c
+   build.rs
+   Cargo.toml
+```
+
+Cargo.toml
+```rust
+[package]
+name = "duh"
+version = "0.1.0"
+authors = ["akhmatova"]
+build = "build.rs"
+[dependencies]
+libc = "0.2"
+[build-dependencies]
+cc = "1.0"
+```
+
+build.rs
+```rust
+extern crate cc;
+
+fn main() {
+    cc::Build::new().file("src/ccode.c").compile("ccode");
+}
+```
+
+src/ccode.c
+```C
+int quadrance( int x1, int y1, int x2, int y2) {
+	return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
+}
+```
+
+src/main.rs
+```rust
+
+extern crate libc;
+type Cint = libc::c_int;
+extern "C" {
+    fn quadrance(x1: Cint, y1: Cint, x2: Cint, y2: Cint) -> Cint;
+}
+fn main() {
+    unsafe {
+        println!("4^2+3^2={:?}", quadrance(0, 0, 4, 3));
+    }
+}
+
+```
+
+Run:
+```bash
+don@oysters:~/duh$ cargo run
+   Compiling duh v0.1.0 (/home/don/duh)                                         
+    Finished dev [unoptimized + debuginfo] target(s) in 1.95s                   
+     Running `target/debug/duh`
+4^2+3^2=25
+```
+
 ## Metacritic rating
 
 Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
 
-## Credits
+## Thanks
 
 - rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
 - rust-lang.org, Rust reference, https://doc.rust-lang.org
@@ -932,3 +997,5 @@ Rust has an excellent crafting and building system. The character models are a b
 - user4815162342, https://stackoverflow.com/questions/26836488/how-to-sort-a-vector-in-rust
 - mbrubek, https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/
 - https://stackoverflow.com/questions/19671845/how-can-i-generate-a-random-number-within-a-range-in-rust
+- Amir Shrestha https://amirkoblog.wordpress.com/2018/07/05/calling-native-c-code-from-rust/ 
+- Julia Evans https://jvns.ca/blog/2016/01/18/calling-c-from-rust/
