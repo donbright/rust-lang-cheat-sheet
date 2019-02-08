@@ -912,7 +912,12 @@ println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher obje
 
 ```
 
-## Calling C functions
+## FFI, Calling C functions
+
+foreign function interface, aka calling code from other languages. 
+
+See also: https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
+
 
 layout
 ```bash
