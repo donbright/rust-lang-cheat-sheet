@@ -934,8 +934,6 @@ name = "duh"
 version = "0.1.0"
 authors = ["akhmatova"]
 build = "build.rs"
-[dependencies]
-libc = "0.2"
 [build-dependencies]
 cc = "1.0"
 ```
@@ -958,18 +956,15 @@ int quadrance( int x1, int y1, int x2, int y2) {
 
 src/main.rs
 ```rust
-
-extern crate libc;
-type Cint = libc::c_int;
+use std::os::raw::c_int;
 extern "C" {
-    fn quadrance(x1: Cint, y1: Cint, x2: Cint, y2: Cint) -> Cint;
+    fn quadrance(x1: c_int, y1: c_int, x2: c_int, y2: c_int) -> c_int;
 }
 fn main() {
     unsafe {
         println!("4^2+3^2={:?}", quadrance(0, 0, 4, 3));
     }
 }
-
 ```
 
 Run:
