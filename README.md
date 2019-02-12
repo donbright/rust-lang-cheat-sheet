@@ -1003,3 +1003,4 @@ Rust has an excellent crafting and building system. The character models are a b
 - https://stackoverflow.com/questions/19671845/how-can-i-generate-a-random-number-within-a-range-in-rust
 - Amir Shrestha https://amirkoblog.wordpress.com/2018/07/05/calling-native-c-code-from-rust/ 
 - Julia Evans https://jvns.ca/blog/2016/01/18/calling-c-from-rust/
+- huon https://stackoverflow.com/questions/23850486/how-do-i-convert-a-string-into-a-vector-of-bytes-in-rust
