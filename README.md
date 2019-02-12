@@ -851,6 +851,10 @@ let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.8860264850081875
 let x = '1'.to_digit(10);  // convert from char to integer, base 10
 let y = 'f'.to_digit(16);  // convert from char to integer, base 16
 let z = std::char::from_digit(x,10).unwrap(); // convert from integer to char, base 10. z is now '1'
+
+println!("{:?}","abc".as_bytes()); // [97, 98, 99] ( utf8 string into bytes. note basic ASCII = utf8 )
+println!("{:?}","ᏣᎳᎩ".as_bytes()); // [225, 143, 163, 225, 142, 179, 225, 142, 169] ( Cherokee utf8 )
+
 ```
 
 ### comparison and sorting
