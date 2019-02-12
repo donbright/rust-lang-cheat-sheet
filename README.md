@@ -854,6 +854,16 @@ let z = std::char::from_digit(x,10).unwrap(); // convert from integer to char, b
 
 println!("{:?}","abc".as_bytes()); // [97, 98, 99] ( utf8 string into bytes. note basic ASCII = utf8 )
 println!("{:?}","ᏣᎳᎩ".as_bytes()); // [225, 143, 163, 225, 142, 179, 225, 142, 169] ( Cherokee utf8 )
+let s = b"\x61\x62\x63"; // b precedes sequence of bytes, hexadecimal, pseudo-string form
+println!("{}",std::str::from_utf8( s ).unwrap()); // abc // decodes utf8 to string, crash if invalid utf8
+
+println!("{:?}", "सूर्य नमस्कार्कार".as_bytes()); // [224, 164, 184,...] 
+let s = [224, 164, 184, 224, 165, 130, 224, 164, 176, 224, 165, 
+         141, 224, 164, 175, 32, 224, 164, 168, 224, 164, 174, 224, 
+	 164, 184, 224, 165, 141, 224, 164, 149, 224, 164, 190, 224, 164, 176];
+println!("{}",std::str::from_utf8( &s ).unwrap()); // सूर्य नमस्कार   
+println!("{:?}",std::str::from_utf8( &s ).unwrap()); // "स\u{942}र\u{94d}य नमस\u{94d}कार" different decoding
+
 
 ```
 
