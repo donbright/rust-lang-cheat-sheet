@@ -3,8 +3,6 @@
 
 This cheat sheet is in a reasonably useful state for basic things, but it may contain some errors.
 
-Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
-
 ## Rust in a Nutshell
 
 * Syntax tokens similar to C
@@ -864,6 +862,10 @@ let s = [224, 164, 184, 224, 165, 130, 224, 164, 176, 224, 165,
 println!("{}",std::str::from_utf8( &s ).unwrap()); // सूर्य नमस्कार   
 println!("{:?}",std::str::from_utf8( &s ).unwrap()); // "स\u{942}र\u{94d}य नमस\u{94d}कार" different decoding
 
+let m = 0b0001; // binary literal
+let m = 0o0007; // octal literal
+let m = 0x000f; // hexadecimal literal
+let (a,b,c) = (0b00_01,0o00_07,0x00_0f); // literals with underscores for ease of reading
 
 ```
 
@@ -995,6 +997,8 @@ don@oysters:~/duh$ cargo run
 Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
 
 ## Thanks
+
+Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 
 - rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
 - rust-lang.org, Rust reference, https://doc.rust-lang.org
