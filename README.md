@@ -867,6 +867,8 @@ let m = 0o0007; // octal literal
 let m = 0x000f; // hexadecimal literal
 let (a,b,c) = (0b00_01,0o00_07,0x00_0f); // literals with underscores for ease of reading
 
+use std::i64;
+let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
 ```
 
 ### comparison and sorting
@@ -1012,6 +1014,7 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - codngame https://www.codingame.com/playgrounds/365/getting-started-with-rust/primitive-data-types
 - Adam Leventhal post here, http://dtrace.org/blogs/ahl/2015/06/22/first-rust-program-pain/
 - Shepmaster, https://stackoverflow.com/questions/33133882/fileopen-panics-when-file-doesnt-exist
+- again, https://stackoverflow.com/questions/32381414/converting-a-hexadecimal-string-to-a-decimal-integer
 - user4815162342, https://stackoverflow.com/questions/26836488/how-to-sort-a-vector-in-rust
 - mbrubek, https://www.reddit.com/r/rust/comments/3fg0xr/how_do_i_find_the_max_value_in_a_vecf64/
 - https://stackoverflow.com/questions/19671845/how-can-i-generate-a-random-number-within-a-range-in-rust
