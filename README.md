@@ -344,6 +344,24 @@ let y = match x {                     // match can 'return a result' to y
         _ => "other"
 };
 println!("{}",y);                     // "ends with 2"
+
+
+fn m(x:(i8,char))->{x.1=='a'};        // patterns can only be constant, but you can
+let n = (0,'a');                      // use a conditional pattern, like this:
+let y = match n {                     // match tuple
+        (0,_) => "start 0",           // any tuple with first element 0, ok.
+        (1,'a') if m(n) => "start 1", // this 'if' piece is called a 'match guard'
+        _ => "stop",                  // match guard allows matching with variables.
+};
+
+let x = 5i32;                          // we can use the match value in match arms,
+let y = match x-1 {                    // this is also called "binding with @", like so:
+	0..=10 => x,                   // y becomes x
+	m @ 10..=std::i32::MAX => m*2, // y becomes (x-1)*2
+        _=>-x,                         
+};
+
+
 ```
 
 
