@@ -950,6 +950,14 @@ println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher obje
 
 ```
 
+## Linked Lists
+
+Linked Lists are different in Rust because textbook C/Java-style implementations often involve ownership that is not allowed by the borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
+
+https://cglab.ca/~abeinges/blah/too-many-lists/book/
+
+You can also implement a linked list as a Vector of structs, using integer indexes into the vector instead of pointers.
+
 ## FFI, Calling C functions
 
 foreign function interface, aka calling code from other languages. 
@@ -1041,3 +1049,5 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - Amir Shrestha https://amirkoblog.wordpress.com/2018/07/05/calling-native-c-code-from-rust/ 
 - Julia Evans https://jvns.ca/blog/2016/01/18/calling-c-from-rust/
 - huon https://stackoverflow.com/questions/23850486/how-do-i-convert-a-string-into-a-vector-of-bytes-in-rust
+- EvilTak https://stackoverflow.com/questions/43176841/how-to-access-the-element-at-variable-index-of-a-tuple
+
