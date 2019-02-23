@@ -75,8 +75,10 @@ let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64
 let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
 let n: f32 = 0.45;   // 32 bit float (automatcally converted+rounded from decimal to binary)
 let n = 42.01f64;  c // 64 bit float literal of the number 42.01 (approximately)
-let r: [u8;3] = [3,4,5];          // slice (array) of 3 int, cannot grow
-let r = [0;500];                  // slice of 500 integers, each initialized to 0
+let r: [u8;3] = [3,4,5];          // array of 3 int, cannot grow
+let s = [0;500];                  // array of 500 integers, each initialized to 0
+let s = &r[0..2];                 // slice of array, s==&[3,4]
+let s = &r[0..2][0];              // index into slice, s==3
 let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, can grow
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
