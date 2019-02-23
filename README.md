@@ -91,7 +91,9 @@ let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
 print("{}",p);                // you can use them alone after assignment
 let m = (4,5,"a");            // tuples can mix types
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
-    
+
+let (a,b) = m.p, m.q;         // error, cannot index into a tuple using a variable
+
 let s = String::from("上善若水"); // String
 let s2 = "水善利萬物而不爭";       // string literal, type is &str
 let s3 = format!("{}{}",s2,s3); // concatenate strings
