@@ -931,9 +931,15 @@ v.sort_by( compare_s );
 ### Pseudo randoms
 
 ```rust
-extern crate rand;
+extern crate rand;   /// use external crate
 use rand::Rng;
 let x = rand::thread_rng().gen_range(0, 100); 
+
+// alternative, without needing external crate
+// Jack @ https://stackoverflow.com/questions/3062746/special-simple-random-number-generator
+let mut seed = 123456789;
+let mut r=||{seed=(1103515245u32.wrapping_mul(seed).wrapping_add(12345)) % 2147483648;seed};
+for i in 0..99 {print!("{} ",r());}; // print 99 pseudo random integers  
 ```
 
 ### Hashing
