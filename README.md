@@ -83,6 +83,7 @@ let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, 
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
 u.push( 2 );                      // append item to vector
+u.pop();                      // vectors can return+remove last input (like a stack)
 v.contains(&3);               // true if vector contains value
 v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
@@ -99,6 +100,7 @@ let (a,b) = m.p, m.q;         // error, cannot index into a tuple using a variab
 let s = String::from("上善若水"); // String
 let s2 = "水善利萬物而不爭";       // string literal, type is &str
 let s3 = format!("{}{}",s2,s3); // concatenate strings
+for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split string
 let hellomsg = r###"            // Multi-line with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
@@ -1058,4 +1060,5 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - Julia Evans https://jvns.ca/blog/2016/01/18/calling-c-from-rust/
 - huon https://stackoverflow.com/questions/23850486/how-do-i-convert-a-string-into-a-vector-of-bytes-in-rust
 - EvilTak https://stackoverflow.com/questions/43176841/how-to-access-the-element-at-variable-index-of-a-tuple
+- https://www.90daykorean.com/korean-proverbs-sayings/
 
