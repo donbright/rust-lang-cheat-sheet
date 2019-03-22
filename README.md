@@ -599,6 +599,10 @@ f = OpenOptions::new().create(true).open("out.txt").unwrap();       // create if
 f = OpenOptions::new().append(true).open("out.txt").unwrap();       // append
 f = OpenOptions::new().append(true).create(true).open("out.txt").unwrap(); // append + create
 write!(f,"{}",s).unwrap(); // write formatted string, given file object f
+
+use std::io::{self,BufRead};  // read from stdin aka standard input
+let line = io::stdin().lock().lines().next().unwrap().unwrap();
+
 ```
 
 ## System, arguments
@@ -1063,4 +1067,5 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - huon https://stackoverflow.com/questions/23850486/how-do-i-convert-a-string-into-a-vector-of-bytes-in-rust
 - EvilTak https://stackoverflow.com/questions/43176841/how-to-access-the-element-at-variable-index-of-a-tuple
 - https://www.90daykorean.com/korean-proverbs-sayings/
+- oli_obk https://stackoverflow.com/questions/30186037/how-can-i-read-a-single-line-from-stdin
 
