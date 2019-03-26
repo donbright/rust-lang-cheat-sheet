@@ -905,7 +905,7 @@ extern crate byteorder; // modify your Cargo.toml to add byteorder crate. then:
 
 use byteorder::{BigEndian, ReadBytesExt, NativeEndian, ByteOrder, LittleEndian, WriteBytesExt};
 let arr = [0,1,2,3];
-let s = NativeEndian::read_u32(&arr[i..i+4]);   // array of four bytes into u32.
+let s = NativeEndian::read_u32(&arr[0..4]);   // array of four bytes into u32.
 
 ```
 
