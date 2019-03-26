@@ -101,6 +101,7 @@ let s = String::from("上善若水"); // String
 let s2 = "水善利萬物而不爭";       // string literal, type is &str
 let s3 = format!("{}{}",s2,s3); // concatenate strings
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split string
+let s4 = &s[0..2];               // Substring using indexes
 let hellomsg = r###"            // Multi-line with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
@@ -1068,4 +1069,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - EvilTak https://stackoverflow.com/questions/43176841/how-to-access-the-element-at-variable-index-of-a-tuple
 - https://www.90daykorean.com/korean-proverbs-sayings/
 - oli_obk https://stackoverflow.com/questions/30186037/how-can-i-read-a-single-line-from-stdin
-
+- ogeon https://users.rust-lang.org/t/how-to-get-a-substring-of-a-string/1351
