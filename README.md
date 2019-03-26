@@ -899,6 +899,14 @@ let (a,b,c) = (0b00_01,0o00_07,0x00_0f); // literals with underscores for ease o
 
 use std::i64;
 let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
+
+// using byteorder crate
+extern crate byteorder; // modify your Cargo.toml to add byteorder crate. then:
+
+use byteorder::{BigEndian, ReadBytesExt, NativeEndian, ByteOrder, LittleEndian, WriteBytesExt};
+let arr = [0,1,2,3];
+let s = NativeEndian::read_u32(&arr[i..i+4]);   // array of four bytes into u32.
+
 ```
 
 ### comparison and sorting
@@ -1070,3 +1078,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - https://www.90daykorean.com/korean-proverbs-sayings/
 - oli_obk https://stackoverflow.com/questions/30186037/how-can-i-read-a-single-line-from-stdin
 - ogeon https://users.rust-lang.org/t/how-to-get-a-substring-of-a-string/1351
+- A.R https://stackoverflow.com/questions/54472982/converting-a-vector-of-integers-to-and-from-bytes-in-rust
