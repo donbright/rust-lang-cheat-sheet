@@ -126,10 +126,13 @@ println!("{}",v.iter_mut());
 ```rust
 1 + 2 - 3 * 4 / 5  // arithmetic add, minus, multiply, divide
 7 % 5              // modulo (remainder)
-& | ^ << >>        // bitwise and, or, xor, leftshift, rightshift
-&^                 // bitwise andnot
+& | ^              // bitwise and, or, xor
+<< >>              // leftshift, rightshift, will crash on overflow
+a.rotate_left(3)   // circular bit rotation, wrapping around
+a.rotate_right(4)  // circular bit rotation, wrapping around
+!                  // bitwise not
 a == b != c < d <= e > f >= g  // logical comparison
-a && b || c ! d    // logical boolean , and, or, not
+a && b || c ! d    // logical boolean, and, or, not
 
 let a = 5;         // pointer + dereference example
 let b = &a;        // &a is 'address of a' in computers memory
