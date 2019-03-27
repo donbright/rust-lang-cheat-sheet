@@ -89,12 +89,13 @@ v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
 v.extend(w);                  // extend v with w (v owns w, w can be immutable)
 v.resize(200,0);              // make vector have 200 elements, set them to 0
+let x = &w[1..];               // get a slice of a vector (a view into it's elements)
+print("{:?}",x);              // [12,13]; 
 let vs = v.len();             // length of vector
-let (p,d,q) = (4,5,6);        // tuple is a way to assign multiple variables
-print("{}",p);                // you can use them alone after assignment
-let m = (4,5,"a");            // tuples can mix types
+let (p,d,q) = (4,5,6);        // tuple() can assign multiple variables at once
+print("{}",p);                // you can use them alone after tuple assignment
+let m = (4,5,"a");            // tuples can have multiple different types as elements
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
-
 let (a,b) = m.p, m.q;         // error, cannot index into a tuple using a variable
 
 let s = String::from("上善若水"); // String
@@ -517,13 +518,6 @@ ty      // type.                       vis     // visibility qualifier
 ## Arrays, Slices, Ranges
 
 todo
-
-### Slices
-
-todo, create, concatenate, cut, strings,
-
-x := [3]string{"Лайка", "Белка", "Стрелка"}
-
 
 ## Split_At_Mut - Mutability and References into a Vector
 
