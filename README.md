@@ -598,6 +598,9 @@ f = OpenOptions::new().append(true).open("out.txt").unwrap();       // append
 f = OpenOptions::new().append(true).create(true).open("out.txt").unwrap(); // append + create
 write!(f,"{}",s).unwrap(); // write formatted string, given file object f
 
+let mut v = vec![];                                                 // read binary data, vec of u8
+f = File::open("test.bin").unwrap().read_to_end(&mut v);            // without using buffering
+
 use std::io::{self,BufRead};  // read from stdin aka standard input
 let line = io::stdin().lock().lines().next().unwrap().unwrap();
 
