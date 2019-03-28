@@ -976,6 +976,17 @@ println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher obje
 
 ```
 
+### Time
+
+```
+use std::time::{Instant};
+let t = Instant::now();
+// do something for 5.3 seonds
+println!("{}",t.elapsed().as_secs());          // 5, seconds, rounded
+println!("{}",t.elapsed().subsec_millis());    // 300. remainder in milliseconds
+
+```
+
 ## Linked Lists
 
 Linked Lists are different in Rust because textbook C/Java-style implementations often involve ownership that is not allowed by the borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
