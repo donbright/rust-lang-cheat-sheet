@@ -468,6 +468,13 @@ if mw == w { print!("equal wheels"); }
 
 ```
 
+## Enums
+
+```rust
+enum ClipType { Intersection, Union, Difference, Xor }
+let clipper = Clip( ClipType::Intersection );
+
+```
 
 ## HashMap, aka associative array / key-value / map 
 ```rust
