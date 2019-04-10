@@ -261,10 +261,10 @@ ARC: todo
 
 ## Functions and closures
 ```rust
-fn adder( a:i8, b:i8) -> i32 { b + a }  // 'return' keyword optional
-fn multi_return( a:i8, b:i32) -> (char,i32) { return ('s',a+b); }
-let (x, s) = multi_return( 3, 56 );   // multi return via tuples
-
+fn add( a:i8, b:i8 ) -> i32 { b + a }  // 'return' keyword optional
+fn getcodes( a:i8, b:i32) -> (char,i32) { return ('s',a+b); }
+let (x, s) = getcodes( 3, 56 );     // multi return via tuples
+fn mulby6( a:i8, b:i8=5 ) -> i16 {} // error. Rust circa 2019 has no default parameters. 
 fn f(t:i8) {          // nesting functions is OK
   fn g(u:i8) { u*5 }
   let a = t + g(2);
@@ -272,7 +272,7 @@ fn f(t:i8) {          // nesting functions is OK
 
 // function pointers
 fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
-println!("{}",fp(5));     // prints 7
+println!("{}",addtwo(5)); // prints 7
 let fp = addtwo;          // fp = function pointer to addtwo function
 println!("{}",fp(5));     // now we can call fp() just like we called addtwo
 fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) } 
@@ -574,9 +574,9 @@ It can create mutable slices, which allow mutable access to the vector.
     println!("{:?}",v); // [W { r: 2 }, W { r: 4 }, W { r: 8 }]
 ```
 
-## subclass, inheritance
+## Object Oriented style
 
-todo
+Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), and even Enums.
 
 ### Files
 
