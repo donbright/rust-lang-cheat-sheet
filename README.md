@@ -289,6 +289,8 @@ f(|x| x * value);     // and a closure can be anonymous, without a name. result 
 for i in 0..4.filter(|x| x>1) // closures are used often with iterators (see below) 
 print!("{} ",i)               // 2 3
 
+type ZFillCallback = fn(bottom:u32,top:u32)->u32;  // typedef of a function
+
 fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see Macros! below
 
 ```
