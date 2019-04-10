@@ -1,7 +1,7 @@
 
 ## Warning
 
-This cheat sheet is in a reasonably useful state for basic things, but it may contain some errors.
+This cheat sheet is in a reasonably useful state for basic things, but it does contain some errors.
 
 ## Rust in a Nutshell
 
@@ -985,6 +985,19 @@ let t = Instant::now();
 println!("{}",t.elapsed().as_secs());          // 5, seconds, rounded
 println!("{}",t.elapsed().subsec_millis());    // 300. remainder in milliseconds
 
+```
+
+## Annotations
+
+Aka hashtags aka warning thingies. These statements typically affect compilation and begin with a hashtag, and square brackets. They are sort of like a mix of #pragma and #ifdef from C. 
+
+```rust
+#![allow(dead_code)]             // stop compiler from printing warnings on unused funcs/vars,   
+#![allow(unused_variables)]      // this is good when you are working on a library
+
+let mut a = 0x00ffee22;          // modify numbers for big endian machines.
+#[cfg(target_endian = "big")]    // target = machine the code will be run on
+a = a.swap_bytes();              // the line (or block) immediately following the # gets affected.
 ```
 
 ## Linked Lists
