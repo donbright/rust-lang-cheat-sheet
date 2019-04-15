@@ -8,7 +8,7 @@ This cheat sheet is in a reasonably useful state for basic things, but it does c
 * Syntax tokens similar to C
 * Ownership of memory enforced at build time
 * Statically linked
-* Functionalish, objectish, genericish
+* Functional-ish, generic-ish, not so objecty
 * Control flow using patterns, 'match' keyword
 * Packages: 'cargo' command, https://crates.io
 * Testing: cargo test, #[test]
@@ -332,6 +332,36 @@ $ cargo test           # test build, will include cfg(test) sections
 -> test_bigtest failed # cargo reports on failed tests
 ```
 
+## Documentation
+
+rust-doc and cargo doc allow automatic building of html documentation
+for code. precede documentation of your code with three slashmarks
+instead of the normal two slashmarks, like so:
+
+```rust
+/// blorg() returns the blorgification of input x
+/// # Details
+/// this code implements the krishnamurthi procedure
+/// for blimfication of zorgonautic primes 
+/// # Arguments
+/// * `x` - typically a square number
+/// # Safety
+/// Cannot panic unless x overflows u64
+/// # Example
+///     let n = blorg(36); 
+fn blorg(x:u64)->u64 {
+   x+x*x
+}
+```
+
+Then run rust-doc or cargo doc and view the result.
+
+```bash
+$ cargo doc
+$ firefox target/doc/cratename/index.html
+```
+
+Good examples of the results are on https://crates.io
 
 ## If, conditionals, patterns, match, control flow
 
@@ -1087,7 +1117,7 @@ Rust has an excellent crafting and building system. The character models are a b
 
 ## Thanks
 
-Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
+Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, and
 
 - rust-lang.org, Rust book, https://doc.rust-lang.org/book/second-edition
 - rust-lang.org, Rust reference, https://doc.rust-lang.org
@@ -1114,3 +1144,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet
 - ogeon https://users.rust-lang.org/t/how-to-get-a-substring-of-a-string/1351
 - A.R https://stackoverflow.com/questions/54472982/converting-a-vector-of-integers-to-and-from-bytes-in-rust
 - dten https://stackoverflow.com/questions/25060583/what-is-the-preferred-way-to-byte-swap-values-in-rust
+- How To Rust-doc https://brson.github.io/2012/04/14/how-to-rustdoc
