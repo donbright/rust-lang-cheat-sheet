@@ -947,6 +947,15 @@ use byteorder::{BigEndian, ReadBytesExt, NativeEndian, ByteOrder, LittleEndian, 
 let arr = [0,1,2,3];
 let s = NativeEndian::read_u32(&arr[0..4]);   // array of four bytes into u32.
 
+// converting raw vectors of u8 bytes into ints, floats, etc.
+let v = vec![0u8;80]; let i = 0;
+let n:i32 = {unsafe { std::mem::transmute::<&[u8],&[i32]>(&v[i..i+4])}}[0]; 
+let x:f32 = {unsafe { std::mem::transmute::<&[u8],&[f32]>(&v[i..i+4])}}[0];
+let mut block = vec![0u8;64];  // convert entire block at once
+let mut X = unsafe { mem::transmute::<&mut [u8], &mut [u32]>(&mut block) }; 
+#[cfg(target_endian = "big")]   // deal with endian issues if needed
+for j in 0..16 { X[j] = X[j].swap_bytes(); }
+
 ```
 
 ### comparison and sorting
