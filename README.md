@@ -505,6 +505,12 @@ n=k;                // copy
 vec![M{0};42];      // clone
 println!("{:?}",n); // debug
 if n==k {0};        // equality 
+
+#[derive(Default,Debug)]               // Initialization and Default
+struct M {n:i8,y:i8,z:f64,s:String,p:bool,}
+let m=M{..Default::default()};     // M { n: 0, y: 0, z: 0.0, s: "", p: false }
+let m=M{n:1,..Default::default()}; // M { n: 1, y: 0, z: 0.0, s: "", p: false }
+
 ```
 
 ## Enums
@@ -1164,3 +1170,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - dten https://stackoverflow.com/questions/25060583/what-is-the-preferred-way-to-byte-swap-values-in-rust
 - How To Rust-doc https://brson.github.io/2012/04/14/how-to-rustdoc
 - Pavel Strakhov https://stackoverflow.com/questions/40030551/how-to-decode-and-encode-a-float-in-rust
+- Zargony https://stackoverflow.com/questions/19650265/is-there-a-faster-shorter-way-to-initialize-variables-in-a-rust-struct/19653453#19653453
