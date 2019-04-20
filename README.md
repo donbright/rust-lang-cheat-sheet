@@ -1154,3 +1154,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - A.R https://stackoverflow.com/questions/54472982/converting-a-vector-of-integers-to-and-from-bytes-in-rust
 - dten https://stackoverflow.com/questions/25060583/what-is-the-preferred-way-to-byte-swap-values-in-rust
 - How To Rust-doc https://brson.github.io/2012/04/14/how-to-rustdoc
+- Pavel Strakhov https://stackoverflow.com/questions/40030551/how-to-decode-and-encode-a-float-in-rust
