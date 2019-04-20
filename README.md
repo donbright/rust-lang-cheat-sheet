@@ -498,6 +498,13 @@ mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable.
 impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
 if mw == w { print!("equal wheels"); }
 
+#[derive(Copy,Clone,Debug,PartialEq)]   // handy defaults
+struct M{n:i8}
+let (n,k)=(M{0},M{-1});
+n=k;                // copy
+vec![M{0};42];      // clone
+println!("{:?}",n); // debug
+n==k;               // equality 
 ```
 
 ## Enums
