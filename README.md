@@ -608,7 +608,7 @@ It can create mutable slices, which allow mutable access to the vector.
 
 Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), and even Enums.
 
-### Files
+## Files
 
 ```rust
 use std::fs::File;
@@ -642,6 +642,8 @@ f = File::open("test.bin").unwrap().read_to_end(&mut v);            // without u
 
 use std::io::{self,BufRead};  // read from stdin aka standard input
 let line = io::stdin().lock().lines().next().unwrap().unwrap();
+
+let x = include!("datafile.txt"); // include external data file, example: vec![0,0,0];
 
 ```
 
