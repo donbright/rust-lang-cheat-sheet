@@ -506,6 +506,11 @@ vec![M{0};42];      // clone
 println!("{:?}",n); // debug
 if n==k {0};        // equality 
 
+#[derive(Debug)]                       // Initialize one struct from another
+struct Apple {color:(u8,u8,u8),price:f32};  // this is called "struct update"
+let a = Apple{color:(100,0,0),price:0.2};
+let b = Apple{color:(9,12,38),..a };
+
 #[derive(Default,Debug)]               // Initialization and Default
 struct M {n:i8,y:i8,z:f64,s:String,p:bool,}
 let m=M{..Default::default()};     // M { n: 0, y: 0, z: 0.0, s: "", p: false }
