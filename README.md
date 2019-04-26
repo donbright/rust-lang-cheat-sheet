@@ -975,8 +975,39 @@ let mut block = vec![0u8;64];  // convert entire block at once
 let mut X = unsafe { mem::transmute::<&mut [u8], &mut [u32]>(&mut block) }; 
 #[cfg(target_endian = "big")]   // deal with endian issues if needed
 for j in 0..16 { X[j] = X[j].swap_bytes(); }
-
 ```
+
+### string conversion
+
+```rust
+let s = "hello" ;                   // s = &str
+let s = "hello".to_string();        // s = String
+let m = s.replace("hello","new");   // m = "new"
+let y = s.to_uppercase();           // y = "NEW"
+```
+
+Regular expressions typically use an external crate.
+Syntax for regex: https://docs.rs/regex/1.1.2/regex/index.html#syntax
+
+In cargo.toml,
+[dependencies]
+regex = "1.1.0"
+
+In main.rs:
+```rust
+use regex::Regex;
+let text = r###"The country is named France, I think the capital city is Paris;
+the Boulangerie are beautiful on la rue du Cherche-Midi"###;              // multiline string
+
+let re = Regex::new(r"country is named (?P<country>.*?),.*?city is (?P<capcity>.*?);").unwrap();
+let caps = re.captures(text).unwrap();
+println!("{}, {}",&caps["capcity"],&caps["country"]);                  // Paris, France
+
+let re = Regex::new(r"(?ms)city is (?P<citname>.*?).$.*?beautiful on (?P<streetname>.*?)$").unwrap();
+let caps = re.captures(text).unwrap();
+println!("{}, {}",&caps["streetname"],&caps["citname"]);               // la Rue de Cherche Midi, Paris
+```
+
 
 ### comparison and sorting
 
