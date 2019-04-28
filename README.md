@@ -189,6 +189,17 @@ println!("{}",s);
 #[derive(Debug)]                       // derive Debug is a simple way to make your own
 struct W{x:i8}                         // structs printable
 println!("{:?}",vec![W{x:4},W{x:3},W{x:2}]); // [W { x: 4 }, W { x: 3 }, W { x: 2 }]
+
+// fmt::Display makes your own structs and enums printable with ordinary {} symbol
+use std::fmt
+impl fmt::Display for W{
+fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{write!(f, "W[{}]", self.x)}}
+
+pub enum Apple{PinkLady,HoneyCrisp}  // can also be done for Enums 
+impl fmt::Display for Apple {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self { Apple::PinkLady=>write!(f, "Ap:PLad"),
+                     Apple::HoneyCrisp=>write!(f, "Ap:HonCr"),}}}
 ```
 
 ### loop, for, while
@@ -218,6 +229,13 @@ while i > 0 {
 let mut i = 0;                          // loop
 loop { i=i+1; if i<10 { break; } };	// plain loop
 let x = loop { i=i+1; if i>=10 { break i; } } // loop that returns value, x = 10
+
+// While Let, can be used in situations where we expect Option::Some() for several iterations,
+// but we expect a Option::None() to be at the end of the iterations. For example:
+let mut n = 99;                
+while let Some(i) = (0..n).filter(|x|x%2==0).last() {n/=2;print!("{}",i);}  
+// this prints the highest even number below n, as n is repeatedly divided in half
+// 98, 48, 22, 10, 4, 2, 0  
 
 ```
 
@@ -1085,6 +1103,24 @@ println!("{}",t.elapsed().as_secs());          // 5, seconds, rounded
 println!("{}",t.elapsed().subsec_millis());    // 300. remainder in milliseconds
 
 ```
+
+## Errors, Result, Option, Exceptions
+
+Rust has no Exceptions of the type found in other languages like Java or C++. It favors special return types called Result and Option. Here is an example with Result:
+
+```rust
+fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
+    match some_data[0] {
+    	255=>Err("we cannot calculate blorg if data begins with 255"),
+        _=>Ok((some_data[0]+some_data[1]*17).rotate_right(3)),
+    }
+}
+```
+
+Note our Result can return two different things, a u8 or a str, but the u8 will be wrapped inside Ok() while the str would
+be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blorg_level() will show an error at compile time.
+
+
 
 ## Annotations
 
