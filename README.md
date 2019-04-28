@@ -1131,6 +1131,30 @@ let mut a = 0x00ffee22;          // modify numbers for big endian machines.
 a = a.swap_bytes();              // the line (or block) immediately following the # gets affected.
 ```
 
+## Source code organization for bigger projects
+
+```bash
+$ ls ..
+./mycrate                   # main crate folder
+./mycrate/Cargo.toml        # cargo file, lists dependencies etc
+./mycrate/src/lib.rs        # crate root file
+./mycrate/src/stuff.rs      # file to hold a module
+$ cargo build               # this builds all files in crate, no easy way to build a single file
+```
+
+src/stuff.rs:
+```rust
+pub fun do_stuff(i:i8)->i16 { u8*9+3-27 }
+```
+
+src/lib.rs:
+```rust
+use stuff;
+fn dosomething() { let x = stuff::do_stuff(9);}
+```
+See also
+https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
+
 ## Linked Lists
 
 Linked Lists are different in Rust because textbook C/Java-style implementations often involve ownership that is not allowed by the borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
