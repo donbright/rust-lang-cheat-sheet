@@ -512,22 +512,22 @@ w.okgrow();  // error, w is immutable, self inside okgrow() is mutable
 mw.dump();   // ok, mw is mutable, self inside dump is immutable.  
 mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable.
 
-// operator overloading for ==, !=
-impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
-if mw == w { print!("equal wheels"); }
-
 #[derive(Copy,Clone,Debug,PartialEq)]   // handy defaults
 struct M{n:i8}
 let (mut n,mut k)=(M{0},M{-1});
 n=k;                // copy
 vec![M{0};42];      // clone
-println!("{:?}",n); // debug
-if n==k {0};        // equality 
+println!("{:?}",n); // debug, formatter
+if n==k {0};        // equality, operator overloading 
+
+// customized operator overloading
+impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
+if mw == w { print!("equal wheels"); }
 
 #[derive(Debug)]                       // Initialize one struct from another
-struct Apple {color:(u8,u8,u8),price:f32};  // this is called "struct update"
+struct Apple {color:(u8,u8,u8),price:f32};  
 let a = Apple{color:(100,0,0),price:0.2};
-let b = Apple{color:(9,12,38),..a };
+let b = Apple{color:(9,12,38),..a };      // this is called "struct update"
 
 #[derive(Default,Debug)]               // Initialization and Default
 struct M {n:i8,y:i8,z:f64,s:String,p:bool,}
