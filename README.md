@@ -1144,6 +1144,7 @@ $ cargo build               # this builds all files in crate, no easy way to bui
 
 src/stuff.rs:
 ```rust
+enum Zorgnog { Noorg, Beezle };
 pub fun do_stuff(i:i8)->i16 { u8*9+3-27 }
 ```
 
@@ -1152,6 +1153,19 @@ src/lib.rs:
 use stuff;
 fn dosomething() { let x = stuff::do_stuff(9);}
 ```
+
+src/otherstuff.rs:
+```rust
+use super::Zorgnog;
+pub fn bloom(a:Zorgnog)->bool {
+   match a {
+   	Zorgnog::Norg=>false,
+	Zorgnog::Beezle=>true,
+   }
+}
+
+```
+
 See also
 https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
 
