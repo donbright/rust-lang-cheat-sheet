@@ -698,13 +698,9 @@ packages: docopt, clap, getopts, structopt
 
 todo
 
-## Interface to other languages, FFI
-
-c++ - https://hsivonen.fi/modern-cpp-in-rust/
-
 ## Traits
 
-todo
+todo. Traits are like 'interfaces' in other languages.
 
 ## Iterators, functional style programming
 
@@ -1147,9 +1143,6 @@ You can also implement a linked list as a Vector of structs, using integer index
 
 foreign function interface, aka calling code from other languages. 
 
-See also: https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
-
-
 layout
 ```bash
    src/lib.rs
@@ -1206,6 +1199,13 @@ don@oysters:~/duh$ cargo run
      Running `target/debug/duh`
 4^2+3^2=25
 ```
+
+See also: https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
+
+c++ - https://hsivonen.fi/modern-cpp-in-rust/
+
+CVarArgs is a special Rust type to help with C
+
 
 ## Metacritic rating
 
