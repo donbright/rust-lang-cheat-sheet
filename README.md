@@ -1135,7 +1135,7 @@ let mut a = 0x00ffee22;          // modify numbers for big endian machines.
 a = a.swap_bytes();              // the line (or block) immediately following the # gets affected.
 ```
 
-## Source code organization for bigger projects
+## Source code organization for a bigger library
 
 ```bash
 $ ls ..
@@ -1143,30 +1143,37 @@ $ ls ..
 ./mycrate/Cargo.toml        # cargo file, lists dependencies etc
 ./mycrate/src/lib.rs        # crate root file
 ./mycrate/src/stuff.rs      # file to hold a module
+./mycrate/src/otherstuff.rs # file to hold a module
+./mycrate/tests             # integration tests (as opposed to unit tests at end of every .rs file)
+./mycrate/examples          # easy to follow examples   
+./mycrate/benches           # speed tests
 $ cargo build               # this builds all files in crate, no easy way to build a single file
 ```
 
-src/stuff.rs:
+src/stuff.rs: (our module that does stuff)
 ```rust
 enum Zorgnog { Noorg, Beezle };
 pub fun do_stuff(i:i8)->i16 { u8*9+3-27 }
 ```
 
-src/lib.rs:
+src/otherstuff.rs: (
 ```rust
-use stuff;
-fn dosomething() { let x = stuff::do_stuff(9);}
-```
-
-src/otherstuff.rs:
-```rust
-use super::Zorgnog;
+use super::Zorgnog; // uses types from stuff.rs
 pub fn bloom(a:Zorgnog)->bool {
    match a {
    	Zorgnog::Norg=>false,
 	Zorgnog::Beezle=>true,
    }
 }
+
+
+src/lib.rs: (our main library file which the world will use)
+```rust
+mod stuff;
+use crate::stuff::*;
+fn dosomething() { let x = do_stuff(9);}
+```
+
 
 ```
 
