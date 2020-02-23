@@ -649,6 +649,8 @@ Inheritance - there is no inheritance. Typical alternatives are "composition" (s
 ```rust
 use std::fs::File;
 use std::io::Read;
+use std::io::Write;
+use std::fs::OpenOptions;
 
 // read file, non-crashing example
 match File::open("test.txt") {
@@ -668,7 +670,7 @@ let mut s = String::new();
 File::open("test.txt").unwrap().read_to_string(&mut s).unwrap();    // read into s
 File::create("output.txt").unwrap().write(s.to_bytes()).unwrap();   // write string
 f = File::create("output.txt").unwrap();                            // create if doesnt exist
-f = OpenOptions::new().create(true).open("out.txt").unwrap();       // create if doesnt exist
+f = OpenOptions::new().write(true).truncate(true).create(true).open("out.txt").unwrap();       // create if doesnt exist
 f = OpenOptions::new().append(true).open("out.txt").unwrap();       // append
 f = OpenOptions::new().append(true).create(true).open("out.txt").unwrap(); // append + create
 write!(f,"{}",s).unwrap(); // write formatted string, given file object f
@@ -680,6 +682,8 @@ use std::io::{self,BufRead};  // read from stdin aka standard input
 let line = io::stdin().lock().lines().next().unwrap().unwrap();
 
 let x = include!("datafile.txt"); // include external data file, example: vec![0,0,0];
+
+// there is no 'close', files close automatically at the end of scope ( "}" )
 
 ```
 
