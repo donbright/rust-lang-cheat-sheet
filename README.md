@@ -544,7 +544,10 @@ let clipper = Clip( ClipType::Intersection );
 
 ```
 
-## HashMap, aka associative array / key-value / map 
+## Collections, Key-value pairs, Sets
+
+HashMap, aka associative array / key-value / map 
+
 ```rust
 use std::collections::HashMap;
 let mut m = HashMap::new();   
@@ -555,6 +558,14 @@ let b = m['a'];                 // this crashes at runtime if 'a' is not in map
 ```
 
 There are no hashmap literals, but you can make your own macro [like Shepmaster, on StackOverflow, click here](https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
+
+HashSet
+
+use std::collections::HashSet;
+let mut squares = HashSet::new();
+squares.insert(0);
+squares.insert(4);
+let b = squares.contains(&4);   // b==true
 
 ## Macros
 
@@ -1182,7 +1193,7 @@ https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-priv
 
 ## Linked Lists
 
-Linked Lists are different in Rust because textbook C/Java-style implementations often involve ownership that is not allowed by the borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
+Textbook C/Java-style implementations of linked lists often involve ownership that is not allowed by the Rust borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
 
 https://cglab.ca/~abeinges/blah/too-many-lists/book/
 
