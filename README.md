@@ -561,11 +561,13 @@ There are no hashmap literals, but you can make your own macro [like Shepmaster,
 
 HashSet
 
+```rust
 use std::collections::HashSet;
 let mut squares = HashSet::new();
 squares.insert(0);
 squares.insert(4);
 let b = squares.contains(&4);   // b==true
+```
 
 ## Macros
 
