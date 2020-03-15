@@ -708,6 +708,10 @@ let x = include!("datafile.txt"); // include external data file, example: vec![0
 std::env::args().for_each(|x| print!("{} ",x)); // main arguments as iterator, print each one 
 for arg in std::env::args().collect::<Vec<String>>() { print!("{} ",arg); }; // same, as vector
 if std::env::args().any(|x| x=="--help") {help()};            // if called with --help, run help()
+let progname = std::env::args().nth(0)  // first argument. but this wont compile! its an Option()
+let progname = std::env::args().nth(0).unwrap_or("yr system is very broken".to_string()); 
+// on most systems, first argument = program name. but args is not guaranteed to exist, its an iterator
+// that could be empty. so we can use unwrap_or() to deal with the Option if no arguments are there
 ```
 
 packages: docopt, clap, getopts, structopt
