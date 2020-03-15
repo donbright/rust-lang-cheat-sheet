@@ -103,6 +103,7 @@ let s2 = "水善利萬物而不爭";       // string literal, type is &str
 let s3 = format!("{}{}",s2,s3); // concatenate strings
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split string
 let s4 = &s[0..2];               // Substring using indexes
+let i4 = s.find('水').unwrap_or(-1); // find index of character (not a byte offset)
 let hellomsg = r###"            // Multi-line with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
