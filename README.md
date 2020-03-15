@@ -111,15 +111,16 @@ let hellomsg = r###"            // Multi-line with embedded quotes
 usize, isize              // this is the pointer size. used in loops, vector length, etc
 
 static FOOBY: i32 = 5;    // static, global-ish variable
+static Z_ERRMSG : [&str;2] = ["need input","need more input"]; // static strings
 
 type Valid = bool;        // typedef ( make your own type names ) 
 
 let mut v = vec![1u8,2u8,3u8];  // determine the type of expression expr by looking at rustc error
-println!("{}",v.iter_mut());
+println!("{}",v.iter_mut());    // for example, if we want to know the type of v, build an error
 12 |     println!("{}",v.iter_mut());   // type of v.iter_mut() is std::slice::IterMut<'_, u8>`
-   |                   ^^^^^^^^^^^^ `std::slice::IterMut<'_, u8>` 
-                         cannot be formatted with the default formatter
-```
+   |                   ^^^^^^^^^^^^ `std::slice::IterMut<'_, u8>` <- error line tells you the type
+                        
+ ```
 
 ## Operators
 
@@ -608,7 +609,7 @@ ty      // type.                       vis     // visibility qualifier
 
 ## Arrays, Slices, Ranges
 
-todo
+todo (see section above for basic array stuff)
 
 ## Split_At_Mut - Mutability and References into a Vector
 
