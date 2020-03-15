@@ -540,8 +540,9 @@ let m=M{n:1,..Default::default()}; // M { n: 1, y: 0, z: 0.0, s: "", p: false }
 ## Enums
 
 ```rust
-enum ClipType { Intersection, Union, Difference, Xor }
-let clipper = Clip( ClipType::Intersection );
+enum Fruit { Apple, Banana, Pear }
+let x = call_some_function( Fruit::Apple );  
+enum Errs { ErrOK = 0, ErrFile = 1, ErrFire = 2, ErrBadCap = 3 }  // enums can have integers
 
 ```
 
