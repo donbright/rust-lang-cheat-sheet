@@ -666,8 +666,7 @@ Inheritance - there is no inheritance. Typical alternatives are "composition" (s
 
 ```rust
 use std::fs::File;
-use std::io::Read;
-use std::io::Write;
+use std::io::{Write,Read}
 use std::fs::OpenOptions;
 
 // read file, non-crashing example
@@ -700,6 +699,25 @@ use std::io::{self,BufRead};  // read from stdin aka standard input
 let line = io::stdin().lock().lines().next().unwrap().unwrap();
 
 let x = include!("datafile.txt"); // include external data file, example: vec![0,0,0];
+
+let mut buf = vec![0u8; 4096];  // read in a loop to a buffer
+loop {
+        match infile.read(&mut buf) {
+            Ok(numbytes_read) => println("read {} bytes",numbyes_read),
+            Err(why) => break Err(why),
+        }
+}
+
+// file errors inside a function and the question mark ?
+fn boodle( dart:u32 ) -> io::Result<usize> {
+  f = File::open("/some/filename.txt")?; // handles error somewhat automatically by returning
+  println("ok, opened file");
+}
+
+// Passing File to function... 
+pub fn zipread( mut rd:&File )  { let x = rd.read(&[buf])?; println!("{}",x); }
+// .. or... pass any struct with read trait 
+pub fn zipread( mut rd:impl Read )  { let x = rd.read(&[buf])?; println!("{}",x); }
 
 // there is no 'close', files close automatically at the end of scope ( "}" )
 
