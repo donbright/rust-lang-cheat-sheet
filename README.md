@@ -973,7 +973,7 @@ let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
 let z = 3.0/4.0;       // 0.75
 ```
 
-### number conversion
+### data conversion
 
 ```rust
 let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
