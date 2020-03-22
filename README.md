@@ -1035,13 +1035,21 @@ let mut X = unsafe { mem::transmute::<&mut [u8], &mut [u32]>(&mut block) };
 for j in 0..16 { X[j] = X[j].swap_bytes(); }
 ```
 
-### string conversion
-
+// string conversion
 ```rust
 let s = "hello" ;                   // s = &str
 let s = "hello".to_string();        // s = String
 let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
+```
+
+// str implements Read and Write, sort of like C++ stringstream
+```
+let s = "Reedeth Senek, and redeth eek Boece";
+let s2= "Ther shul ye seen expres that it no drede is"
+let buf = &mut vec![0u8; 64];
+s.as_bytes().read(buf).unwrap();
+s2.as_bytes().read(&buf[30]).unwrap();
 ```
 
 Regular expressions typically use an external crate.
