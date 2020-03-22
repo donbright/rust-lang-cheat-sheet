@@ -997,25 +997,11 @@ let x = '1'.to_digit(10);  // convert from char to integer, base 10
 let y = 'f'.to_digit(16);  // convert from char to integer, base 16
 let z = std::char::from_digit(x,10).unwrap(); // convert from integer to char, base 10. z is now '1'
 
-println!("{:?}","abc".as_bytes()); // [97, 98, 99] ( utf8 string into bytes. note basic ASCII = utf8 )
-println!("{:?}","ᏣᎳᎩ".as_bytes()); // [225, 143, 163, 225, 142, 179, 225, 142, 169] ( Cherokee utf8 )
-let s = b"\x61\x62\x63"; // b precedes sequence of bytes, hexadecimal, pseudo-string form
-println!("{}",std::str::from_utf8( s ).unwrap()); // abc // decodes utf8 to string, crash if invalid utf8
-
-println!("{:?}", "सूर्य नमस्कार्कार".as_bytes()); // [224, 164, 184,...] 
-let s = [224, 164, 184, 224, 165, 130, 224, 164, 176, 224, 165, 
-         141, 224, 164, 175, 32, 224, 164, 168, 224, 164, 174, 224, 
-	 164, 184, 224, 165, 141, 224, 164, 149, 224, 164, 190, 224, 164, 176];
-println!("{}",std::str::from_utf8( &s ).unwrap()); // सूर्य नमस्कार   
-println!("{:?}",std::str::from_utf8( &s ).unwrap()); // "स\u{942}र\u{94d}य नमस\u{94d}कार" different decoding
 
 let m = 0b0001; // binary literal
 let m = 0o0007; // octal literal
 let m = 0x000f; // hexadecimal literal
 let (a,b,c) = (0b00_01,0o00_07,0x00_0f); // literals with underscores for ease of reading
-
-use std::i64;
-let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
 
 println!("{:x}",0x12345678u32.swap_bytes());  // 0x78563412 32-bit byteswap 
 
@@ -1036,6 +1022,26 @@ for j in 0..16 { X[j] = X[j].swap_bytes(); }
 ```
 
 // string conversion
+
+```
+
+use std::i64;
+let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
+
+println!("{:?}","abc".as_bytes()); // &[u8] slice, [97, 98, 99] ( utf8 string into bytes )
+println!("{:?}","abc".as_bytes().to_vec()); // Vec<u8> [97, 98, 99] string into slice into Vector of bytes
+println!("{:?}","ᏣᎳᎩ".as_bytes()); // [225, 143, 163, 225, 142, 179, 225, 142, 169] ( Cherokee utf8 )
+let s = b"\x61\x62\x63"; // b precedes sequence of bytes, hexadecimal, pseudo-string form
+println!("{}",std::str::from_utf8( s ).unwrap()); // abc // decodes utf8 to string, crash if invalid utf8
+
+println!("{:?}", "सूर्य नमस्कार्कार".as_bytes()); // [224, 164, 184,...] 
+let s = [224, 164, 184, 224, 165, 130, 224, 164, 176, 224, 165, 
+         141, 224, 164, 175, 32, 224, 164, 168, 224, 164, 174, 224, 
+	 164, 184, 224, 165, 141, 224, 164, 149, 224, 164, 190, 224, 164, 176];
+println!("{}",std::str::from_utf8( &s ).unwrap()); // सूर्य नमस्कार   
+println!("{:?}",std::str::from_utf8( &s ).unwrap()); // "स\u{942}र\u{94d}य नमस\u{94d}कार" different decoding
+```
+
 ```rust
 let s = "hello" ;                   // s = &str
 let s = "hello".to_string();        // s = String
@@ -1043,7 +1049,9 @@ let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
 ```
 
-// str implements Read and Write, sort of like C++ stringstream
+
+// str implements Write, sort of like C++ stringstream
+// str.as_bytes() converts to slice, which implements Read, similarly
 ```
 let s = "Reedeth Senek, and redeth eek Boece";
 let s2= "Ther shul ye seen expres that it no drede is"
