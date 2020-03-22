@@ -1231,7 +1231,6 @@ fn dosomething() { let x = do_stuff(9);}
 ```
 
 
-```
 
 See also
 https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
