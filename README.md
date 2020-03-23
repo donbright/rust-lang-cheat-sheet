@@ -1315,7 +1315,8 @@ c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
 https://doc.rust-lang.org/nomicon/ffi.html
 
-CVarArgs is a special Rust type to help with C
+Using char** C functions:
+https://stackoverflow.com/questions/42717473/passing-vecstring-from-rust-to-char-in-c
 
 
 ## Metacritic rating
