@@ -1264,6 +1264,7 @@ authors = ["akhmatova"]
 build = "build.rs"
 [build-dependencies]
 cc = "1.0"
+libc = "0.2.0"
 ```
 
 build.rs
@@ -1285,12 +1286,16 @@ int quadrance( int x1, int y1, int x2, int y2) {
 src/main.rs
 ```rust
 use std::os::raw::c_int;
+use std::os::raw::c_char;
+use std::ffi::CString;  
 extern "C" {
     fn quadrance(x1: c_int, y1: c_int, x2: c_int, y2: c_int) -> c_int;
+    fn blerg(v: *char);
 }
 fn main() {
     unsafe {
         println!("4^2+3^2={:?}", quadrance(0, 0, 4, 3));
+	blerg(CString::new("blarg").unwrap().as_ptr());
     }
 }
 ```
@@ -1307,6 +1312,8 @@ don@oysters:~/duh$ cargo run
 See also: https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
 
 c++ - https://hsivonen.fi/modern-cpp-in-rust/
+
+https://doc.rust-lang.org/nomicon/ffi.html
 
 CVarArgs is a special Rust type to help with C
 
