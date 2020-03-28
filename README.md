@@ -1318,6 +1318,9 @@ https://doc.rust-lang.org/nomicon/ffi.html
 Using char** C functions:
 https://stackoverflow.com/questions/42717473/passing-vecstring-from-rust-to-char-in-c
 
+Structs and bindgen auto header conversion
+https://medium.com/dwelo-r-d/using-c-libraries-in-rust-13961948c72a
+
 Setting CFLAGS examples:
 
 modify build.rs:
