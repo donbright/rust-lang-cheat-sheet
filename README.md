@@ -1315,6 +1315,9 @@ c++ - https://hsivonen.fi/modern-cpp-in-rust/
 
 https://doc.rust-lang.org/nomicon/ffi.html
 
+Michael Bryan's unofficial guide
+https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
+
 Using char** C functions:
 https://stackoverflow.com/questions/42717473/passing-vecstring-from-rust-to-char-in-c
 
