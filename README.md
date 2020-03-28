@@ -1318,6 +1318,20 @@ https://doc.rust-lang.org/nomicon/ffi.html
 Using char** C functions:
 https://stackoverflow.com/questions/42717473/passing-vecstring-from-rust-to-char-in-c
 
+Setting CFLAGS examples:
+
+modify build.rs:
+
+```rust
+extern crate cc;
+
+fn main() {
+    std::env::set_var("CFLAGS","-w");  // turn off all warnings
+    std::env::set_var("CFLAGS","-v");  // run compiler in verbose mode
+    std::env::set_var("CFLAGS","-v -O2");  // optimize level 2 + verbose mode
+    cc::Build::new().file("src/ccode.c").compile("ccode");
+}
+```
 
 ## Metacritic rating
 
