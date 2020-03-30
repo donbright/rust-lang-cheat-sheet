@@ -1122,10 +1122,17 @@ v.sort_by( compare_s );
 ### Pseudo randoms
 
 ```rust
-extern crate rand;   /// use external crate
-use rand::Rng;
-let x = rand::thread_rng().gen_range(0, 100); 
-
+extern crate rand;   /// add rand to dependencies in Cargo.toml
+use rand::prelude::*; 
+let x = rand::random(); // boolean
+let y = rand::random::<int>(); // integer
+let x = rand::thread_rng().gen_range(0, 100); // between
+let mut rng = rand::thread_rng();
+let z: f64 = rng.gen(); // float 0...1
+let mut nums: Vec<i32> = (1..100).collect();
+nums.shuffle(&mut rng);
+```
+```rust
 // alternative, without needing external crate
 // Jack @ https://stackoverflow.com/questions/3062746/special-simple-random-number-generator
 let mut seed = 123456789;
