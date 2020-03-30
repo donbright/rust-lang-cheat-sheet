@@ -204,6 +204,7 @@ impl fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self { Apple::PinkLady=>write!(f, "Ap:PLad"),
                      Apple::HoneyCrisp=>write!(f, "Ap:HonCr"),}}}
+//todo enum variants, containing data
 ```
 
 ### loop, for, while
