@@ -1321,8 +1321,14 @@ https://s3.amazonaws.com/temp.michaelfbryan.com/index.html
 Using char** C functions:
 https://stackoverflow.com/questions/42717473/passing-vecstring-from-rust-to-char-in-c
 
+Note that much C code does not initialize structs or memory, which may be forgotten
+when one is used to Rust
+http://www.ex-parrot.com/~chris/random/initialise.html
+
 Structs and bindgen auto header conversion
 https://medium.com/dwelo-r-d/using-c-libraries-in-rust-13961948c72a
+
+
 
 Setting CFLAGS examples:
 
