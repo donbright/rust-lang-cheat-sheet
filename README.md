@@ -617,13 +617,14 @@ ty      // type.                       vis     // visibility qualifier
 array
 
 ```
-let arr: [u8; 4] = [1, 2, 3, 4]; // immutable
-let mut arrm: [u8; 4] = [1,2,3,4]; // mutable
-let n = arr.len();     // length = 4 items 
-let s1 = &arr[0..2];   // slice
-println!("{:?}",s1);   // 1 2 
+let arr: [u8; 4] = [1, 2, 3, 4]; // immutable array. cant change size.
+let mut arrm: [u8; 4] = [1,2,3,4]; // mutable array. cant change size.
+let n = arr.len();     // length of array = 4 items 
+let s1 = &arr[0..2];   // slice of underlying array
+let n2 = s1.len();     // length of slice = 2 items
+println!("{:?}",s1);   // 1 2, contents of slice
 let s2 = &arr[1..];    // slice until end
-println!("{:?}",s2);   // 2 3 4
+println!("{:?}",s2);   // 2 3 4 contents of slice until end
 let sm = &mut arrm[0..2];  // mutable slice
 sm[0] = 11;                // change element of mutable slice,
 println!("{:?}",sm);       // 11 2 3 4  
