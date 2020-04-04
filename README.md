@@ -614,7 +614,34 @@ ty      // type.                       vis     // visibility qualifier
 
 ## Arrays, Slices, Ranges
 
-todo (see section above for basic array stuff)
+array
+
+```
+let arr: [u8; 4] = [1, 2, 3, 4]; // immutable
+let mut arrm: [u8; 4] = [1,2,3,4]; // mutable
+let n = arr.len();     // length = 4 items 
+let s1 = &arr[0..2];   // slice
+println!("{:?}",s1);   // 1 2 
+let s2 = &arr[1..];    // slice until end
+println!("{:?}",s2);   // 2 3 4
+let sm = &mut arrm[0..2];  // mutable slice
+sm[0] = 11;                // change element of mutable slice,
+println!("{:?}",sm);       // 11 2 3 4  
+                           // underlying array was changed
+println!("{:?}",arrm);     // 11 2 3 4 
+
+// pass array
+fn dostuff(x:&mut [u8]) {
+	x[0] = 5;
+	println!("{:?}  {}",x,x.len()); // 5 2 3 4   4
+}
+
+fn main() {
+	let mut arr: [u8; 4] = [1, 2, 3, 4];
+	dostuff( &mut arr );
+}
+
+```
 
 ## Split_At_Mut - Mutability and References into a Vector
 
