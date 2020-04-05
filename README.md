@@ -1250,7 +1250,7 @@ pub fun do_stuff(i:i8)->i16 { (i*9+3-27) as i16 }
 
 src/otherstuff.rs: (
 ```rust
-use super::Zorgnog; // uses types from stuff.rs
+use stuff::Zorgnog; // uses types from stuff.rs
 pub fn bloom(a:Zorgnog)->bool {
    match a {
    	Zorgnog::Norg=>false,
@@ -1261,7 +1261,8 @@ pub fn bloom(a:Zorgnog)->bool {
 
 src/lib.rs: (our main library file which the world will use)
 ```rust
-mod stuff;
+mod stuff;          // private module
+pub mod otherstuff; // public module, available to world
 use crate::stuff::*;
 fn dosomething() { let x = do_stuff(9);}
 ```
