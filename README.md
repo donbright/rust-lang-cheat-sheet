@@ -1245,7 +1245,7 @@ $ cargo build               # this builds all files in crate, no easy way to bui
 src/stuff.rs: (our module that does stuff)
 ```rust
 enum Zorgnog { Noorg, Beezle };
-pub fun do_stuff(i:i8)->i16 { u8*9+3-27 }
+pub fun do_stuff(i:i8)->i16 { (i*9+3-27) as i16 }
 ```
 
 src/otherstuff.rs: (
@@ -1257,7 +1257,7 @@ pub fn bloom(a:Zorgnog)->bool {
 	Zorgnog::Beezle=>true,
    }
 }
-
+```
 
 src/lib.rs: (our main library file which the world will use)
 ```rust
