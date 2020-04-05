@@ -1381,6 +1381,33 @@ fn main() {
     cc::Build::new().file("src/ccode.c").compile("ccode");
 }
 ```
+## ANSI colors
+
+In C, ansi colors for terminal text output are typically done with the escape code
+in octal format, such as printf("\033]0;31m test red"); In Rust, you can use
+the unicode escape sequence, instead of 033 octal, we can use unicode with 001b hexadecimal:
+
+```rust
+fn main() {
+    println!("\u{001b}[0;31m{}", "test red");
+    println!("\u{001b}[0;32m{}", "test green");
+    println!("\u{001b}[0;33m{}", "test orange");
+    println!("\u{001b}[0;34m{}", "test blue");
+    println!("\u{001b}[0;35m{}", "test magenta");
+    println!("\u{001b}[0;36m{}", "test cyan");
+    println!("\u{001b}[0;37m{}", "test white");
+    println!("\u{001b}[0;91m{}", "test bright red");
+    println!("\u{001b}[0;92m{}", "test bright green");
+    println!("\u{001b}[0;93m{}", "test yellow");
+    println!("\u{001b}[0;94m{}", "test bright blue");
+    println!("\u{001b}[0;95m{}", "test bright magenta");
+    println!("\u{001b}[0;96m{}", "test bright cyan");
+    println!("\u{001b}[0;97m{}", "test bright white");
+    println!("\u{001b}[0m{}", "restored to default");
+}
+```
+
+There are also several crates that do this. Search the web for additional ANSI color features.
 
 ## Metacritic rating
 
