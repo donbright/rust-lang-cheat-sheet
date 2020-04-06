@@ -125,6 +125,13 @@ println!("{}",v.iter_mut());    // for example, if we want to know the type of v
                         
  ```
 
+constants and global variables
+
+```rust
+const BILBOG: i32 = 10;         // constant
+static ORGOG: &str = "zormpf";  // unsafely mutable
+```
+
 ## Operators
 
 ```rust
