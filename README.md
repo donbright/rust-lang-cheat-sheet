@@ -17,6 +17,7 @@ Also note that Rust is still changing quite a bit as of 2020, so some of the bel
 * Auto formatter: rustfmt filename.rs (see rust-lang.org for installation)
 * compiler engine: LLVM
 * raw pointers, low level: unsafe{} keyword
+* online playgrounds: https://play.rust-lang.org, https://tio.run/ 
 * A survivial horror game where griefing is ... oops wrong Rust
 
 ## Hello World
@@ -167,6 +168,27 @@ let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is 
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
 
+let x = do_somthing_that_might_not_work(); // Option can help handle errors 
+match x {
+	Some(x)=>println!("OK!"),
+	None=>println!("sad face"),
+}
+
+if let Some(x) = do_something_that_might_not_work() {
+	println("OK!");
+} // if None, do nothing. 
+
+// Option can be a safer version of Null
+struct Owlgr { name: String, fiznozz: Option<String> }
+let owls = [Owlgr{name:"Harry".to_string(),fiznozz:None},
+            Owlgr{name:"Tom".to_string(),fiznozz:Some("Zoozle".to_string())}];
+for owl in &owls {
+	match &owl.fiznozz {
+		None=>println!("Owlgr named {} has no fiznozz!",owl.name),
+		Some(x)=>println!("Owlgr named {} has fiznozz of {}",owl.name,x),
+}}}
+// note that we didn't have to dereference a possibly-null pointer.
+
 ```
 
 ```bash
@@ -184,14 +206,14 @@ let v = vec![1,2,3];
 println!( "v[0] is {:?} {}", v, v[0] )             // {:?} can print lots of special types
 let s = format!( "x coord={}", p.X )               // print to string 
 s2 := fmt.Sprintf( "{e}", 17.0 )                   // another way to print to string
-println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); // C-ish, hex:11 bin:10001 sci:1.7e1
+println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); 
+// C-ish,   hex:11     bin:10001    sci:1.7e1
 println!("dec:{:#04} hex:{:#06x} bin:{:08b} sci:{:09e}",17,17,17,17.0); 
-// dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1
-// (Same as line above, with 0 padding aka leading zeros ):
+// dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1   < padded with 0s
 println!(" {:.40} ", 1.0f32/3.0f32 );  // print 40 digits of precision for floating point
-
+//  0.3333333432674407958984375000000000000000 
 println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
-
+//  232    8
 let mut s=String::new();               // build string, concatenate over lines 
 s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
@@ -204,9 +226,11 @@ println!("{:?}",vec![W{x:4},W{x:3},W{x:2}]); // [W { x: 4 }, W { x: 3 }, W { x: 
 // fmt::Display makes your own structs and enums printable with ordinary {} symbol
 use std::fmt
 impl fmt::Display for W{
-fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{write!(f, "W[{}]", self.x)}}
+  fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{
+    write!(f, "W[{}]", self.x)
+}}
 
-pub enum Apple{PinkLady,HoneyCrisp}  // can also be done for Enums 
+pub enum Apple{PinkLady,HoneyCrisp}  // Display also works for Enums 
 impl fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self { Apple::PinkLady=>write!(f, "Ap:PLad"),
@@ -244,11 +268,9 @@ let x = loop { i=i+1; if i>=10 { break i; } } // loop that returns value, x = 10
 
 // While Let, can be used in situations where we expect Option::Some() for several iterations,
 // but we expect a Option::None() to be at the end of the iterations. For example:
-let mut n = 99;                
-while let Some(i) = (0..n).filter(|x|x%2==0).last() {n/=2;print!("{}",i);}  
-// this prints the highest even number below n, as n is repeatedly divided in half
-// 98, 48, 22, 10, 4, 2, 0  
-
+let mut x = (0..12).filter(|x| x%2==0);
+while let Some(i) = x.next() {print!("{}:",i);} 
+// 0:2:4:6:8:10:   // prints the even numbers between 0 and 12
 ```
 
 
@@ -292,7 +314,7 @@ ARC: todo
 ## Functions and closures
 ```rust
 fn add( a:i8, b:i8 ) -> i32 { b + a }  // 'return' keyword optional
-fn getcodes( a:i8, b:i32) -> (char,i32) { return ('s',a+b); }
+fn getcodes( a:i8, b:i32) -> (char,i32) { return ('s',a+b); } // multi return
 let (x, s) = getcodes( 3, 56 );     // multi return via tuples
 fn mulby6( a:i8, b:i8=5 ) -> i16 {} // error. Rust circa 2019 has no default parameters. 
 fn f(t:i8) {          // nesting functions is OK
@@ -435,9 +457,9 @@ let y = match x-1 {                    // this is also called "binding with @", 
         _=>-x,                         
 };
 
-
 ```
 
+See also: While let, if let. 
 
 ## Ownership, Borrowing, References, Lifetimes
 
@@ -555,6 +577,19 @@ enum Fruit { Apple, Banana, Pear }
 let x = call_some_function( Fruit::Apple );  
 enum Errs { ErrOK = 0, ErrFile = 1, ErrFire = 2, ErrBadCap = 3 }  // enums can have integers
 
+enum Blorg {     // enums can have different types as members
+ Flarg(u8),
+ Blarg(u32),
+ Norg(String),
+ Florg(bool)
+}
+
+let x = Blorg::Flarg(1)  // enums can be detected with a match
+match x {
+    Blorg::Flarg => println!("x is a flarg"),
+    Blorg::Norg => println!("x is a florg"),
+    _ => println!("neither Flarg nor Florg"),
+}
 ```
 
 ## Collections, Key-value pairs, Sets
