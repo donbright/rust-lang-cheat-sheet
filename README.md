@@ -570,6 +570,7 @@ let m=M{n:1,..Default::default()}; // M { n: 1, y: 0, z: 0.0, s: "", p: false }
 
 ```
 
+
 ## Enums
 
 ```rust
@@ -1423,6 +1424,18 @@ fn main() {
     cc::Build::new().file("src/ccode.c").compile("ccode");
 }
 ```
+
+Unions:
+
+In Rust, Enums are typically preferred over union, as a traditional C-style union is
+only available by using unsafe{}. But unions can help talking to / porting C code:
+``` rust
+#[repr(C)]
+union Borgle { dorgle: u32, porgle: u8[4] }
+let mut a=Borgle{dorgle:1234};
+unsafe{ a.dorgle = 0xa0ca0c };
+```
+
 ## ANSI colors
 
 In C, ansi colors for terminal text output are typically done with the escape code
