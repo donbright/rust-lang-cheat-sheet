@@ -219,18 +219,30 @@ s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
 println!("{}",s);
   
-#[derive(Debug)]                       // derive Debug is a simple way to make your own
-struct W{x:i8}                         // structs printable
-println!("{:?}",vec![W{x:4},W{x:3},W{x:2}]); // [W { x: 4 }, W { x: 3 }, W { x: 2 }]
+// derive Debug can make your own structs, enums, and unions printable by {:?}
+#[derive(Debug)]
+struct Wheel{radius:i8}                
+println!("{:?}",vec![Wheel{radius:4},Wheel{radius:3},Wheel{radius:2}]);
+// [Wheel { radius: 4 }, Wheel { radius: 3 }, Wheel { radius: 2 }]
+
+// If you want to customize your debug output, you can implement Debug yourself
+use std::fmt;
+struct Wheel{radius:i8}     
+impl fmt::Debug for Wheel {
+  fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{
+    write!(f, "輪:徑[{}]", self.radius)
+}}
+println!("{:?}",vec![Wheel{radius:4},Wheel{radius:3},Wheel{radius:2}]);
+// [輪:徑[4], 輪:徑[3], 輪:徑[2]]
 
 // fmt::Display makes your own structs and enums printable with ordinary {} symbol
-use std::fmt
-impl fmt::Display for W{
+impl fmt::Display for Wheel{
   fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{
-    write!(f, "W[{}]", self.x)
+    write!(f, "W[{}]", self.radius)
 }}
 
-pub enum Apple{PinkLady,HoneyCrisp}  // Display also works for Enums 
+// enums example
+pub enum Apple{PinkLady,HoneyCrisp}  
 impl fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self { Apple::PinkLady=>write!(f, "Ap:PLad"),
@@ -339,7 +351,7 @@ let value = 5;        // a closure can also read values outside its scope
 f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
 
 for i in 0..4.filter(|x| x>1) // closures are used often with iterators (see below) 
-print!("{} ",i)               // 2 3
+print!("{} ",i)               // 2 3  (0 1 2 3 filtered to only values greater than 1)
 
 type ZFillCallback = fn(bottom:u32,top:u32)->u32;  // typedef of a function
 
@@ -624,9 +636,17 @@ Does not act like a preprocessor. It replaces items in the abstract syntax tree
 
 ```rust
 macro_rules! hello {
-    ($a:ident) => $a = 5;
+    ($a:ident) => ($a = 5)
 }
-hello!(a);    // a = 5
+let a = 0;
+println!("{}",a); // 0
+hello!(a);
+println!("{}",a); // 5
+    
+macro_rules! bellana {
+    ($a:expr,$b:expr) => ($a + $b)
+}
+println!("{:?}",bellana!(5,(9*2))); // 23
 
 macro_rules! maximum {   
     ($x:expr) => ($x);
