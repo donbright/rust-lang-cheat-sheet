@@ -1303,37 +1303,43 @@ $ ls ..
 ./mycrate                   # main crate folder
 ./mycrate/Cargo.toml        # cargo file, lists dependencies etc
 ./mycrate/src/lib.rs        # crate root file
-./mycrate/src/stuff.rs      # file to hold a module
-./mycrate/src/otherstuff.rs # file to hold a module
+./mycrate/src/blorg.rs      # file to hold a module
+./mycrate/src/znog.rs       # file to hold a different module
 ./mycrate/tests             # integration tests (as opposed to unit tests at end of every .rs file)
 ./mycrate/examples          # easy to follow examples   
 ./mycrate/benches           # speed tests
 $ cargo build               # this builds all files in crate, no easy way to build a single file
 ```
 
-src/stuff.rs: (our module that does stuff)
+src/blorg.rs: (our module that does stuff)
 ```rust
 enum Zorgnog { Noorg, Beezle };
-pub fun do_stuff(i:i8)->i16 { (i*9+3-27) as i16 }
+pub fun do_stuff(x:i8)->i16 { (x*9+3-27) as i16 }
+pub struct Monster {   // public struct, available to other modules
+    pub is_happy:bool, // public struct member, available to others
+    num_teeth:i8,      // private struct member, unavailble to others
+}
+
 ```
 
-src/otherstuff.rs: (
+src/znog.rs: (
 ```rust
-use stuff::Zorgnog; // uses types from stuff.rs
-pub fn bloom(a:Zorgnog)->bool {
-   match a {
+use blorg::*; // uses types from blorg.rs
+pub fn bloom(a:Zorgnog)->Monster {
+   let m = match a {
    	Zorgnog::Norg=>false,
 	Zorgnog::Beezle=>true,
    }
+   Monster{is_happy:m,num_teeth:7}
 }
 ```
 
 src/lib.rs: (our main library file which the world will use)
 ```rust
-mod stuff;          // private module
-pub mod otherstuff; // public module, available to world
-use crate::stuff::*;
+mod blorg;          // private module
+pub mod znog;       // public module, available to world using lib
 fn dosomething() { let x = do_stuff(9);}
+fn build_monster(x:u8) -> Monster { if x<5 { bloom(Zorgnog::Norg) } else { bloom(Zorgnog::Beezle) }
 ```
 
 
