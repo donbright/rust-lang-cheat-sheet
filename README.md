@@ -694,7 +694,13 @@ println!("{:?}",sm);       // 11 2 3 4
                            // underlying array was changed
 println!("{:?}",arrm);     // 11 2 3 4 
 
-// pass array
+let z = [1,6,1,8,0,0,3];
+println!("{:?}",z[0..4]);   // error - not a slice
+^^^^^^^^^^^^^^^^^^^^^^^^^ doesn't have a size known at compile-time
+println!("{:?}",&z[0..4]);  // OK to take a slice   
+// 1,6,1,8
+
+// pass array to function
 fn dostuff(x:&mut [u8]) {
 	x[0] = 5;
 	println!("{:?}  {}",x,x.len()); // 5 2 3 4   4
