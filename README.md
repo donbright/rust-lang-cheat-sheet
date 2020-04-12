@@ -1367,7 +1367,7 @@ https://cglab.ca/~abeinges/blah/too-many-lists/book/
 
 You can also implement a linked list as a Vector of structs, using integer indexes into the vector instead of pointers.
 
-## FFI, Calling C functions
+## FFI, Calling C functions, porting C code
 
 foreign function interface, aka calling code from other languages. 
 
@@ -1453,7 +1453,6 @@ Structs and bindgen auto header conversion
 https://medium.com/dwelo-r-d/using-c-libraries-in-rust-13961948c72a
 
 
-
 Setting CFLAGS examples:
 
 modify build.rs:
@@ -1479,6 +1478,31 @@ union Borgle { dorgle: u32, porgle: u8[4] }
 let mut a=Borgle{dorgle:1234};
 unsafe{ a.dorgle = 0xa0ca0c };
 ```
+
+Goto vs labels, loops, and breaks:
+
+Rust does not have Goto, however sometimes a similar result 
+can be achieved using labelled loops and breaks. 
+
+```rust
+    'label1: loop {
+    	if zimblatz == 5 {
+	    break; // breaks labe1 loop
+	}
+        'label2: for frobnoz in 0..4 {
+            if blorg==KUMQUAT {break;} // breaks label2 only
+	    while j<5 {
+	    	if snog==7 { 
+			// goto end of label1 loop immediately
+			break 'label1; 
+		}
+		j+=1;
+	    }
+        }	
+    } // end of 'label1 loop
+    do_something();
+```
+
 
 ## ANSI colors
 
