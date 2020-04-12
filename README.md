@@ -1219,6 +1219,8 @@ v.sort_by( compare_s );
 
 ### Pseudo randoms
 
+Pseudo Random number generators, aka PRNGs
+
 ```rust
 extern crate rand;   /// add rand to dependencies in Cargo.toml
 use rand::prelude::*; 
@@ -1231,11 +1233,16 @@ let mut nums: Vec<i32> = (1..100).collect();
 nums.shuffle(&mut rng);
 ```
 ```rust
-// alternative, without needing external crate
-// Jack @ https://stackoverflow.com/questions/3062746/special-simple-random-number-generator
-let mut seed = 123456789;
-let mut r=||{seed=(1103515245u32.wrapping_mul(seed).wrapping_add(12345)) % 2147483648;seed};
-for i in 0..99 {print!("{} ",r());}; // print 99 pseudo random integers  
+// alternative, without needing external crate, based on codeproject.com by Dr John D Cook
+// https://www.codeproject.com/Articles/25172/Simple-Random-Number-Generation
+use std::time::{SystemTime, UNIX_EPOCH};
+let mut m_z = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time reversed").as_millis();
+let mut m_w = m_z.wrapping_add( 1 );
+let mut prng = || {  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
+                     m_w = 18000 * (m_w & 65535) + (m_w >> 16);
+                     m_z.rotate_left( 16 ) + m_w };
+let buf = (0..1000).map(|_| prng() as u8).collect::<Vec<u8>>();
+// creates 1000 random bytes in buf, using Closure named prng
 ```
 
 ### Hashing
