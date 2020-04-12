@@ -114,7 +114,9 @@ let hellomsg = r###"            // Multi-line with embedded quotes
 
 usize, isize              // this is the pointer size. used in loops, vector length, etc
 
-static FOOBY: i32 = 5;    // static, global-ish variable
+const BILBOG: i32 = 10;         // constant
+static ORGOG: &str = "zormpf";  // static, global-ish variable
+static FOOBY: i32 = 5;          // unsafely mutable
 static Z_ERRMSG : [&str;2] = ["need input","need more input"]; // static strings
 
 type Valid = bool;        // typedef ( make your own type names ) 
@@ -126,12 +128,6 @@ println!("{}",v.iter_mut());    // for example, if we want to know the type of v
                         
  ```
 
-constants and global variables
-
-```rust
-const BILBOG: i32 = 10;         // constant
-static ORGOG: &str = "zormpf";  // unsafely mutable
-```
 
 ## Operators
 
