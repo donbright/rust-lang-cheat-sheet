@@ -1302,6 +1302,12 @@ Aka hashtags aka warning thingies. These statements typically affect compilation
 ```rust
 #![allow(dead_code)]             // stop compiler from printing warnings on unused funcs/vars,   
 #![allow(unused_variables)]      // this is good when you are working on a library
+//  = note: #[warn(unused_assignments)] on by default
+#![allow(unused_assignments)]    // you can take most warnings, and disable by changing 'warn' to 'allow'
+
+// by removing ! and placing on line before a fn, you can disbale warning only for the function
+#[allow(unused_assignments)]     
+fn zoogle_poof( n:u8 )->u8 { let a = 0; 5+n };
 
 let mut a = 0x00ffee22;          // modify numbers for big endian machines.
 #[cfg(target_endian = "big")]    // target = machine the code will be run on
