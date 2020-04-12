@@ -1235,6 +1235,7 @@ nums.shuffle(&mut rng);
 ```rust
 // alternative, without needing external crate, based on codeproject.com by Dr John D Cook
 // https://www.codeproject.com/Articles/25172/Simple-Random-Number-Generation
+// License: BSD, see https://opensource.org/licenses/bsd-license.php
 use std::time::{SystemTime, UNIX_EPOCH};
 let mut m_z = SystemTime::now().duration_since(UNIX_EPOCH).expect("Time reversed").as_millis();
 let mut m_w = m_z.wrapping_add( 1 );
