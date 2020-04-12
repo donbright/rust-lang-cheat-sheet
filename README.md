@@ -1407,16 +1407,19 @@ src/ccode.c
 int quadrance( int x1, int y1, int x2, int y2) {
 	return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
 }
+#include <stdio.h>
+void blerg( *char txt ) {
+	printf("This is C. Here is text from Rust: %s", txt);
+}
 ```
 
 src/main.rs
 ```rust
-use std::os::raw::c_int;
-use std::os::raw::c_char;
+use std::os::raw::{c_int,c_char,c_void};
 use std::ffi::CString;  
 extern "C" {
     fn quadrance(x1: c_int, y1: c_int, x2: c_int, y2: c_int) -> c_int;
-    fn blerg(v: *char);
+    fn blerg(v: *char)->c_void;
 }
 fn main() {
     unsafe {
