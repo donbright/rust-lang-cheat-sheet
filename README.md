@@ -1503,6 +1503,15 @@ can be achieved using labelled loops and breaks.
     do_something();
 ```
 
+Pointer arithmetic
+
+```rust
+use std::raw::c_uchar;
+unsafe{
+	let mut x = some_c_func() as *const c_uchar;
+	x = x.offset(1);  // instead of x++
+}
+```
 
 ## ANSI colors
 
