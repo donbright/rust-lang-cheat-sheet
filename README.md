@@ -217,8 +217,10 @@ println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align 
 let mut s=String::new();               // build string, concatenate over lines 
 s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
-println!("{}",s);
-  
+println!("{}",s);                      // 1 2 3 4 
+
+println!("\u{2766}");                  // ❦  unicode floral heart, character hex 2766 
+
 // derive Debug can make your own structs, enums, and unions printable by {:?}
 #[derive(Debug)]
 struct Wheel{radius:i8}                
