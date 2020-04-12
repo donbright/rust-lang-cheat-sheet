@@ -140,7 +140,11 @@ static ORGOG: &str = "zormpf";  // unsafely mutable
 7 % 5              // modulo (remainder)
 & | ^              // bitwise and, or, xor
 << >>              // leftshift, rightshift, will crash on overflow
-a.rotate_left(3)   // circular bit rotation, wrapping around
+// note that in C, overflowing << is actually undefined. 
+// Rust has multiple versions, each defined. 
+a.rotate_left(3)   // circular bit rotation, out of left -> in at right
+a.wrapping_shl(3)  // this destroys the left-most bits that would cause overflow
+a.overflowing_shl(4) // returns tuple (value,did_it_overflow) 
 a.rotate_right(4)  // circular bit rotation, wrapping around
 !                  // bitwise not
 a == b != c < d <= e > f >= g  // logical comparison
