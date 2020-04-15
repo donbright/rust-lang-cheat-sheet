@@ -640,7 +640,7 @@ Does not act like a preprocessor. It replaces items in the abstract syntax tree
 macro_rules! hello {
     ($a:ident) => ($a = 5)
 }
-let a = 0;
+let mut a = 0;
 println!("{}",a); // 0
 hello!(a);
 println!("{}",a); // 5
