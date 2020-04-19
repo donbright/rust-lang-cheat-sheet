@@ -601,7 +601,8 @@ w.r = 6; // error, cannot mutably borrow field of immutable binding
 let mut mw = Wheel{r:5,s:7}; //  new mutable wheel. fields inherit mutability of struct;
 mw.r = 6;  // ok
 
-impl Wheel {              // impl -> implement methods for struct, kinda like a class
+impl Wheel {              // impl -> implement methods for struct, kinda like a C++ class
+        fn new(r: isize) -> Wheel { Wheel { r:r, s:4 } }  // our own default
         fn dump(    &self) { println!("{} {}",self.r,self.s); }  // immutable self
 	fn badgrow(    &self) { self.s += 4; } // error, cannot mutably borrow field of immutable binding
         fn  okgrow(&mut self) { self.s += 4; } // ok, mutable self
@@ -612,13 +613,15 @@ w.okgrow();  // error, w is immutable, self inside okgrow() is mutable
 mw.dump();   // ok, mw is mutable, self inside dump is immutable.  
 mw.okgrow(); // ok, mw is mutable, self inside grow() is mutable.
 
-#[derive(Copy,Clone,Debug,PartialEq)]   // handy defaults
-struct M{n:i8}
-let (mut n,mut k)=(M{0},M{-1});
-n=k;                // copy
-vec![M{0};42];      // clone
-println!("{:?}",n); // debug, formatter
-if n==k {0};        // equality, operator overloading 
+#[derive(Default,Copy,Clone,Debug,PartialEq)] // automatic implementations 
+struct Moo {x:u8,y:u8,z:u8,}
+let m1:Moo=Default::default();            // Default, x=0 y=0 z=0
+let m2:Moo=Moo{x:3,..Default::default()}; // Default, x=3 y=0 z=0
+let (mut n,mut k)=(M{x:-1,y:-1,z:-1},Default::default());
+n=k;                          // Copy
+vec![M{x:0,y:1,z:2};42];      // Clone
+println!("{:?}",n);           // Debug, formatter
+if n==k {println!("hi");};    // PartialEq, operator overloading 
 
 // customized operator overloading
 impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
@@ -1640,3 +1643,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - How To Rust-doc https://brson.github.io/2012/04/14/how-to-rustdoc
 - Pavel Strakhov https://stackoverflow.com/questions/40030551/how-to-decode-and-encode-a-float-in-rust
 - Zargony https://stackoverflow.com/questions/19650265/is-there-a-faster-shorter-way-to-initialize-variables-in-a-rust-struct/19653453#19653453
+- Wesley Wiser https://stackoverflow.com/questions/41510424/most-idiomatic-way-to-create-a-default-struct
