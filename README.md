@@ -1157,10 +1157,13 @@ let b = 537629.886026485;    print!("{:.50}",b);      // 537629.8860264850081875
 let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
 let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
 
-let x = '1'.to_digit(10);  // convert from char to integer, base 10
-let y = 'f'.to_digit(16);  // convert from char to integer, base 16
+let a = '3';
+if a.is_digit(10) { x = a.to_digit(10) };  // char detection and convert to integer, base 10
+let y = 'f'.to_digit(16);  // convert from char to integer, base 16 (y is 15)
+let n = 'x'.is_alphabetic(); // detect whether letter
 let z = std::char::from_digit(x,10).unwrap(); // convert from integer to char, base 10. z is now '1'
-
+println!("𝄠 is hex 0x{:06x}, or decimal {}",'𝄠' as u32,'𝄠' as u32); // unicode codepoint
+println!("a is hex 0x{:06x}, or decimal {}",'a' as u32,'a' as u32); // for <128 this is the ascii code
 
 let m = 0b0001; // binary literal
 let m = 0o0007; // octal literal
