@@ -1461,7 +1461,7 @@ int quadrance( int x1, int y1, int x2, int y2) {
 	return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
 }
 #include <stdio.h>
-cont char * blerg( *char txt ) {
+char * blerg( *char txt ) {
 	printf("This is C. Here is text from Rust: %s", txt);
 	return "blerg";
 }
