@@ -156,7 +156,33 @@ overloading: see struct
 
 ## Run time errors, Crashing, panic, except, unwrap, Option, Result
 
-Rust has no Exceptions of the type found in other languages like Java or C++. It favors special return types called Result and Option, which can be "caught" with match and handled, or ignored with functions like .unwrap() and .unwrap_or(). Here is an example with Result:
+
+
+```rust
+panic!("oops");             // panic!() instantly crashes program
+let v = vec![3,4,5];
+let a = v[0];               // ok, normal lookup, a is 3
+let b = v[12];              // will call panic! at runtime, v[12] doesn't exist
+```
+
+```bash
+$ export RUST_BACKTRACE=1
+$ cargo run    # will tell you exact line where panic occured, with call stack trace
+```
+
+Option - a basic way to deal with functions that might not work.  
+
+```
+let c = v.get(12);          // this will not crash, c will instead be an Option
+print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
+print!("{:?}",v.get(0));    // prints the word "Some(3)"
+let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
+let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
+let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
+
+```
+
+Result - instead of Some and None, there is Ok() and Err():
 
 ```rust
 fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
@@ -181,18 +207,9 @@ fn less_important_function() {
 Note our Result can return two different things, a u8 or a str, but the u8 will be wrapped inside Ok() while the str would
 be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blorg_level() will show an error at compile time.
 
+More examples with options:
 
-```rust
-panic!("oops");             // panic!() instantly crashes program
-let v = vec![3,4,5];
-let a = v[0];               // ok, normal lookup, a is 3
-let b = v[12];              // will call panic! at runtime, v[12] doesn't exist
-let c = v.get(12);          // this will not crash, it will instead create an Option
-print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
-print!("{:?}",v.get(0));    // prints the word "Some(3)"
-let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
-let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
-let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
+```
 
 let x = do_somthing_that_might_not_work(); // Option can help handle errors 
 match x {
@@ -204,23 +221,32 @@ if let Some(x) = do_something_that_might_not_work() {
 	println("OK!");
 } // if None, do nothing. 
 
-// Option can be a safer version of Null
-struct Owlgr { name: String, fiznozz: Option<String> }
+```
+
+Option in particular can prevent the use of null pointers, preventing crashes one might see in C/C++.
+
+```
+struct Owlgr { 
+	name: String, 
+	fiznozz: Option<String> 
+}
+
 let owls = [Owlgr{name:"Harry".to_string(),fiznozz:None},
             Owlgr{name:"Tom".to_string(),fiznozz:Some("Zoozle".to_string())}];
+
 for owl in &owls {
 	match &owl.fiznozz {
 		None=>println!("Owlgr named {} has no fiznozz!",owl.name),
 		Some(x)=>println!("Owlgr named {} has fiznozz of {}",owl.name,x),
-}}}
-// note that we didn't have to dereference a possibly-null pointer.
+	}
+}}
+
+// note that we did not have to check for null pointers, nor derefernece any
+// pointer. if we forgot to check for None, the compiler would give an error.
 
 ```
 
-```bash
-$ export RUST_BACKTRACE=1
-$ cargo run    # will tell you exact line where panic occured, with call stack trace
-```
+Note that there are no Exceptions. panic/Option/Result/multi-value-return are used instead. 
 
 ## Printing
 
