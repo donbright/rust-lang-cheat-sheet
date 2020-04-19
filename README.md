@@ -154,7 +154,33 @@ print("{}",c);     // 5
 overloading: see struct
 ```
 
-## Run time errors, Crashing, panic, except, unwrap, Option
+## Run time errors, Crashing, panic, except, unwrap, Option, Result
+
+Rust has no Exceptions of the type found in other languages like Java or C++. It favors special return types called Result and Option, which can be "caught" with match and handled, or ignored with functions like .unwrap() and .unwrap_or(). Here is an example with Result:
+
+```rust
+fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
+    match some_data[0] {
+    	255=>Err("we cannot calculate blorg if data begins with 255"),
+        _=>Ok((some_data[0]+some_data[1]*17).rotate_right(3)),
+    }
+}
+
+fn big_important_function() {
+	match calculate_blorg_level([1,2,3]) {
+		Err(why)=>{println!("Bad blorg: {}",why);},
+		Ok(n) => { begin_deep_space_transmission(n); }
+}}
+
+fn less_important_function() {
+	let m = calculate_blorg_level([7,8,9]).unwrap_or(5);
+	set_pizza_delivery_level(m);
+}
+```
+
+Note our Result can return two different things, a u8 or a str, but the u8 will be wrapped inside Ok() while the str would
+be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blorg_level() will show an error at compile time.
+
 
 ```rust
 panic!("oops");             // panic!() instantly crashes program
@@ -823,6 +849,18 @@ pub fn zipread( mut rd:impl Read )  { let x = rd.read(&[buf])?; println!("{}",x)
 
 ```
 
+### Filesystem
+
+```rust
+use std::fs;
+match std::fs::copy( "file.txt", "newfile.txt") {
+	Ok => println!("copy successfull"),
+	Err(why) => println!("copy failed"),
+}
+std::fs::remove_file("newfile.txt").unwrap(); // panic if failure
+
+```
+
 ## System, arguments
 
 ```rust
@@ -1274,22 +1312,6 @@ println!("{}",t.elapsed().as_secs());          // 5, seconds, rounded
 println!("{}",t.elapsed().subsec_millis());    // 300. remainder in milliseconds
 
 ```
-
-## Errors, Result, Option, Exceptions
-
-Rust has no Exceptions of the type found in other languages like Java or C++. It favors special return types called Result and Option. Here is an example with Result:
-
-```rust
-fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
-    match some_data[0] {
-    	255=>Err("we cannot calculate blorg if data begins with 255"),
-        _=>Ok((some_data[0]+some_data[1]*17).rotate_right(3)),
-    }
-}
-```
-
-Note our Result can return two different things, a u8 or a str, but the u8 will be wrapped inside Ok() while the str would
-be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blorg_level() will show an error at compile time.
 
 
 
