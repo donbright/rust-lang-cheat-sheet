@@ -1478,7 +1478,8 @@ extern "C" {
 fn main() {
     unsafe {
         println!("4^2+3^2={:?}", quadrance(0, 0, 4, 3));
-	let msg = blerg(CString::new("blarg").unwrap().as_ptr());
+	let tmp = CString::new("blarg").unwrap(); // CString must be assigned
+	let msg = blerg(tmp.as_ptr()); // so as_ptr() will have something to point at 
 	println!("This is Rust. Here's text from C: {:?}",CStr::from_ptr(msg));
     }
 }
