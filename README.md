@@ -1388,57 +1388,6 @@ let mut a = 0x00ffee22;          // modify numbers for big endian machines.
 a = a.swap_bytes();              // the line (or block) immediately following the # gets affected.
 ```
 
-## Source code organization for a bigger library
-
-```bash
-$ ls ..
-./mycrate                   # main crate folder
-./mycrate/Cargo.toml        # cargo file, lists dependencies etc
-./mycrate/src/lib.rs        # crate root file
-./mycrate/src/blorg.rs      # file to hold a module
-./mycrate/src/znog.rs       # file to hold a different module
-./mycrate/tests             # integration tests (as opposed to unit tests at end of every .rs file)
-./mycrate/examples          # easy to follow examples   
-./mycrate/benches           # speed tests
-$ cargo build               # this builds all files in crate, no easy way to build a single file
-```
-
-src/blorg.rs: (our module that does stuff)
-```rust
-enum Zorgnog { Noorg, Beezle };
-pub fun do_stuff(x:i8)->i16 { (x*9+3-27) as i16 }
-pub struct Monster {   // public struct, available to other modules
-    pub is_happy:bool, // public struct member, available to others
-    num_teeth:i8,      // private struct member, unavailble to others
-}
-
-```
-
-src/znog.rs: (
-```rust
-use blorg::*; // uses types from blorg.rs
-pub fn bloom(a:Zorgnog)->Monster {
-   let m = match a {
-   	Zorgnog::Norg=>false,
-	Zorgnog::Beezle=>true,
-   }
-   Monster{is_happy:m,num_teeth:7}
-}
-```
-
-src/lib.rs: (our main library file which the world will use)
-```rust
-mod blorg;          // private module
-pub mod znog;       // public module, available to world using lib
-fn dosomething() { let x = do_stuff(9);}
-fn build_monster(x:u8) -> Monster { if x<5 { bloom(Zorgnog::Norg) } else { bloom(Zorgnog::Beezle) }
-```
-
-
-
-See also
-https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
-
 ## Linked Lists
 
 Textbook C/Java-style implementations of linked lists often involve ownership that is not allowed by the Rust borrow checker. However it can be accomplished. There is builting "LinkedList" type in std::collections, also some resources from A. Beinges :
@@ -1601,27 +1550,71 @@ unsafe{
 }
 ```
 
-## typical source code layout
+## source code layout
 
-```bash
-        myproject/Cargo.toml                 // main configuration file
-	myproject/src/lib.rs                 // only one library is allowed per project
-	myproject/src/module1.rs             // a library can have multiple modules within it
-	myproject/tests/integration_test.rs  // big test that tests big part of library
-        myproject/tests/test_data_file       // integration tests often use test files
-	myproject/src/bin/program1.rs        // source code for an executable
-	myproject/src/bin/program2.rs        // source code for another executable
-        myproject/examples                   // example programs that use library
-        myproject/examples/helloworld.rs     // simple example, "use myproject::*"
-        myproject/examples/zoogbnoz.rs       // more complicated example
-	myproject/benches/benchtest.rs       // program to run benchmarking speed tests
-	myproject/build.rs                   // optional program to run before build
-	myproject/target		     // binaries are generated under target
-	myproject/target/debug/program1      // debug build executable
-	myproject/target/release/program1    // release build executable (optimized for speed) 
-```
-todo: add sub packages / modules
+Here is a typical source code organization layout for a simple library, which has a handful of modules, some examples, integration tests, benchmarking, and two executable binaries.
  
+```bash
+$ ls ..
+./mycrate                  	  # main crate folder
+./mycrate/Cargo.toml       	  # cargo file, lists dependencies etc
+./mycrate/src/lib.rs        	  # only one library is allowed per crate
+./mycrate/src/blorg.rs      	  # module. a library can use multiple modules
+./mycrate/src/znog.rs       	  # file to hold a different module
+./mycrate/src/bin/program1.rs     # source code for an executable
+./mycrate/src/bin/program2.rs     # source code for another executable
+./mycrate/tests             	  # integration tests (as opposed to unit tests at end of every .rs file)
+./mycrate/tests/integration_test.rs  # big test that tests big part of library
+./mycrate/tests/test_data_file       # integration tests often use test files
+./mycrate/examples          	  # easy to follow examples   
+./mycrate/examples/helloworld.rs  # simple example, "use mycrate::*"
+./mycrate/examples/zoogbnoz.rs    # more complicated example
+./mycrate/benches           	  # benchmarking code and files
+./mycrate/benches/benchtest.rs    # program to run benchmarking speed tests
+./mycrate/build.rs                # optional program to run before build
+./mycrate/target		  # binaries are generated under target
+./mycrate/target/debug/program1   # debug build executable
+./mycrate/target/release/program1 # release build executable (optimized for speed) 
+$ cargo build                     # this builds all files in crate
+```
+
+src/blorg.rs: (our module that does stuff)
+```rust
+enum Zorgnog { Noorg, Beezle };
+pub fun do_stuff(x:i8)->i16 { (x*9+3-27) as i16 }
+pub struct Monster {   // public struct, available to other modules
+    pub is_happy:bool, // public struct member, available to others
+    num_teeth:i8,      // private struct member, unavailble to others
+}
+
+```
+
+src/znog.rs: (
+```rust
+use blorg::*; // uses types from blorg.rs
+pub fn bloom(a:Zorgnog)->Monster {
+   let m = match a {
+   	Zorgnog::Norg=>false,
+	Zorgnog::Beezle=>true,
+   }
+   Monster{is_happy:m,num_teeth:7}
+}
+```
+
+src/lib.rs: (our main library file which the world will use)
+```rust
+mod blorg;          // private module
+pub mod znog;       // public module, available to world using lib
+fn dosomething() { let x = do_stuff(9);}
+fn build_monster(x:u8) -> Monster { if x<5 { bloom(Zorgnog::Norg) } else { bloom(Zorgnog::Beezle) }
+```
+
+
+
+See also
+https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
+
+
 ## ANSI colors
 
 In C, ansi colors for terminal text output are typically done with the escape code
