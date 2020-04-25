@@ -492,10 +492,17 @@ if you_like_it() {                   // normal if else, like C, Pascal, etc
 	therapy();
 }
 
-match boo {                            // match a variable
-	liked(boo) => put_a_ring(),    // => signifies a branch or leg of the match
-	notliked(boo) => move_on(),    // have as many=> legs as you want
-	_ => therapy();                // _ will match anything not previously matched
+match kaboogle {            // match a variable
+	zoogle => red(),    // => signifies a branch or leg of the match
+	noogle => purkle(), // have as many=> legs as you want
+	_ => green();       // _ will match anything not previously matched
+}
+
+let color = match apple_type {     // match can "return" a value
+	GRANNY=>"green",           // color = "green" or "red" or..
+	HONEYCRISP=>"red",
+	JAZZ="red",
+	_=>"unknown",
 }
 
 let x = [1i8,2i8];                    // match patterns can be structs, enums, arrays, etc
@@ -516,11 +523,31 @@ let y = match n {                     // match tuple
         _ => "stop",                  // match guard allows matching with variables.
 };
 
+let hour = get_24hr_time();       // patterns can be integer ranges (x..=y)
+ampm = match hour {               // however it has to be inclusive 
+	0..=12 => "am"            // 1..12 is not ok, 1..=12 is ok.
+	13..=23 => "pm"           // this returns a tuple (integer,&str)
+	_=> "unknown"            
+};
+
 let x = 5i32;                          // we can use the match value in match arms,
 let y = match x-1 {                    // this is also called "binding with @", like so:
-	0..=10 => x,                   // y becomes x
-	m @ 10..=std::i32::MAX => m*2, // y becomes (x-1)*2
-        _=>-x,                         
+	0..=10 => 7,                   // y becomes x
+	m @ 10..=20 => m*2,            // y becomes (x-1)*2
+        _=> -1,                         
+};
+
+let mut v = Vec::new();                // match works with Result<>
+match File::open("/dev/random") {     
+	Ok(f)=>f.read_to_end(&v),
+	Err(why)=>println!("file open failed, {}",why),
+}
+
+let v = vec![1,2,3];			// match works with Option too
+let n = 1;
+match v.get(n) {
+	Some(x) => println!("nth item of v is {}",x),
+	None => println!("v has no nth item for n={}",n),
 };
 
 ```
