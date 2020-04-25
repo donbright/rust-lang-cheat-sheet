@@ -537,9 +537,9 @@ let y = match x-1 {                    // this is also called "binding with @", 
         _=> -1,                         
 };
 
-let mut v = Vec::new();                // match works with Result<>
+let mut v = vec![0;4096];                // match works with Result<>
 match File::open("/dev/random") {     
-	Ok(f)=>f.read_to_end(&v),
+	Ok(f)=>f.read(&v),
 	Err(why)=>println!("file open failed, {}",why),
 }
 
