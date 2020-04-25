@@ -1601,6 +1601,27 @@ unsafe{
 }
 ```
 
+## typical source code layout
+
+```bash
+        myproject/Cargo.toml                 // main configuration file
+	myproject/src/lib.rs                 // only one library is allowed per project
+	myproject/src/module1.rs             // a library can have multiple modules within it
+	myproject/tests/integration_test.rs  // big test that tests big part of library
+        myproject/tests/test_data_file       // integration tests often use test files
+	myproject/src/bin/program1.rs        // source code for an executable
+	myproject/src/bin/program2.rs        // source code for another executable
+        myproject/examples                   // example programs that use library
+        myproject/examples/helloworld.rs     // simple example, "use myproject::*"
+        myproject/examples/zoogbnoz.rs       // more complicated example
+	myproject/benches/benchtest.rs       // program to run benchmarking speed tests
+	myproject/build.rs                   // optional program to run before build
+	myproject/target		     // binaries are generated under target
+	myproject/target/debug/program1      // debug build executable
+	myproject/target/release/program1    // release build executable (optimized for speed) 
+```
+todo: add sub packages / modules
+ 
 ## ANSI colors
 
 In C, ansi colors for terminal text output are typically done with the escape code
