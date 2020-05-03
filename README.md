@@ -484,18 +484,23 @@ Good examples of the results are on https://crates.io
 ## If, conditionals, patterns, match, control flow
 
 ```rust
-if you_like_it() {                   // normal if else, like C, Pascal, etc
-	put_a_ring();
-} else if you_dont_like() {
-	movin_on();
+let (zoogle, noogle, poogle) = 3,4,5;
+let x = zorgnaught_level();
+if x == zoogle {                   // normal if else, like C, Pascal, etc
+	print!("zurkle")
+} else if x == noogle {
+	print!("nurkle")
+} else if x == poogle {
+	print!("purkle")
 } else {
-	therapy();
+	print!("unknown zorgnaught level");
 }
 
-match kaboogle {            // match a variable
-	zoogle => red(),    // => signifies a branch or leg of the match
-	noogle => purkle(), // have as many=> legs as you want
-	_ => green();       // _ will match anything not previously matched
+match x {            // match a variable
+	zoogle => print!("zurkle"),    // "=>" signifies a branch or leg of the match
+	noogle => print!("nurkle"),    // have as many=> legs as you want
+	poogle => print!("purkle"),    // end each leg with a comma ,
+	_ => print!("unknown zorgnaught level"), // underscore _ will match anything not previously matched
 }
 
 let color = match apple_type {     // match can "return" a value
@@ -515,24 +520,25 @@ let y = match x {                     // match can 'return a result' to y
 println!("{}",y);                     // "ends with 2"
 
 
-fn m(x:(i8,char))->{x.1=='a'};        // patterns can only be constant, but you can
-let n = (0,'a');                      // use a conditional pattern, like this:
-let y = match n {                     // match tuple
-        (0,_) => "start 0",           // any tuple with first element 0, ok.
-        (1,'a') if m(n) => "start 1", // this 'if' piece is called a 'match guard'
-        _ => "stop",                  // match guard allows matching with variables.
+let m = 3;	 		     // match patterns can only be constant, but you can
+let n = 4;                           // do somewhat a conditional pattern match, like this:
+let y = match (n,m) {                // match tuple
+        (0,0) => "ok",               // any tuple with first element 0, ok.
+        (3,_) if n%5==0 => "ok",     // any tuple with first element 3, and n divisible by 5
+	(_,_) if m%3==0 => "ok",     // anytime m|3. the 'if' piece is called a 'match guard'
+        _ => "stop",                 // match guard allows matching with variables.
 };
 
-let hour = get_24hr_time();       // patterns can be integer ranges (x..=y)
-ampm = match hour {               // however it has to be inclusive 
-	0..=12 => "am"            // 1..12 is not ok, 1..=12 is ok.
-	13..=23 => "pm"           // this returns a tuple (integer,&str)
+let hour = get_24hr_time();          // patterns can be integer ranges (x..=y)
+ampm = match hour {                  // however it has to be inclusive 
+	0..=12 => "am"               // 1..12 is not ok, 1..=12 is ok.
+	13..=23 => "pm"          
 	_=> "unknown"            
 };
 
 let x = 5i32;                          // we can use the match value in match arms,
 let y = match x-1 {                    // this is also called "binding with @", like so:
-	0..=10 => 7,                   // y becomes x
+	0..=9 => 7,                    // y becomes x
 	m @ 10..=20 => m*2,            // y becomes (x-1)*2
         _=> -1,                         
 };
