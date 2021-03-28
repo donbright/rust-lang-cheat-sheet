@@ -2,7 +2,8 @@
 ## Warning
 
 This cheat sheet is in a reasonably useful state for basic things, but it does contain some errors.
-Also note that Rust is still changing quite a bit as of 2020, so some of the below may be outdated/deprecated. 
+Also note that Rust is still changing quite a bit as of 2020, and I have had to quit working on this,
+so some of the below may be outdated/deprecated. 
 
 ## Rust in a Nutshell
 
