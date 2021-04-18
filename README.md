@@ -1695,10 +1695,6 @@ fn main() {
 
 There are also several crates that do this. Search the web for additional ANSI color features.
 
-## Metacritic rating
-
-Rust has an excellent crafting and building system. The character models are a bit wide, and combat is lacking. Multiplayer is a bit twiddly, as the central server can be hard to find a match on. There is a steep difficulty level for beginners. These factors make Rust a cult favorite but not a megahit. 7.3/10. 
-
 ## Thanks
 
 Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, and
