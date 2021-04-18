@@ -1,7 +1,7 @@
 
 ## Warning
 
-This cheat sheet is in a reasonably useful state for basic things, but it does contain some errors.
+This cheat sheet is in a reasonably useful state for basic things, but it does contain many errors.
 Also note that Rust is still changing quite a bit as of 2020, and I have had to quit working on this,
 so some of the below may be outdated/deprecated. 
 
@@ -294,14 +294,18 @@ println!("{:?}",vec![Wheel{radius:4},Wheel{radius:3},Wheel{radius:2}]);
 impl fmt::Display for Wheel{
   fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{
     write!(f, "W[{}]", self.radius)
-}}
+   }
+}
 
 // enums example
 pub enum Apple{PinkLady,HoneyCrisp}  
 impl fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self { Apple::PinkLady=>write!(f, "Ap:PLad"),
-                     Apple::HoneyCrisp=>write!(f, "Ap:HonCr"),}}}
+                     Apple::HoneyCrisp=>write!(f, "Ap:HonCr"),
+		     }
+    }
+}
 //todo enum variants, containing data
 ```
 
