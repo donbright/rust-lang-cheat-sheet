@@ -711,11 +711,12 @@ enum Blorg {     // enums can have different types as members
  Florg(bool)
 }
 
-let x = Blorg::Flarg(1)  // enums can be detected with a match
+let x = Blorg::Flarg(1); // enums can be detected with a match
 match x {
-    Blorg::Flarg => println!("x is a flarg"),
-    Blorg::Norg => println!("x is a florg"),
-    _ => println!("neither Flarg nor Florg"),
+    Blorg::Flarg(1) => println!("x is a Flarg with value of 1!"),
+    Blorg::Flarg(_) => println!("x is a Flarg with non-1 value"),
+    Blorg::Norg(_) => println!("x is a Norg"),
+    _ => println!("neither Flarg nor Norg"),
 }
 ```
 
