@@ -921,13 +921,14 @@ let line = io::stdin().lock().lines().next().unwrap().unwrap();
 
 let x = include!("datafile.txt"); // include external data file, example: vec![0,0,0];
 
-let mut buf = vec![0u8; 4096];  // read in a loop to a buffer
-loop {
-        match infile.read(&mut buf) {
-            Ok(numbytes_read) => println("read {} bytes",numbyes_read),
-            Err(why) => break Err(why),
-        }
-}
+let mut tmpbuf = vec![0u8; 4096];  // read binary data in a loop to a buffer
+// infile is an Option<File>, could be passed around sort of like a *FILE in C
+let infile = std::File::open("somefile.bin"); 
+match infile.as_ref().unwrap().read( &mut tmpbuf ) {
+        Ok(numbytes_read) => println!("read {} bytes",numbytes_read),
+        Err(why) => println!("fail read {:?}",why),
+};
+	    
 
 // file errors inside a function and the question mark ?
 fn boodle( dart:u32 ) -> io::Result<usize> {
