@@ -1483,13 +1483,18 @@ fn main() {
 
 src/ccode.c
 ```C
+#include <stdio.h>
 int quadrance( int x1, int y1, int x2, int y2) {
 	return (x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
 }
-#include <stdio.h>
 char * blerg( *char txt ) {
 	printf("This is C. Here is text from Rust: %s", txt);
+	int fd = open("/tmp/blerg",0);
 	return "blerg";
+}
+void printerrs() {
+        int code = errno;
+        printf("C: errno: %i strerror: %s\n",code,strerror(code));
 }
 ```
 
@@ -1500,6 +1505,7 @@ use std::ffi::{CString,CStr};
 extern "C" {
     fn quadrance(x1: c_int, y1: c_int, x2: c_int, y2: c_int) -> c_int;
     fn blerg(v: *const char)->*const c_char;
+    fn printerrs()->c_void;
 }
 fn main() {
     unsafe {
@@ -1507,6 +1513,7 @@ fn main() {
 	let tmp = CString::new("blarg").unwrap(); // CString must be assigned
 	let msg = blerg(tmp.as_ptr()); // so as_ptr() will have something to point at 
 	println!("This is Rust. Here's text from C: {:?}",CStr::from_ptr(msg));
+	printerrs(); // was there an error?
     }
 }
 ```
