@@ -1,7 +1,9 @@
 
 ## Warning
 
-This cheat sheet is in a reasonably useful state for basic things, but it does contain many errors.
+This cheat sheet is in a reasonably useful state for basic things, but it does contain many errors and typos and 
+pedagological mistakes of omission and ordering & etc. 
+
 Also note that Rust is still changing quite a bit as of 2020, and I have had to quit working on this,
 so some of the below may be outdated/deprecated. 
 
@@ -183,9 +185,12 @@ let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f =
 
 ```
 
-Result - instead of Some and None, there is Ok() and Err():
+Result - is like Option but instead of Some and None, there is Ok() and Err():
 
 ```rust
+
+// first define some function that returns Result... which means it
+// returrns Err(u8) if something goes wrong, and Ok(&str) if it goes right. 
 fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
     match some_data[0] {
     	255=>Err("we cannot calculate blorg if data begins with 255"),
@@ -193,13 +198,19 @@ fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
     }
 }
 
-fn big_important_function() {
+// now we want to use this calculation function. 
+// sometimes we need to catch whether the Result is Err() or OK()
+fn space_transmit_function() {
 	match calculate_blorg_level([1,2,3]) {
-		Err(why)=>{println!("Bad blorg: {}",why);},
-		Ok(n) => { begin_deep_space_transmission(n); }
-}}
+		Err(why)=>{println!("Bad blorg, space transmit inoperative: {}",why);},
+		Ok(n) => { begin_space_transmission(n); }
+        }
+}
 
-fn less_important_function() {
+// but other times we want to use the calculation function
+// but it's OK if we don't have a perfect OK() result, we can 
+// assume it's 5 and use unwrap_or(5) if we get an Err()  
+fn pizza_transmit_function() {
 	let m = calculate_blorg_level([7,8,9]).unwrap_or(5);
 	set_pizza_delivery_level(m);
 }
@@ -229,7 +240,7 @@ Option in particular can prevent the use of null pointers, preventing crashes on
 ```
 struct Owlgr { 
 	name: String, 
-	fiznozz: Option<String> 
+	fiznozz: Option<String>     // in C++ this might be a *char which could init as NULL 
 }
 
 let owls = [Owlgr{name:"Harry".to_string(),fiznozz:None},
@@ -240,7 +251,8 @@ for owl in &owls {
 		None=>println!("Owlgr named {} has no fiznozz!",owl.name),
 		Some(x)=>println!("Owlgr named {} has fiznozz of {}",owl.name,x),
 	}
-}}
+    }
+}
 
 // note that we did not have to check for null pointers, nor derefernece any
 // pointer. if we forgot to check for None, the compiler would give an error.
@@ -489,30 +501,42 @@ Good examples of the results are on https://crates.io
 ## If, conditionals, patterns, match, control flow
 
 ```rust
-let (zoogle, noogle, poogle) = 3,4,5;
+
+fn zorgnaught_level() -> i32 { 3 }
+
+let (zoogle, noogle, poogle) = (3,4,5);
+
 let x = zorgnaught_level();
+
 if x == zoogle {                   // normal if else, like C, Pascal, etc
-	print!("zurkle")
+	print!("zoogle")
 } else if x == noogle {
-	print!("nurkle")
+	print!("noogle")
 } else if x == poogle {
-	print!("purkle")
+	print!("poogle")
 } else {
 	print!("unknown zorgnaught level");
 }
 
-match x {            // match a variable
-	zoogle => print!("zurkle"),    // "=>" signifies a branch or leg of the match
-	noogle => print!("nurkle"),    // have as many=> legs as you want
-	poogle => print!("purkle"),    // end each leg with a comma ,
+match x {            // match... mostly works on literals not variables
+	3 => print!("zoogle"),    // "=>" signifies a branch or leg of the match
+	4 => print!("noogle"),    // have as many=> legs as you want
+	5 => print!("poogle"),    // end each leg with a comma ,
 	_ => print!("unknown zorgnaught level"), // underscore _ will match anything not previously matched
 }
 
-let color = match apple_type {     // match can "return" a value
-	GRANNY=>"green",           // color = "green" or "red" or..
-	HONEYCRISP=>"red",
-	JAZZ="red",
-	_=>"unknown",
+ // match... can work on enums too
+pub enum Zorglvl{Zoogle,Noogle,Poogle}
+
+fn zorgnaught_level2() -> Zorglvl { Zorglvl::Zoogle }
+
+let x = zorgnaught_level2();
+
+match x {           
+	Zorglvl::Zoogle => print!("zoogle"),    // "=>" signifies a branch or leg of the match
+	Zorglvl::Noogle => print!("noogle"),    // have as many=> legs as you want
+	Zorglvl::Poogle => print!("poogle"),    // end each leg with a comma ,
+        // don't need underscore, enum checks all, covers all
 }
 
 let x = [1i8,2i8];                    // match patterns can be structs, enums, arrays, etc
@@ -543,9 +567,9 @@ ampm = match hour {                  // however it has to be inclusive
 
 let x = 5i32;                          // we can use the match value in match arms,
 let y = match x-1 {                    // this is also called "binding with @", like so:
-	0..=9 => 7,                    // y becomes x
-	m @ 10..=20 => m*2,            // y becomes (x-1)*2
-        _=> -1,                         
+	0..=9 => 7,                    // since x is 5, x-1 is 4 and 4 is in 0..=9, y=7 
+	m @ 10..=20 => m*2,            // since x is 5, x-1 is 4, y becomes (x-1)*2, y=8
+        _=> -1,                        // y = -1 is x-1 is 21 or greater
 };
 
 let mut v = vec![0;4096];                // match works with Result<>
