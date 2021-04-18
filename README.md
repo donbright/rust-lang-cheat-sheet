@@ -722,14 +722,22 @@ match x {
 
 ## Collections, Key-value pairs, Sets
 
-HashMap, aka associative array / key-value / map 
+HashMap, aka associative array / key-value store / map 
 
 ```rust
-use std::collections::HashMap;
 let mut m = HashMap::new();   
-m.insert('a', 1);               // key is 'a', value is 1
-let b = m['a'];                 // this crashes at runtime if 'a' is not in map
-*m.get_mut('a').unwrap() += 2;  // changing value inside a map
+m.insert('a', 1);                   // key is 'a', value is 1
+let b = m[&'a'];                    // [] lookup, this crashes at runtime if 'a' is not in map
+let c = m.get(&'a').unwrap_or(&-1); // .get(), c == -1 if a is not in map. no crash.
+match m.get(&'a') {                 // deal with map get() lookup using Match + Option
+    Some(x)=>println!("a found in map, value is {}",x),
+    None=>println!("a not found in map"),
+}
+if let Some(x) = m.get(&'a') {     // deal with map get() lookup using if let + Option
+    println!("a found in map, value is {}",x);
+}  // if 'a' is not in map, do nothing
+
+*m.get_mut(&'a').unwrap() += 2;  // change a value inside a map
 
 ```
 
