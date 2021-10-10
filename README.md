@@ -550,12 +550,12 @@ println!("{}",y);                     // "ends with 2"
 
 
 let m = 3;	 		     // match patterns can only be constant, but you can
-let n = 4;                           // do somewhat a conditional pattern match, like this:
-let y = match (n,m) {                // match tuple
-        (0,0) => "ok",               // any tuple with first element 0, ok.
-        (3,_) if n%5==0 => "ok",     // any tuple with first element 3, and n divisible by 5
-	(_,_) if m%3==0 => "ok",     // anytime m|3. the 'if' piece is called a 'match guard'
-        _ => "stop",                 // match guard allows matching with variables.
+let n = 4;                           // do similar things with "match guard", an if statement 
+let y = match (n,m) {                // which is inside of a => arm. First, we match tuple (n,m)
+        (0,0) => "ok",               //  this leg matches any tuple with first element 0, return ok
+        (3,_) if n%5==0 => "ok",     //  this leg matches when first element=3, and second divisible by 5
+	(_,_) if m%3==0 => "ok",     //  this leg matches any tuple where the second element is divisble by 3
+        _ => "stop",                 //  this leg matches anything else. 
 };
 
 let hour = get_24hr_time();          // patterns can be integer ranges (x..=y)
@@ -567,12 +567,12 @@ ampm = match hour {                  // however it has to be inclusive
 
 let x = 5i32;                          // we can use the match value in match arms,
 let y = match x-1 {                    // this is also called "binding with @", like so:
-	0..=9 => 7,                    // since x is 5, x-1 is 4 and 4 is in 0..=9, y=7 
-	m @ 10..=20 => m*2,            // since x is 5, x-1 is 4, y becomes (x-1)*2, y=8
-        _=> -1,                        // y = -1 is x-1 is 21 or greater
+	0..=9 => 7,                    // since x is 5, x-1 is 4 and 4 is in 0..=9, so y=7 
+	m @ 10..=19 => m*2,            // if x-1 was 14, m becomes 14, so y would be 28
+	_=> -1,                        // if x-1 was >=20, y would become -1
 };
 
-let mut v = vec![0;4096];                // match works with Result<>
+let mut v = vec![0;4096];                // match also works with Result<>
 match File::open("/dev/random") {     
 	Ok(f)=>f.read(&v),
 	Err(why)=>println!("file open failed, {}",why),
