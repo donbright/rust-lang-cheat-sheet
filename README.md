@@ -1231,13 +1231,29 @@ let z = 3.0/4.0;       // 0.75
 ### data conversion
 
 ```rust
-let x: u16 = 42;           // casting, start with 16 bit unsigned integer
+let x: u16 = 42;           // integer conversion. start with u16
 let y: u8 = x as u8;       // cast to unsigned 8 bit integer
 let z: i32 = x as i32;     // cast to signed 32 bit integer
 let bez = z.to_le_bytes(); // get individual 8 bit bytes in the 32 bit int 
 let bbz = z.to_be_bytes(); // same, but in big endian order  
 println!("{:?},{:?},{:?},{:?}",bez[0],bez[1],bez[2],bez[3]); // 42,0,0,0
 println!("{:?},{:?},{:?},{:?}",bbz[0],bbz[1],bbz[2],bbz[3]); // 0,0,0,42
+
+let s = [0,1,2,3];                  // u8 to u32, start with array of four u8
+let ls = u32::from_le_bytes(s);     // convert to u32, little endian
+let bs = u32::from_be_bytes(s);     // convert. to u32, big endian
+println!("{:?} {:?}",ls,bs);        // 50462976 66051
+let s2 = vec![0,0,0,1,2,3,4,5,6,7]; // vector of ten u8
+let ars2 = [s2[2],s2[3],s2[4],s2[5]]; // array of four u8
+let be = u32::from_be_bytes(ars2);    // create u32 from 3rd-6th bytes of ars2
+println!("{:?}",be);                // 66051
+
+// integer conversion using byteorder crate
+extern crate byteorder; // modify your Cargo.toml to add byteorder crate. then:
+use byteorder::{BigEndian, ReadBytesExt, NativeEndian, ByteOrder, LittleEndian, WriteBytesExt};
+let arr = [0,1,2,3];
+let s = NativeEndian::read_u32(&arr[0..4]);   // array of four bytes into u32.
+
 
 let s = format!("{:e}",0.0f32);    // convert float32 to base-10 decimal string (scientific format)
 let n = s.parse::<f32>().unwrap(); // parse float from string, panic/crash if theres an error
@@ -1266,12 +1282,6 @@ let m = 0x000f; // hexadecimal literal
 let (a,b,c) = (0b00_01,0o00_07,0x00_0f); // literals with underscores for ease of reading
 
 println!("{:x}",0x12345678u32.swap_bytes());  // 0x78563412 32-bit byteswap 
-
-// using byteorder crate
-extern crate byteorder; // modify your Cargo.toml to add byteorder crate. then:
-use byteorder::{BigEndian, ReadBytesExt, NativeEndian, ByteOrder, LittleEndian, WriteBytesExt};
-let arr = [0,1,2,3];
-let s = NativeEndian::read_u32(&arr[0..4]);   // array of four bytes into u32.
 
 // converting raw vectors of u8 bytes into ints, floats, etc.
 let v = vec![0u8;80]; let i = 0;
