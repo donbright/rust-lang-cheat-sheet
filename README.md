@@ -739,7 +739,7 @@ impl ColorMapData {
 let ca = ColorMapData::FourByteColor(vec![0xFFAA32FFu32,0x00AA0011,0x0000AA00]);
 println!("{}",ca.description()); // ColorMap with 3 colors, 4 bytes per color
 let mut cb = ColorMapData::OneByteColor(vec![0,1,3,9,16]);
-println!("{}",ca.description()); // ColorMap with 5 colors, 1 bytes per color
+println!("{}",cb.description()); // ColorMap with 5 colors, 1 bytes per color
 ```
 
 ## Collections, Key-value pairs, Sets
