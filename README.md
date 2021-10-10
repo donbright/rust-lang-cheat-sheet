@@ -25,7 +25,7 @@ so some of the below may be outdated/deprecated.
 
 ## Hello World
 
-& see https://www.rust-lang.org for installation details
+See https://www.rust-lang.org for installation details.
 
 ```rust
 fn main() {
