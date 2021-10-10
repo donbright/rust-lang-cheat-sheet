@@ -1292,16 +1292,9 @@ let mut X = unsafe { mem::transmute::<&mut [u8], &mut [u32]>(&mut block) };
 #[cfg(target_endian = "big")]   // deal with endian issues if needed
 for j in 0..16 { X[j] = X[j].swap_bytes(); }
 
-// converting bytes to u32, for Rust versions as of late 2020
-let s = [0,9,3,4];
-let ls = u32::from_le_bytes(s);  // le = little endian
-let bs = u32::from_be_bytes(s);  // be = big endian
-let s2 = [1,2,3,4,5,6,7,8,9,10];
-let ss = &s[3..7]; // slice view of s2
-u32::from_be_bytes([ss[0],ss[1],ss[2],ss[3]]); // wrap slice pieces into an array
 ```
 
-// string conversion
+#### string conversion
 
 ```
 
