@@ -718,6 +718,28 @@ match x {
     Blorg::Norg(_) => println!("x is a Norg"),
     _ => println!("neither Flarg nor Norg"),
 }
+
+// Enums can also derive traits, kind of like structs
+#[derive(Clone,Debug,PartialEq)]  // cannot derive Default on enum
+enum ColorMapData { 
+    OneByteColor(Vec<u8>),
+    FourByteColor(Vec<u32>),
+}
+// Enums can also have methods, kind of like structs
+impl ColorMapData {
+  fn description(&self)->String {
+    let (numcolors,numbytes) = match self {
+      ColorMapData::OneByteColor(x) => (x.len(),"1"),
+      ColorMapData::FourByteColor(x) => (x.len(),"4"),
+    };
+    format!("ColorMap with {} colors, {} bytes per color",numcolors,numbytes)
+  }
+}
+// Enums can be used to create variables
+let ca = ColorMapData::FourByteColor(vec![0xFFAA32FFu32,0x00AA0011,0x0000AA00]);
+println!("{}",ca.description()); // ColorMap with 3 colors, 4 bytes per color
+let mut cb = ColorMapData::OneByteColor(vec![0,1,3,9,16]);
+println!("{}",ca.description()); // ColorMap with 5 colors, 1 bytes per color
 ```
 
 ## Collections, Key-value pairs, Sets
@@ -1736,3 +1758,5 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - Pavel Strakhov https://stackoverflow.com/questions/40030551/how-to-decode-and-encode-a-float-in-rust
 - Zargony https://stackoverflow.com/questions/19650265/is-there-a-faster-shorter-way-to-initialize-variables-in-a-rust-struct/19653453#19653453
 - Wesley Wiser https://stackoverflow.com/questions/41510424/most-idiomatic-way-to-create-a-default-struct
+- u/excaliburhissheath and u/connorcpu https://www.reddit.com/r/rust/comments/30k4k4/is_it_possible_to_modify_wrapped
+
