@@ -159,7 +159,6 @@ overloading: see struct
 ## Run time errors, Crashing, panic, except, unwrap, Option, Result
 
 
-
 ```rust
 panic!("oops");             // panic!() instantly crashes program
 let v = vec![3,4,5];
@@ -267,17 +266,18 @@ println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ");
 print!("Hi, the answer is {} ",42);           // variables replace {}
 
 let v = vec![1,2,3];
-println!( "v[0] is {:?} {}", v, v[0] )             // {:?} can print lots of special types
-let s = format!( "x coord={}", p.X )               // print to string 
-s2 := fmt.Sprintf( "{e}", 17.0 )                   // another way to print to string
-println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); 
-// C-ish,   hex:11     bin:10001    sci:1.7e1
+println!( "v[0] is {:?} {}", v, v[0] )        // {:?} can print lots of special types
+println!("{:02x?}",v);                        // {:02x?} can print 2 digit hex of vector
+let s = format!( "x coord={}", p.X )          // print to string 
+s2 := fmt.Sprintf( "{e}", 17.0 )              // another way to print to string
+println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); // hexadecimal, binary, etc. 
+// C-ish style results in:  "hex:11     bin:10001    sci:1.7e1"
 println!("dec:{:#04} hex:{:#06x} bin:{:08b} sci:{:09e}",17,17,17,17.0); 
-// dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1   < padded with 0s
+// Pad with zeros: "dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1"
 println!(" {:.40} ", 1.0f32/3.0f32 );  // print 40 digits of precision for floating point
-//  0.3333333432674407958984375000000000000000 
+//  "0.3333333432674407958984375000000000000000" 
 println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
-//  232    8
+//  " 232    8"
 let mut s=String::new();               // build string, concatenate over lines 
 s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
