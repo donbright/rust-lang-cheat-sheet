@@ -1231,9 +1231,13 @@ let z = 3.0/4.0;       // 0.75
 ### data conversion
 
 ```rust
-let numx: u16 = 42;       // casting, start with 16 bit unsigned integer
-let numy: u8 = x as u8;   // cast to unsigned 8 bit integer
-let numz: i32 = x as i32; // cast to signed 32 bit integer
+let x: u16 = 42;           // casting, start with 16 bit unsigned integer
+let y: u8 = x as u8;       // cast to unsigned 8 bit integer
+let z: i32 = x as i32;     // cast to signed 32 bit integer
+let bez = z.to_le_bytes(); // get individual 8 bit bytes in the 32 bit int 
+let bbz = z.to_be_bytes(); // same, but in big endian order  
+println!("{:?},{:?},{:?},{:?}",bez[0],bez[1],bez[2],bez[3]); // 42,0,0,0
+println!("{:?},{:?},{:?},{:?}",bbz[0],bbz[1],bbz[2],bbz[3]); // 0,0,0,42
 
 let s = format!("{:e}",0.0f32);    // convert float32 to base-10 decimal string (scientific format)
 let n = s.parse::<f32>().unwrap(); // parse float from string, panic/crash if theres an error
@@ -1242,7 +1246,7 @@ match s.parse::<f32>() {
 	Err(e)=>println!("bad parse of {}, because {}",s,e),
 	Ok(x)=>n=x
 }
-let a = "537629.886026485"                            // base-10 decimal string to binary float pt
+let a = "537629.886026485"                        // base-10 decimal string to binary float point
 print!("{:.50}",a.to_string().parse::<f32>().unwrap();// 537629.875000000000000000000000000000000 
 let b = 537629.886026485;    print!("{:.50}",b);      // 537629.886026485008187592029571533203125
 let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
