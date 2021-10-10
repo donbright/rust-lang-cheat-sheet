@@ -1248,11 +1248,41 @@ let ars2 = [s2[2],s2[3],s2[4],s2[5]]; // array of four u8
 let be = u32::from_be_bytes(ars2);    // create u32 from 3rd-6th bytes of ars2
 println!("{:?}",be);                // 66051
 
+// converting vectors of integers
+let mut v1 = vec![0u8;2];                // 2 u8, each with '0'
+let v2 = vec![0xffeeaa00u32,0xff0000dd]; // two u32 in a vector
+v2.extend(v2);  // error the trait bound `Vec<u8>: Extend<u32>` is not satisfied
+for d in v2 { v1.extend(d.to_le_bytes()) }; // convert each u32 by itself
+println!("{:?}",v1) // [0, 0, 0, 170, 238, 255, 221, 0, 0, 255]
+
 // integer conversion using byteorder crate
 extern crate byteorder; // modify your Cargo.toml to add byteorder crate. then:
 use byteorder::{BigEndian, ReadBytesExt, NativeEndian, ByteOrder, LittleEndian, WriteBytesExt};
 let arr = [0,1,2,3];
 let s = NativeEndian::read_u32(&arr[0..4]);   // array of four bytes into u32.
+let mut v = vec![0u8];
+s.write_u8( v );
+
+let vx = vec![0u8,1,2,0xff,4,5,6,0xff];     // vector of u8
+//let mut vy = vec![0u32];                  // vector of u32
+//LittleEndian::read_u32_into(&vx,&mut vy); // panic, vy cant hold vx
+let mut vy = vec![0u32;2];                  // vector of u32
+LittleEndian::read_u32_into(&vx,&mut vy);   // convert u8s to u32s
+println!("{:x?}",vy);                       // [ff020100, ff060504]
+let mut vx2 = vec![0u8;8];                  // new vector of u8
+LittleEndian::write_u32_into(&vy,&mut vx2); // convert back to u8s
+println!("{:02x?}",vx);                     // [00, 01, 02, ff, 04, 05, 06, ff]
+
+// converting vectors of integers using unsafe mem::transmute
+let v = vec![0u8;80]; let i = 0;
+let n:i32 = {unsafe { std::mem::transmute::<&[u8],&[i32]>(&v[i..i+4])}}[0]; 
+let x:f32 = {unsafe { std::mem::transmute::<&[u8],&[f32]>(&v[i..i+4])}}[0];
+let mut block = vec![0u8;64];  // convert entire block at once
+let mut X = unsafe { mem::transmute::<&mut [u8], &mut [u32]>(&mut block) }; 
+#[cfg(target_endian = "big")]   // deal with endian issues if needed
+for j in 0..16 { X[j] = X[j].swap_bytes(); }
+
+
 
 
 let s = format!("{:e}",0.0f32);    // convert float32 to base-10 decimal string (scientific format)
@@ -1283,14 +1313,7 @@ let (a,b,c) = (0b00_01,0o00_07,0x00_0f); // literals with underscores for ease o
 
 println!("{:x}",0x12345678u32.swap_bytes());  // 0x78563412 32-bit byteswap 
 
-// converting raw vectors of u8 bytes into ints, floats, etc.
-let v = vec![0u8;80]; let i = 0;
-let n:i32 = {unsafe { std::mem::transmute::<&[u8],&[i32]>(&v[i..i+4])}}[0]; 
-let x:f32 = {unsafe { std::mem::transmute::<&[u8],&[f32]>(&v[i..i+4])}}[0];
-let mut block = vec![0u8;64];  // convert entire block at once
-let mut X = unsafe { mem::transmute::<&mut [u8], &mut [u32]>(&mut block) }; 
-#[cfg(target_endian = "big")]   // deal with endian issues if needed
-for j in 0..16 { X[j] = X[j].swap_bytes(); }
+
 
 ```
 
@@ -1765,4 +1788,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - Zargony https://stackoverflow.com/questions/19650265/is-there-a-faster-shorter-way-to-initialize-variables-in-a-rust-struct/19653453#19653453
 - Wesley Wiser https://stackoverflow.com/questions/41510424/most-idiomatic-way-to-create-a-default-struct
 - u/excaliburhissheath and u/connorcpu https://www.reddit.com/r/rust/comments/30k4k4/is_it_possible_to_modify_wrapped
-
+- Simson https://stackoverflow.com/questions/54472982/how-to-convert-vector-of-integers-to-and-from-bytes
