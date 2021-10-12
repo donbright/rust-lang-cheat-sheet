@@ -39,11 +39,12 @@ $ rustc main.rs   # creates 'main' executable
 ## Hello Packages, Hello Tests, Hello Dependencies
 
 ```bash
-$ rustup.sh       # install rust, see rust-lang.org for details
-$ cargo new bin   # start new executable project
-$ ls -lR          # list our skeleton of files
-src/main.rs       # main.rs, has main() entry point
-Cargo.toml        # Cargo.toml defines packaging
+$ rustup.sh         # install rust, see rust-lang.org for details
+$ mkdir myp; cd myp # creat new directory for project, cd into it
+$ cargo new --bin   # start new executable project
+$ ls -lR            # list our skeleton of files
+src/main.rs         # main.rs, has main() entry point
+Cargo.toml          # Cargo.toml defines packaging
 $ $EDITOR Cargo.toml  # add dependencies and other details
 [package]
 name = "helloworld"
