@@ -40,8 +40,8 @@ $ rustc main.rs   # creates 'main' executable
 
 ```bash
 $ rustup.sh         # install rust, see rust-lang.org for details
-$ mkdir myp; cd myp # creat new directory for project, cd into it
-$ cargo new --bin   # start new executable project
+$ cargo new myproj  # start new executable project under myproj path
+$ cd myproj         # cd into the new directory
 $ ls -lR            # list our skeleton of files
 src/main.rs         # main.rs, has main() entry point
 Cargo.toml          # Cargo.toml defines packaging
