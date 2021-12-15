@@ -1,10 +1,34 @@
+[<img src="https://www.technotification.com/wp-content/uploads/2018/09/Rust-programming-language.jpg" title="https://github.com/donbright/rust-lang-cheat-sheet"/>](https://github.com/donbright/rust-lang-cheat-sheet)
+
+<p align="center">
+  <b>Main author (thanks to him)</b><br>
+  <a href="https://github.com/donbright/rust-lang-cheat-sheet">donbright</a>
+</p>
 
 ## Warning
 
-This cheat sheet is in a reasonably useful state for basic things, but it does contain many errors and typos and 
-pedagological mistakes of omission and ordering & etc. 
-
 Also note that Rust is still changing quite a bit in 2019-2021 so some of the below may be outdated/deprecated. 
+
+## Install Rust
+
+Generic installation : <a href="https://www.rust-lang.org/tools/install">www.rust-lang.org/tools/install</a>
+
+### macOS,Linux & Unix-like OS
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+Add the cargo environment to the path.
+* $HOME/.profile
+* $HOME/.bashrc
+```c
+export PATH="$HOME/.cargo/bin:$PATH"
+```
+Re-open terminal and check the setup.
+```bash
+echo $PATH         ': must contain .cargo/bin'
+rustup show
+cargo --version
+```
 
 ## Rust in a Nutshell
 
@@ -23,8 +47,6 @@ Also note that Rust is still changing quite a bit in 2019-2021 so some of the be
 * A survivial horror game where griefing is ... oops wrong Rust
 
 ## Hello World
-
-See https://www.rust-lang.org for installation details.
 
 ```rust
 fn main() {
@@ -77,6 +99,7 @@ let x: bool = false; // let keyword
 let k = false;       // rustc can determine some types
 let y: char = '上';  // all chars are 4 bytes
 let 上 = 5;          // error. identifiers must be ASCII characters 
+let _temp = 5;       // unused variable
 let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
 let n: f32 = 0.45;   // 32 bit float (automatcally converted+rounded from decimal to binary)
@@ -116,6 +139,8 @@ let hellomsg = r###"            // Multi-line with embedded quotes
 "###;
 
 usize, isize              // this is the pointer size. used in loops, vector length, etc
+                          //Gives the guarantee to be always big enough to hold any pointer
+//32 bits computer : usize = u32 & 64 bits usize = u64
 
 const BILBOG: i32 = 10;         // constant
 static ORGOG: &str = "zormpf";  // static, global-ish variable
