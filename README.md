@@ -126,9 +126,7 @@ type Valid = bool;        // typedef ( make your own type names )
 
 let mut v = vec![1u8,2u8,3u8];  // determine the type of expression expr by looking at rustc error
 println!("{}",v.iter_mut());    // for example, if we want to know the type of v, build an error
-12 |     println!("{}",v.iter_mut());   // type of v.iter_mut() is std::slice::IterMut<'_, u8>`
-   |                   ^^^^^^^^^^^^ `std::slice::IterMut<'_, u8>` <- error line tells you the type
-                        
+println!("{}",v.iter_mut());   // type of v.iter_mut() is std::slice::IterMut<'_, u8>`
  ```
 
 
@@ -645,13 +643,33 @@ let b = &mut a;
 let c = &mut a;
 ```
 
-Lifetimes: todo
-
-Resources are destroyed, (their heap memory is freed), at the end of a 'scope'. Their owners are also destroyed. That is the point of ownership - so that resources won't be accessed after they are destroyed, which is the source of a huge number of errors in C programs.
+Lifetime in Rust: Resources are destroyed, (their heap memory is freed), at the end of a 'scope'. Their owners are also destroyed. That is the point of ownership - so that resources won't be accessed after they are destroyed, which is the source of a huge number of errors in C programs.
 
 Borrowed resources are not destroyed when the borrowed reference itself goes out of scope. However the borrow cannot "outlive" the destruction of the original resource nor it's owner.
 
-https://medium.com/@jordan_98525/reference-iterators-in-rust-5603a51b5192
+Take, for example, the case where we borrow a variable via ```&```. The borrow has a lifetime that is determined by where it is declared. As a result, the borrow is valid as long as it ends before the lender is destroyed. However, the scope of the borrow is determined by where the reference is used.
+
+```rust 
+fn main() {
+    let i = 3; // Lifetime for `i` starts. ────────────────┐
+    //                                                     │
+    { //                                                   │
+        let borrow1 = &i; // `borrow1` lifetime starts. ──┐│
+        //                                                ││
+        println!("borrow1: {}", borrow1); //              ││
+    } // `borrow1 ends. ──────────────────────────────────┘│
+    //                                                     │
+    //                                                     │
+    { //                                                   │
+        let borrow2 = &i; // `borrow2` lifetime starts. ──┐│
+        //                                                ││
+        println!("borrow2: {}", borrow2); //              ││
+    } // `borrow2` ends. ─────────────────────────────────┘│
+    //                                                     │
+}   // Lifetime ends. ─────────────────────────────────────┘
+
+```
+
 
 ## Structs
 
@@ -866,8 +884,7 @@ Imagine we have three Wheels (struct W) with radius (W.r) and they are inside
 a vector v. We start with wheels of radius 3,4,5 and want to change 
 it to be radiuses of 2, 4, 8.
 
-```
-
+```rust
     #[derive(Debug)]
     struct W{ r:u32 }       // wheel struct
     let mut v = vec![W{r:3},W{r:4},W{r:5}];   // vector of structs
@@ -1349,7 +1366,8 @@ let y = s.to_uppercase();           // y = "NEW"
 
 // str implements Write, sort of like C++ stringstream
 // str.as_bytes() converts to slice, which implements Read, similarly
-```
+
+```rust
 let s = "Reedeth Senek, and redeth eek Boece";
 let s2= "Ther shul ye seen expres that it no drede is"
 let buf = &mut vec![0u8; 64];
