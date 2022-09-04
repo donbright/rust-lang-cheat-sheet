@@ -174,7 +174,7 @@ $ cargo run    # will tell you exact line where panic occured, with call stack t
 
 Option - a basic way to deal with functions that might not work.  
 
-```
+```rust
 let c = v.get(12);          // this will not crash, c will instead be an Option
 print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
 print!("{:?}",v.get(0));    // prints the word "Some(3)"
@@ -220,7 +220,7 @@ be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blor
 
 More examples with options:
 
-```
+```rust
 
 let x = do_somthing_that_might_not_work(); // Option can help handle errors 
 match x {
@@ -236,7 +236,7 @@ if let Some(x) = do_something_that_might_not_work() {
 
 Option in particular can prevent the use of null pointers, preventing crashes one might see in C/C++.
 
-```
+```rust
 struct Owlgr { 
 	name: String, 
 	fiznozz: Option<String>     // in C++ this might be a *char which could init as NULL 
@@ -824,7 +824,7 @@ ty      // type.                       vis     // visibility qualifier
 
 array
 
-```
+```rust
 let arr: [u8; 4] = [1, 2, 3, 4]; // immutable array. cant change size.
 let mut arrm: [u8; 4] = [1,2,3,4]; // mutable array. cant change size.
 let n = arr.len();     // length of array = 4 items 
@@ -866,7 +866,7 @@ Imagine we have three Wheels (struct W) with radius (W.r) and they are inside
 a vector v. We start with wheels of radius 3,4,5 and want to change 
 it to be radiuses of 2, 4, 8.
 
-```
+```rust
 
     #[derive(Debug)]
     struct W{ r:u32 }       // wheel struct
@@ -888,7 +888,7 @@ split_at_mut
 
 It can create mutable slices, which allow mutable access to the vector.
 
-```
+```rust
      #[derive(Debug)]
     struct W{ r:u32 }       // wheel struct
     let mut v = vec![W{r:3},W{r:4},W{r:5}];   // vector of structs
@@ -1320,7 +1320,7 @@ println!("{:x}",0x12345678u32.swap_bytes());  // 0x78563412 32-bit byteswap
 
 #### string conversion
 
-```
+```rust
 
 use std::i64;
 let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
@@ -1346,10 +1346,10 @@ let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
 ```
 
-
+```rust
 // str implements Write, sort of like C++ stringstream
 // str.as_bytes() converts to slice, which implements Read, similarly
-```
+
 let s = "Reedeth Senek, and redeth eek Boece";
 let s2= "Ther shul ye seen expres that it no drede is"
 let buf = &mut vec![0u8; 64];
@@ -1463,7 +1463,7 @@ println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher obje
 
 ### Time
 
-```
+```rust
 use std::time::{Instant};
 let t = Instant::now();
 // do something for 5.3 seonds
