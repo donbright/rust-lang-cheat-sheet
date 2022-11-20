@@ -4,7 +4,7 @@
 This cheat sheet is in a reasonably useful state for basic things, but it does contain many errors and typos and 
 pedagological mistakes of omission and ordering & etc. 
 
-Also note that Rust is still changing quite a bit in 2019-2021 so some of the below may be outdated/deprecated. 
+Also note that Rust is still changing quite a bit in 2019-2022 so some of the below may be outdated/deprecated. 
 
 ## Rust in a Nutshell
 
@@ -187,7 +187,7 @@ Result - is like Option but instead of Some and None, there is Ok() and Err():
 ```rust
 
 // first define some function that returns Result... which means it
-// returrns Err(u8) if something goes wrong, and Ok(&str) if it goes right. 
+// returrns Err(&str) if something goes wrong, and Ok(u8) if it goes right. 
 fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
     match some_data[0] {
     	255=>Err("we cannot calculate blorg if data begins with 255"),
@@ -208,7 +208,7 @@ fn space_transmit_function() {
 // but it's OK if we don't have a perfect OK() result, we can 
 // assume it's 5 and use unwrap_or(5) if we get an Err()  
 fn pizza_transmit_function() {
-	let m = calculate_blorg_level([7,8,9]).unwrap_or(5);
+	let m = calculate_blorg_level([255,8,9]).unwrap_or(5);  // cause an error
 	set_pizza_delivery_level(m);
 }
 ```
@@ -228,7 +228,7 @@ match x {
 
 if let Some(x) = do_something_that_might_not_work() {
 	println("OK!");
-} // if None, do nothing. 
+} // let Some means we don't have to type out a handler for None. it does nothing. 
 
 ```
 
@@ -627,7 +627,7 @@ println!("{:p}",&c); // 0x7ffcffb6b298  // with their own addresses
 However borrowing has special rules regarding mutability. 
 
 In a block, only one of these statements can be true for a given resource R
-* The program has one or more references to R
+* The program has one or more immutable references to R
 * The program has exactly one mutable reference to R 
 
 ```rust
@@ -650,23 +650,23 @@ Borrowed resources are not destroyed when the borrowed reference itself goes out
 Take, for example, the case where we borrow a variable via ```&```. The borrow has a lifetime that is determined by where it is declared. As a result, the borrow is valid as long as it ends before the lender is destroyed. However, the scope of the borrow is determined by where the reference is used.
 
 ```rust 
-fn main() {
+fn main() { // main block starts 
     let i = 3; // Lifetime for `i` starts. ────────────────┐
     //                                                     │
-    { //                                                   │
+    { // new block starts                                  │
         let borrow1 = &i; // `borrow1` lifetime starts. ──┐│
         //                                                ││
         println!("borrow1: {}", borrow1); //              ││
-    } // `borrow1 ends. ──────────────────────────────────┘│
+    } // block for `borrow1 ends. ─────────-──────────────┘│
     //                                                     │
     //                                                     │
-    { //                                                   │
+    { // new block starts                                  │
         let borrow2 = &i; // `borrow2` lifetime starts. ──┐│
         //                                                ││
         println!("borrow2: {}", borrow2); //              ││
-    } // `borrow2` ends. ─────────────────────────────────┘│
+    } // block for `borrow2` ends. ───────────────────────┘│
     //                                                     │
-}   // Lifetime ends. ─────────────────────────────────────┘
+}   // main block ends, so does Lifetime ends. ────────────┘
 
 ```
 
@@ -755,9 +755,9 @@ impl ColorMapData {
 }
 // Enums can be used to create variables
 let ca = ColorMapData::FourByteColor(vec![0xFFAA32FFu32,0x00AA0011,0x0000AA00]);
-println!("{}",ca.description()); // ColorMap with 3 colors, 4 bytes per color
+println!("{}",ca.description()); // prints "ColorMap with 3 colors, 4 bytes per color"
 let mut cb = ColorMapData::OneByteColor(vec![0,1,3,9,16]);
-println!("{}",cb.description()); // ColorMap with 5 colors, 1 bytes per color
+println!("{}",cb.description()); // prints "ColorMap with 5 colors, 1 bytes per color"
 ```
 
 ## Collections, Key-value pairs, Sets
@@ -1008,8 +1008,49 @@ let progname = std::env::args().nth(0).unwrap_or("yr system is very broken".to_s
 // that could be empty. so we can use unwrap_or() to deal with the Option if no arguments are there
 ```
 
-packages: docopt, clap, getopts, structopt
+### clap - command line argument parser crate
 
+    # if you want your program 'mycompiler' to have args like this:
+    mycompiler input.txt -o binary.exe -optimize -I./include -I/usr/include
+    # install clap crate: 
+    cargo add clap --features derive   # bash command to add clap dependency
+ 
+```rust
+mycompiler.rs:
+extern crate clap;
+// clap will parse the struct and automatically handle errors,
+// detect the argument type based on the variable (Vec,Option,bool)
+// automatically provide --verison and --help using /// comments
+#[derive(clap::Parser, Debug)]
+pub struct Args {
+    /// inputfile - filename to compile 
+    inputfile: String,   
+    
+    /// outfile - filename for binary output
+    #[arg(short = 'o', long)]
+    outfile: Option(String), 
+    
+    /// paths to search for header files
+    #[arg(short = 'I', long)]
+    include: Vec<String>,
+
+    /// use the optimizer during compilation
+    #[arg(short='O', long)]
+    optimize: bool       
+}
+
+fn main() {
+    let clapargs = Args::parse_from(std::env::args.clone());
+    println!("{:?}",clapargs);
+    let mut output = "a.out";
+    let Some(outname) = clapargs.outfile.as_deref() { output = outname};
+    let Some(input) = clapargs.inputfile.as_deref() {
+	compile(input,output,clapargs.optimize);
+    }  // since input is required, CLAP will automatically print error,
+       // no need to handle if input=None by ourselves
+}
+
+```
 
 ## Reflection
 
