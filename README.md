@@ -921,6 +921,7 @@ It can create mutable slices, which allow mutable access to the vector.
 ## Object Oriented style
 
 Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), and even Enums.
+In 2022 Rust added some generic-ish stuff that can also do some object-ish things. 
 
 ## Files
 
@@ -1008,7 +1009,7 @@ let progname = std::env::args().nth(0).unwrap_or("yr system is very broken".to_s
 // that could be empty. so we can use unwrap_or() to deal with the Option if no arguments are there
 ```
 
-### clap - command line argument parser crate
+### clap - command line argument parser
 
     # if you want your program 'mycompiler' to have args like this:
     mycompiler input.txt -o binary.exe -optimize -I./include -I/usr/include
@@ -1020,6 +1021,8 @@ mycompiler.rs:
 extern crate clap;
 // clap will parse the struct and automatically handle errors,
 // detect the argument type based on the variable (Vec,Option,bool)
+// with Option for optional args, no Option for Requred args, Vec for
+// multiple args, bool for flag style args, etc. clap will also
 // automatically provide --verison and --help using /// comments
 #[derive(clap::Parser, Debug)]
 pub struct Args {
@@ -1046,8 +1049,7 @@ fn main() {
     let Some(outname) = clapargs.outfile.as_deref() { output = outname};
     let Some(input) = clapargs.inputfile.as_deref() {
 	compile(input,output,clapargs.optimize);
-    }  // since input is required, CLAP will automatically print error,
-       // no need to handle if input=None by ourselves
+    } 
 }
 
 ```
