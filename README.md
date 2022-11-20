@@ -1061,6 +1061,9 @@ todo
 ## Traits
 
 todo. Traits are like 'interfaces' in other languages.
+You can see examples above where a Struct will Derive the Debug trait
+so that gives it certain abilities. Traits are used extensively
+when dealing with iterators, see below. 
 
 ## Iterators, functional style programming
 
