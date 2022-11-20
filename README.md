@@ -1363,7 +1363,7 @@ let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
 ```
 
-
+```rust
 // str implements Write, sort of like C++ stringstream
 // str.as_bytes() converts to slice, which implements Read, similarly
 
