@@ -183,14 +183,12 @@ print!("{:?}",v.get(0));    // prints the word "Some(3)"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
-many iterators will return None on the last item
-
 ```
 Option and Match  - like if / else but more robust
 ```
-let x = do_something_that_might_return_none();
-match x { Some(x)=>println!("OK!"),
-	  None=>println!("sad face"), }
+let x = v.get(12);
+match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
+	  None=>println!("sad face"), }   // otherwise print sad face
 ```
 
 ### Result - Ok() and Err() instead of Some() and None. 
@@ -198,19 +196,19 @@ match x { Some(x)=>println!("OK!"),
 ```rust
 
 match std::env::var("SHLVL") { 
-	Ok(v)=>println!("SHLVL = {:?}",v),
-	Err(e)=>println!("error message: {:?}",e.to_string()) };
+	Ok(v)=>println!("SHLVL = {:?}",v),   //std::env returns value of Environment variable
+	Err(e)=>println!("error message: {:?}",e.to_string()) }; // or error message
 ```
 
 If Let - like match but no-op for None or Err() 
 
 ```rust
 
-if let Some(x) = do_something_that_might_return_none() { println("OK!"); } 
+if let Some(x) = v.get(12) { println("OK! {}",x); } 
 // we don't have to type out a handler for None. it does nothing. 
 
 if let Ok(x) = std::env::var("SHLVL") { println!("SHLVL = {:?}",x); }
-// if the Result is Err, then nothing is done. don't need to type it out. 
+// if the Result is Err, then nothing is done. 
 ```
 
 Option in particular can prevent the use of null pointers, preventing crashes one might see in C/C++.
