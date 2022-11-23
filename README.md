@@ -555,15 +555,15 @@ let m = 3;	 		     // match patterns can only be constant, but you can
 let n = 4;                           // do similar things with "match guard", an if statement 
 let y = match (n,m) {                // which is inside of a => arm. First, we match tuple (n,m)
         (0,0) => "ok",               //  this leg matches any tuple with first element 0, return ok
-        (3,_) if n%5==0 => "ok",     //  this leg matches when first element=3, and second divisible by 5
+        (3,_) if m%5==0 => "ok",     //  this leg matches when first element=3, and second divisible by 5
 	(_,_) if m%3==0 => "ok",     //  this leg matches any tuple where the second element is divisble by 3
         _ => "stop",                 //  this leg matches anything else. 
 };
 
 let hour = get_24hr_time();          // patterns can be integer ranges (x..=y)
 ampm = match hour {                  // however it has to be inclusive 
-	0..=12 => "am"               // 1..12 is not ok, 1..=12 is ok.
-	13..=23 => "pm"          
+	0..=11 => "am"               // 1..12 is not ok, 1..=12 is ok.
+	12..=23 => "pm"          
 	_=> "unknown"            
 };
 
