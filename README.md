@@ -189,6 +189,7 @@ Option and Match  - like if / else but more robust
 let x = v.get(12);
 match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
 	  None=>println!("sad face"), }   // otherwise print sad face
+// you will get a compile-time error if you forget to handle both Some and None
 ```
 
 ### Result - Ok() and Err() instead of Some() and None. 
