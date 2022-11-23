@@ -185,55 +185,36 @@ let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
 
 ```
+Option and Match  - like if / else but more robust
 
-Result - is like Option but instead of Some and None, there is Ok() and Err():
-
-```rust
-
-// first define some function that returns Result... which means it
-// returrns Err(&str) if something goes wrong, and Ok(u8) if it goes right. 
-fn calculate_blorg_level(some_data: &[u8]) -> Result<u8, &'static str> {
-    match some_data[0] {
-    	255=>Err("we cannot calculate blorg if data begins with 255"),
-        _=>Ok((some_data[0]+some_data[1]*17).rotate_right(3)),
-    }
-}
-
-// now we want to use this calculation function. 
-// sometimes we need to catch whether the Result is Err() or OK()
-fn space_transmit_function() {
-	match calculate_blorg_level([1,2,3]) {
-		Err(why)=>{println!("Bad blorg, space transmit inoperative: {}",why);},
-		Ok(n) => { begin_space_transmission(n); }
-        }
-}
-
-// but other times we want to use the calculation function
-// but it's OK if we don't have a perfect OK() result, we can 
-// assume it's 5 and use unwrap_or(5) if we get an Err()  
-fn pizza_transmit_function() {
-	let m = calculate_blorg_level([255,8,9]).unwrap_or(5);  // cause an error
-	set_pizza_delivery_level(m);
-}
 ```
-
-Note our Result can return two different things, a u8 or a str, but the u8 will be wrapped inside Ok() while the str would
-be wrapped inside an Err(). Not 'catching' a Result when you call calcualte_blorg_level() will show an error at compile time.
-
-More examples with options:
-
-```rust
-
-let x = do_somthing_that_might_not_work(); // Option can help handle errors 
+let x = do_something_that_might_return_none();
 match x {
 	Some(x)=>println!("OK!"),
 	None=>println!("sad face"),
 }
+```
 
-if let Some(x) = do_something_that_might_not_work() {
-	println("OK!");
-} // let Some means we don't have to type out a handler for None. it does nothing. 
+Result - some functions return Ok() and Err() instead of Some() and None. 
 
+```rust
+
+match std::env::var("SHLVL") { 
+	Ok(v)=>println!("SHLVL = {:?}",v),
+	Err(e)=>println!("error message: {:?}",e.to_string())
+};
+
+```
+
+If Let - match but no-op for None or Err() 
+
+```rust
+
+if let Some(x) = do_something_that_might_return_none() { println("OK!"); } 
+// we don't have to type out a handler for None. it does nothing. 
+
+if let Ok(x) = std::env::var("SHLVL") { println!("SHLVL = {:?}",x); }
+// if the Result is Err, then nothing is done. don't need to type it out. 
 ```
 
 Option in particular can prevent the use of null pointers, preventing crashes one might see in C/C++.
