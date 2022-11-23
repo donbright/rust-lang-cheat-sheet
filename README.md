@@ -1001,7 +1001,7 @@ std::fs::remove_file("newfile.txt").unwrap(); // panic if failure
 
 ```
 
-## System, arguments
+## System, arguments to main(), environment variables
 
 ```rust
 std::env::args().for_each(|x| print!("{} ",x)); // main arguments as iterator, print each one 
@@ -1050,13 +1050,23 @@ fn main() {
     let clapargs = Args::parse_from(std::env::args.clone());
     println!("{:?}",clapargs);
     let mut output = "a.out";
-    let Some(outname) = clapargs.outfile.as_deref() { output = outname};
-    let Some(input) = clapargs.inputfile.as_deref() {
+    if let Some(outname) = clapargs.outfile.as_deref() { output = outname};
+    if let Some(input) = clapargs.inputfile.as_deref() {
 	compile(input,output,clapargs.optimize);
     } 
 }
 
 ```
+
+### Environment variables
+```rust
+std::env::var("IGNORE_CASE")  // environment variable IGNORE_CASE, returns Result or Err
+if let Ok(v) = std::env::var("SHLVL") {println!("{:?}",v);} // print SHLVL if it's there, otherwise ignore
+let sl = match std::env::var("SHLVL") { Ok(v)=>v,Err(e)=>"not set".to_string() }; // set s1 to SHLVL or "not set" if unset
+println!("{:?}",std::env::vars().collect::<Vec<(String,String)>>()); // print all environment variables
+for v in std::env::vars() {println!("{:?}",v);}  // print env vars line by line
+```
+
 
 ## Reflection
 
