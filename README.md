@@ -174,7 +174,7 @@ $ export RUST_BACKTRACE=1
 $ cargo run    # will tell you exact line where panic occured, with call stack trace
 ```
 
-Option - a basic way to deal with functions that might not work.  
+### Option - for functions that may return Some thing, or None thing 
 
 ```rust
 let c = v.get(12);          // this will not crash, c will instead be an Option
@@ -183,30 +183,26 @@ print!("{:?}",v.get(0));    // prints the word "Some(3)"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
+many iterators will return None on the last item
 
 ```
 Option and Match  - like if / else but more robust
-
 ```
 let x = do_something_that_might_return_none();
-match x {
-	Some(x)=>println!("OK!"),
-	None=>println!("sad face"),
-}
+match x { Some(x)=>println!("OK!"),
+	  None=>println!("sad face"), }
 ```
 
-Result - some functions return Ok() and Err() instead of Some() and None. 
+### Result - Ok() and Err() instead of Some() and None. 
 
 ```rust
 
 match std::env::var("SHLVL") { 
 	Ok(v)=>println!("SHLVL = {:?}",v),
-	Err(e)=>println!("error message: {:?}",e.to_string())
-};
-
+	Err(e)=>println!("error message: {:?}",e.to_string()) };
 ```
 
-If Let - match but no-op for None or Err() 
+If Let - like match but no-op for None or Err() 
 
 ```rust
 
