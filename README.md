@@ -538,7 +538,7 @@ let y = match (n,m) {                // which is inside of a => arm. First, we m
 
 let hour = get_24hr_time();          // patterns can be integer ranges (x..=y)
 ampm = match hour {                  // however it has to be inclusive 
-	0..=11 => "am"               // 1..12 is not ok, 1..=12 is ok.
+	0..=11 => "am"               // 1..11 is not ok, 1..=11 is ok.
 	12..=23 => "pm"          
 	_=> "unknown"            
 };
