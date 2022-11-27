@@ -1755,9 +1755,10 @@ mod mod1;      // we must add each modules in lib.rs with 'mod' before we can us
 pub mod mod2;  // this module is public, anyone using this crate can access its functions too
 pub fn mycrate_init() { 
   let x = do_stuff1(9);  // call function from mod1.rs
+  mycrate_monster(x);
 }
-pub fn mycrate_monster() -> Monster { // Monster - type from mod1.rs
-  let mut a = Monster{ true,12 };
+pub fn mycrate_monster(y:u8) -> Monster { // Monster - type from mod1.rs
+  let mut a = Monster{ true,y };
   do_stuff2( &mut a );   // call function from mod2.rs
   a
 }
