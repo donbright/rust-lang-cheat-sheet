@@ -1720,9 +1720,9 @@ unsafe{
 }
 ```
 
-## source code layout
+## source code layout and modules
 
-Here is a typical source code organization layout for a simple library, which has a handful of modules, some examples, integration tests, benchmarking, and two executable binaries.
+Here is an example source code organization layout for a simple library, which has a handful of modules, some examples, integration tests, benchmarking, and two executable binaries.
  
 ```bash
 $ ls ..
