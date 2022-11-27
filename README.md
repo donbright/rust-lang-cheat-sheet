@@ -1752,7 +1752,9 @@ $ cargo build                     # this builds all files in crate
 src/lib.rs: (our main library file which the world will use)
 ```rust
 mod mod1;      // we must add each modules in lib.rs with 'mod' before we can use them within each other
+use mod1::*;   // import symbols from mod1.rs
 pub mod mod2;  // this module is public, anyone using this crate can access its functions too
+use mod2::*;   // import symbols from mod2.rs
 pub fn mycrate_init() { 
   let x = do_stuff1(9);  // call function from mod1.rs
   mycrate_monster(x);
