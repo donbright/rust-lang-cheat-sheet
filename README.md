@@ -1729,8 +1729,8 @@ $ ls ..
 ./mycrate                  	  # main crate folder
 ./mycrate/Cargo.toml       	  # cargo file, lists dependencies etc
 ./mycrate/src/lib.rs        	  # only one library is allowed per crate
-./mycrate/src/blorg.rs      	  # module. a library can use multiple modules
-./mycrate/src/znog.rs       	  # file to hold a different module
+./mycrate/src/mod1.rs      	  # module 1. a library can use multiple modules
+./mycrate/src/mod2.rs       	  # module 2 , a second module
 ./mycrate/src/bin/program1.rs     # source code for an executable
 ./mycrate/src/bin/program2.rs     # source code for another executable
 ./mycrate/tests             	  # integration tests (as opposed to unit tests at end of every .rs file)
@@ -1748,38 +1748,43 @@ $ ls ..
 $ cargo build                     # this builds all files in crate
 ```
 
-src/blorg.rs: (our module that does stuff)
-```rust
-enum Zorgnog { Noorg, Beezle };
-pub fun do_stuff(x:i8)->i16 { (x*9+3-27) as i16 }
-pub struct Monster {   // public struct, available to other modules
-    pub is_happy:bool, // public struct member, available to others
-    num_teeth:i8,      // private struct member, unavailble to others
-}
-
-```
-
-src/znog.rs: (
-```rust
-use blorg::*; // uses types from blorg.rs
-pub fn bloom(a:Zorgnog)->Monster {
-   let m = match a {
-   	Zorgnog::Norg=>false,
-	Zorgnog::Beezle=>true,
-   }
-   Monster{is_happy:m,num_teeth:7}
-}
-```
 
 src/lib.rs: (our main library file which the world will use)
 ```rust
-mod blorg;          // private module
-pub mod znog;       // public module, available to world using lib
-fn dosomething() { let x = do_stuff(9);}
-fn build_monster(x:u8) -> Monster { if x<5 { bloom(Zorgnog::Norg) } else { bloom(Zorgnog::Beezle) }
+mod mod1;      // we must add each modules in lib.rs with 'mod' before we can use them within each other
+pub mod mod2;  // this module is public, anyone using this crate can access its functions too
+pub fn mycrate_init() { 
+  let x = do_stuff1(9);  // call function from mod1.rs
+}
+pub fn mycrate_monster() -> Monster { 
+  let mut a = Monster{ true,12 };
+  do_stuff2( &mut a );   // call function from mod2.rs
+  a
+}
+pub fn mycrate_calcteeth()-> { 23 }
 ```
 
+src/mod1.rs: (our 1st module that does stuff)
+```rust
+pub fn do_stuff1(x:u8)->u8 { x+5 } // public function, available to other modules
+pub struct Monster1 {   // public struct, available to other modules
+    pub is_happy:bool, // public struct member, available to others
+    num_teeth:i8,      // private struct member, unavailble to others
+}
+```
 
+src/mod2.rs: (
+```rust
+use super::*; // use functions from lib.rs
+use mod1::*; // use functions/types from mod1.rs, like Monster struct 
+             // note: this only works if "mod mod1" line is in lib.rs
+pub fn do_stuff2( a: &mut Monster ) { 
+	a.is_happy = calc_happy();           // call our own private function
+	a.num_teeth = mycrate_calcteeth();   // call a function from lib.rs
+}
+fn calc_happy() -> bool { // private function only available within mod2.rs
+  match today { Tuesday => true ,_=>false } }
+```
 
 See also
 https://doc.rust-lang.org/book/ch07-02-modules-and-use-to-control-scope-and-privacy.html
