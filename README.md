@@ -77,14 +77,14 @@ p = true;                // ok, mutable binding can change;
 
 ## types, variables, declarations, initialization
 ```rust
-let x: bool = false; // let keyword
-let k = false;       // rustc can determine some types
-let y: char = '上';  // all chars are 4 bytes
-let 上 = 5;          // error. identifiers must be ASCII characters 
-let a: i8 = -2;      // 8 bit signed integers, also i16, i32, i64  
-let b: u8 = 200;     // 8 bit unsigned integers, also u16, u32, u64 
-let n: f32 = 0.45;   // 32 bit float (automatcally converted+rounded from decimal to binary)
-let n = 42.01f64;  c // 64 bit float literal of the number 42.01 (approximately)
+let x: bool = false;   // let keyword
+let k = false;         // rustc can determine some types
+let y: char = '上';    // all chars are 4 bytes
+let 上 = 5;            // error. identifiers must be ASCII characters 
+let a: i8 = -2;        // 8 bit signed integers, also i16, i32, i64  
+let b: u8 = 200;       // 8 bit unsigned integers, also u16, u32, u64
+let n: f32 = 0.45;     // 32 bit float (automatcally converted+rounded from decimal to binary)
+let n = 42.01f64;  c   // 64 bit float literal of the number 42.01 (approximately)
 let r: [u8;3] = [3,4,5];          // array of 3 int, cannot grow
 let s = [0;500];                  // array of 500 integers, each initialized to 0
 let s = &r[0..2];                 // slice of array, s==&[3,4]
@@ -1292,6 +1292,10 @@ let bez = z.to_le_bytes(); // get individual 8 bit bytes in the 32 bit int
 let bbz = z.to_be_bytes(); // same, but in big endian order  
 println!("{:?},{:?},{:?},{:?}",bez[0],bez[1],bez[2],bez[3]); // 42,0,0,0
 println!("{:?},{:?},{:?},{:?}",bbz[0],bbz[1],bbz[2],bbz[3]); // 0,0,0,42
+
+let a = u64::from('A')              // get integer value of char
+let a = char::from_u32(68)          // get char value of an integer (utf8/ascii)
+let a = char::from_digit(4,10)      // get char '4' from integer 4, base 10
 
 let s = [0,1,2,3];                  // u8 to u32, start with array of four u8
 let ls = u32::from_le_bytes(s);     // convert to u32, little endian
