@@ -174,7 +174,7 @@ $ export RUST_BACKTRACE=1
 $ cargo run    # will tell you exact line where panic occured, with call stack trace
 ```
 
-### Option - for functions that may return Some thing, or None thing 
+### Option - a type for functions that may return Some thing, or None thing 
 
 ```rust
 let c = v.get(12);          // this will not crash, c will instead be an Option
@@ -184,7 +184,7 @@ let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is 
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
 ```
-Option and Match  - like if / else but more robust
+Option and **Match**  - a control flow similar to **if else** but with more error checking at compile time
 ```
 let x = v.get(12);
 match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
@@ -192,7 +192,7 @@ match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
 // you will get a compile-time error if you forget to handle both Some and None
 ```
 
-### Result - Ok() and Err() instead of Some() and None. 
+### Result - a type like Option but with Ok() and Err() instead of Some() and None. 
 
 ```rust
 
@@ -201,7 +201,7 @@ match std::env::var("SHLVL") {  // env::var() returns a Result<> type.
 	Err(e)=>println!("error message: {:?}",e.to_string()) }; // if not, error message
 ```
 
-If Let - like match but no-op for None or Err() 
+**If Let** - A control statemnt like match but with a no-op for None or Err() 
 
 ```rust
 
