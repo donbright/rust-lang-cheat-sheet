@@ -1756,7 +1756,7 @@ pub mod mod2;  // this module is public, anyone using this crate can access its 
 pub fn mycrate_init() { 
   let x = do_stuff1(9);  // call function from mod1.rs
 }
-pub fn mycrate_monster() -> Monster { 
+pub fn mycrate_monster() -> Monster { // Monster - type from mod1.rs
   let mut a = Monster{ true,12 };
   do_stuff2( &mut a );   // call function from mod2.rs
   a
@@ -1767,17 +1767,18 @@ pub fn mycrate_calcteeth()-> { 23 }
 src/mod1.rs: (our 1st module that does stuff)
 ```rust
 pub fn do_stuff1(x:u8)->u8 { x+5 } // public function, available to other modules
-pub struct Monster1 {   // public struct, available to other modules
+pub struct Monster1 {  // public struct, available to other modules
     pub is_happy:bool, // public struct member, available to others
-    num_teeth:i8,      // private struct member, unavailble to others
+    pub num_teeth:i8,
 }
 ```
 
 src/mod2.rs: (
 ```rust
 use super::*; // use functions from lib.rs
-use mod1::*; // use functions/types from mod1.rs, like Monster struct 
-             // note: this only works if "mod mod1" line is in lib.rs
+use mod1::*;  // use functions/types from mod1.rs, like Monster struct 
+              // note: this only works if "mod mod1" line is in lib.rs
+	      // otherwise you get E0432 unresolved import , maybe a missing crate
 pub fn do_stuff2( a: &mut Monster ) { 
 	a.is_happy = calc_happy();           // call our own private function
 	a.num_teeth = mycrate_calcteeth();   // call a function from lib.rs
