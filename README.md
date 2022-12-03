@@ -700,7 +700,8 @@ let b = Apple{color:(9,12,38),..a };      // this is called "struct update"
 ```rust
 enum Fruit { Apple, Banana, Pear }
 let x = call_some_function( Fruit::Apple );  
-enum Errs { ErrOK = 0, ErrFile = 1, ErrFire = 2, ErrBadCap = 3 }  // enums can have integers
+enum Errs { ErrOK = 3, ErrFile = 5, ErrFire = 12 } // custom Discriminats (integers)
+enum Planet { Earth = 3, Mars, Jupiter } // mars will be 4, Jupiter 5. 
 
 enum Blorg {     // enums can have different types as members
  Flarg(u8),
