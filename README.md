@@ -772,7 +772,8 @@ println!("{}",cb.description()); // prints "ColorMap with 5 colors, 1 bytes per 
 HashMap, aka associative array / key-value store / map 
 
 ```rust
-let mut m = HashMap::new();   
+use std::collections::{HashMap};
+let mut m = HashMap<char,i32>::new();   
 m.insert('a', 1);                   // key is 'a', value is 1
 let b = m[&'a'];                    // [] lookup, this crashes at runtime if 'a' is not in map
 let c = m.get(&'a').unwrap_or(&-1); // .get(), c == -1 if a is not in map. no crash.
