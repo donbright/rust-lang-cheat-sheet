@@ -952,9 +952,12 @@ match infile.as_ref().unwrap().read( &mut tmpbuf ) {
 	    
 
 // file errors inside a function and the question mark ?
-fn boodle( dart:u32 ) -> io::Result<usize> {
-  f = File::open("/some/filename.txt")?; // handles error somewhat automatically by returning
-  println("ok, opened file");
+fn boodle( dart:u32 ) -> Result<usize, std::io::Error> {
+  f = File::open("/some/filename.txt")?;
+  let mut count = f.read(blah blah blah)?;
+  f.seek()?;  // no need to write error handling if/match for every operation
+  count += f.read()?; // ? just returns with approrpiate error wrapped in Result enum
+  Ok(count)
 }
 
 // Passing File to function... 
@@ -1080,8 +1083,6 @@ vec![3,4,5].iter().for_each(|x| print!("{} ",x)); // 3 4 5
 let biggest = v.iter().max();        // 5
 let hasle2 = v.iter().any(|x| x<=4); // true if any element is less than or equal to 2
 let biggest = v[0..1].iter().max();  // will return 4, not 5, b/c we took a slice of the vector
-for i in v.iter().step_by(2) {print!("{} ",i);} // 3 5 vec![
-for i in vec![3,4,5].iter().skip(1) {print("{}",i);} // 4, 5
 for i in vec![3,4,5].iter().take(2) {print("{}",i);} // 3, 4
 for (i,n) in vec![3,4,5].iter().enumerate() {print!("{}:{} ",i,n);} // 0:3 1:4 2:5
 vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
@@ -1091,7 +1092,9 @@ vec![3,4,5].iter().position(|&&x| x == 5) // 2 // kind of like indexOf() in othe
 for i in vec![3,4,5].chain(vec![1,12,13]) {print!("{} ",i);} // 3 4 5 1 12 13
 for i in vec![3,4,5].zip(vec![1,12,13]) {print!("{} ",i);} // (3,1) (4,12) (5,13)
 
-// removing or modifying items
+// skipping, removing or modifying items
+for i in v.iter().step_by(2) {print!("{} ",i);} // 3 5 vec![
+for i in vec![3,4,5].iter().skip(1) {print("{}",i);} // 4, 5
 print!("{:?}",vec![3,4,5].into_iter().map(|x| 2 * x).collect::<Vec<u8>>()); // 6 8 10
 for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{}",i);} // 3 4
 for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
