@@ -393,7 +393,8 @@ fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }
 f(fp);  // call function f, passing a pointer to the 'addtwo' function. result=3
 
 // closures
-let c = |x| x + 2;    // define a closure, which is kinda like a lambda function 
+let c = |x| x + 2;    // define a closure, which is kinda like a lambda function
+let a = c(5);         // closures can be called, like functions. result = 7
 fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }  // f takes a function as an argument 
 f(c);                 // a closure can be passed, like a function pointer, result = 3
 let value = 5;        // a closure can also read values outside its scope
