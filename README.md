@@ -12,17 +12,17 @@ Also note that Rust is still changing quite a bit in 2019-2022 so some of the be
 
 ## Rust in a Nutshell
 
-* Syntax tokens similar to C
+* Syntax tokens somewhat similar to C / C++ / Go
 * Ownership of memory enforced at build time
 * Statically linked
-* Functional-ish, generic-ish, not so objecty
-* Control flow using patterns, 'match' keyword
-* Packages: 'cargo' command, https://crates.io
-* Testing: cargo test, #[test]
+* Not so Object-Orientish, tends to be Functional-ish
+* Control flow using patterns, 'match' keyword, Option+Result enums
+* Packages: 'cargo add' command, https://crates.io
+* Testing: 'cargo test' command, #[test] unit tests, integration tests
 * Concurrency: ownership, mutability, channels, mutex, crossbeam + Rayon packages
-* Auto formatter: rustfmt filename.rs (see rust-lang.org for installation)
-* compiler engine: LLVM
-* raw pointers, low level: unsafe{} keyword
+* Auto formatter: 'rustfmt filename.rs' (see rust-lang.org for installation)
+* compiler engine: LLVM, no non-LLVM compilers yet
+* raw pointers, low level, call C/C++: use the unsafe{} keyword
 * online playgrounds: https://play.rust-lang.org, https://tio.run/ 
 * A survivial horror game where griefing is ... oops wrong Rust
 
