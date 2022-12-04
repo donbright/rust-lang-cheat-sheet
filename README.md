@@ -109,13 +109,16 @@ let m = (4,5,"a");            // tuples can have multiple different types as ele
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
 let (a,b) = m.p, m.q; //err   // error, cannot index into a tuple using a variable
 
-let s = String::from("上善若水"); // String
-let s2 = "水善利萬物而不爭";       // string literal, type is &str
-let s3 = format!("{}{}",s2,s3); // concatenate strings
-for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split string
-let s4 = s.get(0..2);                // Substring using indexes
+let s = String::from("上善若水"); // String is a heap variable
+let s2 = "水善利萬物而不爭";       // &str, different from String
+let s3 = &s;                    // & prefix to String gives &str
+let s4 = s2.to_string();        // create String from &str
+let s5 = format!("{}{}",s2,s3); // concatenate &str to &str
+let s6 = s + s2;                // concatenate String to &str
+for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split &str
+let s4 = s.get(0..2);                // SubString using indexes
 let i4 = s.find('水').unwrap_or(-1); // find index of character (not a byte offset)
-let hellomsg = r###"            // Multi-line with embedded quotes
+let hellomsg = r###"            // Multi-line &str with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
 "###;
