@@ -23,6 +23,7 @@ Also note that Rust is still changing quite a bit in 2019-2022 so some of the be
 * Auto formatter: 'rustfmt filename.rs' (see rust-lang.org for installation)
 * compiler engine: LLVM, no non-LLVM compilers yet
 * raw pointers, low level, call C/C++: use the unsafe{} keyword
+* smart pointers: Box, Rc
 * online playgrounds: https://play.rust-lang.org, https://tio.run/ 
 * A survivial horror game where griefing is ... oops wrong Rust
 
@@ -369,8 +370,32 @@ $ cargo run          # installs rayon, runs program
 ```rust 
 channels: todo
 mutex: todo
-ARC: todo
 ```
+
+## Smart pointers
+
+Box is a smart pointer. It is not possible to become null or to point to invalid memory.
+
+As an example, consider a tree data structure. In C you might have nodes that have
+pointers to child nodes, and then at the leaf nodes , the child node pointers are NULL. 
+
+In Rust, the nodes have Boxed pointers to child nodes. The Boxes are all wrapped with an Option.
+So if there is no child, the Option is None. If there is a child, it is Some(Box(childnode)) 
+
+```rust
+struct Node { data: char, leftchild: Option<Box<Node>>, rightchild: Option<Box<Node>> }
+let mut x = Node{data:'x',leftchild:None,rightchild:None};
+let y = Node{data:'y',leftchild:None,rightchild:None};
+let z = Node{data:'z',leftchild:None,rightchild:None};
+(x.leftchild,x.rightchild) = (Some(Box::new(y)),Some(Box::new(z)));
+// Node { data: 'x', 
+//        leftchild: Some(Node { data: 'y', leftchild: None, rightchild: None }), 
+//        rightchild: Some(Node { data: 'z', leftchild: None, rightchild: None }) }
+```
+
+https://doc.rust-lang.org/std/boxed/index.html
+
+Arc, RC - reference counted pointers. Todo
 
 ## Functions and closures
 ```rust
@@ -1526,7 +1551,7 @@ let mut prng = || {  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
                      m_w = 18000 * (m_w & 65535) + (m_w >> 16);
                      m_z.rotate_left( 16 ) + m_w };
 let buf = (0..1000).map(|_| prng() as u8).collect::<Vec<u8>>();
-// creates 1000 random bytes in buf, using Closure named prng
+// creates 1000 pseudo random bytes in buf, using Closure named prng
 ```
 
 ### Hashing
