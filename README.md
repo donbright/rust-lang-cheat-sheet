@@ -71,7 +71,7 @@ $ cargo run --example fundemo -- --argtodemo # run example with argument
 
 ```rust
 let x = false;           // all variable bindings are immutable by default
-x = true;                // compile error. can't change an immutable binding
+x = true; // err         // compile error. can't change a variable which has an immutable binding
 let mut p = false;       // "mut" designates a binding as mutable
 p = true;                // ok, mutable binding can change;
 ```
@@ -81,7 +81,7 @@ p = true;                // ok, mutable binding can change;
 let x: bool = false;   // let keyword
 let k = false;         // rustc can determine some types
 let y: char = '上';    // all chars are 4 bytes
-let 上 = 5;            // error. identifiers must be ASCII characters 
+let 上 = 5; //err      // error. identifiers must be ASCII characters 
 let a: i8 = -2;        // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;       // 8 bit unsigned integers, also u16, u32, u64
 let n: f32 = 0.45;     // 32 bit float (automatcally converted+rounded from decimal to binary)
@@ -107,13 +107,13 @@ let (p,d,q) = (4,5,6);        // tuple() can assign multiple variables at once
 print("{}",p);                // you can use them alone after tuple assignment
 let m = (4,5,"a");            // tuples can have multiple different types as elements
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
-let (a,b) = m.p, m.q;         // error, cannot index into a tuple using a variable
+let (a,b) = m.p, m.q; //err   // error, cannot index into a tuple using a variable
 
 let s = String::from("上善若水"); // String
 let s2 = "水善利萬物而不爭";       // string literal, type is &str
 let s3 = format!("{}{}",s2,s3); // concatenate strings
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split string
-let s4 = s.get(0..2);               // Substring using indexes
+let s4 = s.get(0..2);                // Substring using indexes
 let i4 = s.find('水').unwrap_or(-1); // find index of character (not a byte offset)
 let hellomsg = r###"            // Multi-line with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
