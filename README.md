@@ -1074,44 +1074,53 @@ println!("{:?}",i.next());  // None
 let mut i = v.iter();
 print!("{:?}",i.collect::<Vec<_>>(); // iterator back to vector 
 
+// basic iteration and sorting
 for i in v.iter() {print!("{} ",i);} // 3 4 5 
+vec![3,4,5].iter().for_each(|x| print!("{} ",x)); // 3 4 5
 let biggest = v.iter().max();        // 5
 let hasle2 = v.iter().any(|x| x<=4); // true if any element is less than or equal to 2
 let biggest = v[0..1].iter().max();  // will return 4, not 5, b/c we took a slice of the vector
 for i in v.iter().step_by(2) {print!("{} ",i);} // 3 5 vec![
 for i in vec![3,4,5].iter().skip(1) {print("{}",i);} // 4, 5
 for i in vec![3,4,5].iter().take(2) {print("{}",i);} // 3, 4
+for (i,n) in vec![3,4,5].iter().enumerate() {print!("{}:{} ",i,n);} // 0:3 1:4 2:5
+vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
+vec![3,4,5].iter().position(|&&x| x == 5) // 2 // kind of like indexOf() in other langs
+
+// multiple iterators
 for i in vec![3,4,5].chain(vec![1,12,13]) {print!("{} ",i);} // 3 4 5 1 12 13
 for i in vec![3,4,5].zip(vec![1,12,13]) {print!("{} ",i);} // (3,1) (4,12) (5,13)
+
+// removing or modifying items
 print!("{:?}",vec![3,4,5].into_iter().map(|x| 2 * x).collect::<Vec<u8>>()); // 6 8 10
-vec![3,4,5].iter().for_each(|x| print!("{} ",x)); // 3 4 5
 for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{}",i);} // 3 4
-for (i,n) in vec![3,4,5].iter().enumerate() {print!("{}:{} ",i,n);} // 0:3 1:4 2:5
+for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
 for i in vec![4,5,3,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,3
 for i in vec![3,4,5,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,4,5,3
 for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{},",i);} // 4,5
 for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{},",i);} //   (nothing) 
+let v =[3,4,5]; for i in v.iter().cycle().skip(2); // 5,3,4 - cycle allows wraparound
+
+// mathematical operations
 for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{}",i)} // 3,7,12
 print!("{}",vec![3,4,5].iter().fold(0, |a, x| a + x)); // 12
 vec![3,4,5].iter().sum() // 3+4+5, 12
 vec![3,4,5].iter().product() // 12*5, 60
+(1..4).reduce(|x,y| x*y).unwrap_or(0); // 6   // 6 is 1*2*3
 println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MIN, f64::max)); // max, 3
 println!("{}",vec![1.,2.,3.].iter().cloned().fold(std::f64::MAX, f64::min)); // min, 1
+print!("{:?}",vec![['a','b','c'], ['d','e','f']].iter().flatten().collect::<String>() ); // "abcdef"
 print!("{:?}",vec![vec![3,4],vec![5,1]].iter().flatten().collect::<Vec<_>>()); // 3,4,5,1
-for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
 let (a,b): (Vec<_>, Vec<_>) = vec![3,4,5].into_iter().partition(|x| x>&4);
 println!("{:?} {:?}",a,b); // [5] [3,4]
 vec![3,4,5].iter().all(|x| x>2) // true
 vec![3,4,5].iter().all(|x| x>4) // false
 vec![3,4,5].iter().any(|x| x<4) // true
 vec![3,4,5].iter().any(|x| x<2) // false
-vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
-vec![3,4,5].iter().position(|&&x| x == 5) // 2 // kind of like indexOf() in other langs
+// comparisons: cmp, le, eq, ne, lt, etc
+print!("{}",vec![3,4,5].iter().eq(vec![1,3,4,5].iter().skip(1))); // true
 
-let v =[3,4,5];
-let (i,j)=(v.iter(),v.iter().cycle().skip(2)); // cycle allows wraparound
-i.zip(j).for_each(|x| println!("{:?}",x));  // (3, 5)  (4, 3)  (5, 4)
-
+// misc
 cloned() // clones each element
 unzip() // backwards of zip()
 rev() // reverse iterator
@@ -1123,9 +1132,11 @@ find_map() // combine find and map
 flat_map() // combine flatten and map 
 filter_map() // combine filter and map
 
-// comparisons: cmp, le, eq, ne, lt, etc
-print!("{}",vec![3,4,5].iter().eq(vec![1,3,4,5].iter().skip(1))); // true
-
+into_iter() // can help you collect
+let (v,u)=(vec![1,2,3],vec![4,5,6]);
+print!("{:?}", v.into_iter().zip(u.into_iter()).collect<Vec<(i8,i8)>>()); // E0277
+// value of type `Vec<(i8, i8)>` cannot be built from `std::iter::Iterator<Item=(&{integer}...
+print!("{:?}", v.into_iter().zip(u.into_iter()).collect<Vec<(i8,i8)>>()); // [(1, 4), (2, 5), (3, 6)]
 ```
 
 
@@ -1133,30 +1144,40 @@ print!("{}",vec![3,4,5].iter().eq(vec![1,3,4,5].iter().skip(1))); // true
 Itertools library: more adapters
 ```rust
     use itertools::Itertools;
+    // these are periodically integrated into Rust core, and/or may change
+    
+    // sort related
     vec![13,1,12].into_iter().sorted(); // [1,12,13]
     vec![(3,13),(4,1),(5,12)].into_iter().sorted_by(|x,y| Ord::cmp(&x.1,&y.1)); // [(4,1),(5,12),(3,13)]            
+    "Mississippi".chars().dedup().collect::<String>(); // Misisipi
+    "agcatcagcta".chars().unique().collect::<String>(); // agct
+
+    // mingling single items into others
     "四四".chars().join("十")); // 四十四
     (1..4).interleave(6..9).collect_vec(); // 1,6,2,7,3,8
     " 十是十 ".chars().intersperse('四').collect::<String>(); // "四十四是四十四"
+    "愛".chars().pad_using(4,|_| '.').collect::<String>(); // "愛..."
+
+    // multiple iterators
     "az".chars().merge("lm".chars()).collect::<String>(); // "almz"
     "za".chars().merge_by("ml".chars(),|x,y| x>y ).collect::<String>(); // "zmla"
     vec!["az".chars(),"lm".chars()].into_iter().kmerge().collect::<String>(); //"almz"
+    for c in &vec![1,2,3,4,5].into_iter().chunks(2) {  // chunk - split into new iterator groups of 2
+      for x in c { print!("{:?}",x); } print!(","); } // each group is 2 items. output: 12,34,5,
+
+    // mathematical operations
     "ab".chars().cartesian_product("cd".chars()).collect_vec() ; // [(a,b),(a,d),(b,c),(b,d)]
-    "bananas".chars().coalesce(|x,y| if x=='a'{Ok('z')}else{Err((x,y))}).collect::<String>(); // bzzz
-    "Mississippi".chars().dedup().collect::<String>(); // Misisipi
-    "agcatcagcta".chars().unique().collect::<String>(); // agct
     (1..=3).combinations(2).collect_vec(); // [[1,2], [1,3], [2,3]]
-    "愛".chars().pad_using(4,|_| '.').collect::<String>(); // "愛..."
-    Itertools::flatten( vec![vec![12,1,13], vec![4,5,3]].iter() ).collect_vec(); // [12,1,13,4,5,3]
     "Go raibh maith agat".chars().positions(|c| c=='a').collect_vec();// [4, 10, 15, 17]
-    vec![1,2,3].into_iter().update(|n| *n *= *n).collect_vec(); // [1,4,9]
     ("四十四是四十四".chars().all_equal(), "謝謝".chars().all_equal()); // (false, true)
-    vec![1,2,3].iter().foreach(|n| {print!("{},",n)}; // 1,2,3
-    vec![vec![12,1,13], vec![4,5,3]].into_iter().concat() ; // [12,1,13,4,5,3]
-    let mut s=['.';3];s.iter_mut().set_from("abcdefgh".chars()); s.iter().collect::<String>(); // "abc"
-    (1..4).fold1(|x,y| x*y).unwrap_or(0)); // 6   // 6 is 1*2*3
     [1,5,10].iter().minmax().into_option().unwrap() // (1,10) // faster than min() then max()
     (0..3).zip_eq("abc".chars()).collect_vec(); // [(0,'a'), (1,'b'), (2,'c')]
+
+    // modifying and removing items
+    "bananas".chars().coalesce(|x,y| if x=='a'{Ok('z')}else{Err((x,y))}).collect::<String>(); 
+    // coalesce will replace a pair of items with a new single item, if the item matches
+    vec![1,2,3].into_iter().update(|n| *n *= *n).collect_vec(); // [1,4,9]
+    let mut s=['.';3];s.iter_mut().set_from("abcdefgh".chars()); s.iter().collect::<String>(); // "abc"
 ```
 
 ## Implementing your own iterator for your own struct
