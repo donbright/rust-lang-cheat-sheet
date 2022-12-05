@@ -291,7 +291,7 @@ impl fmt::Display for Wheel{
    }
 }
 
-// enums example
+//enums
 pub enum Apple{PinkLady,HoneyCrisp}  
 impl fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
@@ -300,7 +300,6 @@ impl fmt::Display for Apple {
 		     }
     }
 }
-//todo enum variants, containing data
 ```
 
 ### loop, for, while
@@ -397,7 +396,7 @@ let z = Node{data:'z',leftchild:None,rightchild:None};
 ```
 
 Another way is to use Enum variants for the different node types, then you dont
-even need to use Option at all
+even need to use Option at all. See below for more on how Enums work in Rust. 
 
 ```rust
 enum Node { Branch(Box<Node>,Box<Node>), Leaf(char) }
@@ -739,7 +738,10 @@ let b = Apple{color:(9,12,38),..a };      // this is called "struct update"
 ```
 
 
-## Enums
+## Enums - not like C
+
+Enums in Rust do more than Enums in C/C++. They are actually more like 
+Tagged Unions or ADT / Algebraic Data Types from Functional programming languages.
 
 ```rust
 enum Fruit { Apple, Banana, Pear }
@@ -762,27 +764,40 @@ match x {
     _ => println!("neither Flarg nor Norg"),
 }
 
-// Enums can also derive traits, kind of like structs
+// Enums can also derive traits
 #[derive(Clone,Debug,PartialEq)]  // cannot derive Default on enum
 enum ColorMapData { 
     OneByteColor(Vec<u8>),
     FourByteColor(Vec<u32>),
 }
-// Enums can also have methods, kind of like structs
+
+// Enums can also derive traits
+#[derive(Clone,Debug,PartialEq)]  // cannot derive Default on enum
+enum ColorMapData {
+    OneByteColors(Vec<u8>),
+    FourByteColors(Vec<u32>),
+}
+
+// Enums can also have methods / functions, using impl
+// the key is that inside the function, pattern matching is used
+// to determine which variant of the Enum the function receives
 impl ColorMapData {
   fn description(&self)->String {
     let (numcolors,numbytes) = match self {
-      ColorMapData::OneByteColor(x) => (x.len(),"1"),
-      ColorMapData::FourByteColor(x) => (x.len(),"4"),
+      ColorMapData::OneByteColors(x) => (x.len(),"1"),
+      ColorMapData::FourByteColors(x) => (x.len(),"4"),
     };
     format!("ColorMap with {} colors, {} bytes per color",numcolors,numbytes)
-  }
-}
-// Enums can be used to create variables
-let ca = ColorMapData::FourByteColor(vec![0xFFAA32FFu32,0x00AA0011,0x0000AA00]);
-println!("{}",ca.description()); // prints "ColorMap with 3 colors, 4 bytes per color"
-let mut cb = ColorMapData::OneByteColor(vec![0,1,3,9,16]);
-println!("{}",cb.description()); // prints "ColorMap with 5 colors, 1 bytes per color"
+}}
+
+// functions can take Enum as arguments
+fn examinecm( c:ColorMapData ) { println!("{}",c.description()); }
+let ca = ColorMapData::FourByteColors(vec![0xFFAA32FFu32,0x00AA0011,0x0000AA00]);
+let cb = ColorMapData::OneByteColors(vec![0,1,3,9,16]);
+examinecm(ca);
+// ColorMap with 3 colors, 4 bytes per color
+examinecm(cb);
+// ColorMap with 5 colors, 1 bytes per color
 ```
 
 ## Collections, Key-value pairs, Sets
