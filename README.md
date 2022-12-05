@@ -396,7 +396,9 @@ let z = Node{data:'z',leftchild:None,rightchild:None};
 ```
 
 Another way is to use Enum variants for the different node types, then you dont
-even need to use Option at all. See below for more on how Enums work in Rust. 
+even need to use Option at all. Each node is actually a different type so the leaf
+nodes do not even have children, while the inner branch nodes do.
+See below section on "Enums - not like C" for more on how Enums work in Rust. 
 
 ```rust
 enum Node { Branch(Box<Node>,Box<Node>), Leaf(char) }
@@ -407,6 +409,7 @@ let x = Node::Branch(Box::new(y),Box::new(z));
 ```
 
 https://doc.rust-lang.org/std/boxed/index.html
+
 https://rosettacode.org/wiki/Huffman_coding#Rust
 
 Arc, RC - reference counted pointers. Todo
