@@ -1438,7 +1438,8 @@ println!("{:x}",0x12345678u32.swap_bytes());  // 0x78563412 32-bit byteswap
 ```rust
 
 use std::i64;
-let z = i64::from_str_radix("0x1f".trim_left_matches("0x"), 16).unwrap(); // hex string to integer
+let z = i64::from_str_radix("0x1f".trim_start_matches("0x"), 16).unwrap(); // hex string to integer
+let q = i64::from_str_radix("0b10001".trim_start_matches("0b"), 2).unwrap(); // binary string to integer
 
 println!("{:?}","abc".as_bytes()); // &[u8] slice, [97, 98, 99] ( utf8 string into bytes )
 println!("{:?}","abc".as_bytes().to_vec()); // Vec<u8> [97, 98, 99] string into slice into Vector of bytes
@@ -1459,13 +1460,10 @@ let s = "hello" ;                   // s = &str
 let s = "hello".to_string();        // s = String
 let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
-```
 
-```rust
 // str implements Write, sort of like C++ stringstream
 // str.as_bytes() converts to slice, which implements Read, similarly
 
-```rust
 let s = "Reedeth Senek, and redeth eek Boece";
 let s2= "Ther shul ye seen expres that it no drede is"
 let buf = &mut vec![0u8; 64];
