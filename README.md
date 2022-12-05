@@ -766,13 +766,6 @@ match x {
 
 // Enums can also derive traits
 #[derive(Clone,Debug,PartialEq)]  // cannot derive Default on enum
-enum ColorMapData { 
-    OneByteColor(Vec<u8>),
-    FourByteColor(Vec<u32>),
-}
-
-// Enums can also derive traits
-#[derive(Clone,Debug,PartialEq)]  // cannot derive Default on enum
 enum ColorMapData {
     OneByteColors(Vec<u8>),
     FourByteColors(Vec<u32>),
