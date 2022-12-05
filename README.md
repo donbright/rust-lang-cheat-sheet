@@ -396,8 +396,10 @@ let z = Node{data:'z',leftchild:None,rightchild:None};
 ```
 
 Another way is to use Enum variants for the different node types, then you dont
-even need to use Option at all. Each node is actually a different type so the leaf
-nodes do not even have children, while the inner branch nodes do.
+even need to use Option at all. Each node is actually a different Variant so the leaf
+nodes do not even have children they only have data, while the inner branch nodes have
+children but do not have data.
+
 See below section on "Enums - not like C" for more on how Enums work in Rust. 
 
 ```rust
