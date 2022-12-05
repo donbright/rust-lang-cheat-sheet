@@ -400,13 +400,11 @@ Another way is to use Enum variants for the different node types, then you dont
 even need to use Option at all
 
 ```rust
-enum NodeVariant { Branch(Box<Node>,Box<Node>), Leaf(char) }
-struct Node { var: NodeVariant }
-fn main() {
-let y = Node{var:NodeVariant::Leaf('y')};
-let z = Node{var:NodeVariant::Leaf('z')};
-let x = Node{var:NodeVariant::Branch(Box::new(y),Box::new(z))};
-// Node { var: Branch(Node { var: Leaf('y') }, Node { var: Leaf('z') }) }
+enum Node { Branch(Box<Node>,Box<Node>), Leaf(char) }
+let y = Node::Leaf('y');
+let z = Node::Leaf('z');
+let x = Node::Branch(Box::new(y),Box::new(z));
+// print!("{:?}",x); // Branch(Leaf('y'), Leaf('z'))
 ```
 
 https://doc.rust-lang.org/std/boxed/index.html
