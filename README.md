@@ -402,14 +402,16 @@ Arc, RC - reference counted pointers. Todo
 
 ## Functions and closures
 ```rust
-fn add( a:i8, b:i8 ) -> i32 { b + a }  // 'return' keyword optional
-fn getcodes( a:i8, b:i32) -> (char,i32) { return ('s',a+b); } // multi return
-let (x, s) = getcodes( 3, 56 );     // multi return via tuples
-fn mulby6( a:i8, b:i8=5 ) -> i16 {} // error. Rust circa 2019 has no default parameters. 
-fn f(t:i8) {          // nesting functions is OK
+fn add( a:i8, b:i8 ) -> i32 { b + a }   // 'return' keyword optional
+fn getcodes(a:i8)->(i8,i32){ (9,a*99) } // multi return
+let (x, s) = getcodes( 3, 56 );         // multi return via tuples
+fn mulby6(a:i8,b:i8=5)->i16{}   //error // Rust has no default parameters. 
+fn f(t:i8) {                            // nesting functions is OK
   fn g(u:i8) { u*5 }
-  let a = t + g(2);
-}
+  let a = t + g(2);  }
+fn f2(t:i8) {             // however, nested functs cannot access outside variables 
+  let mut m = 2;        
+  fn g2(u:i8) { u*5 + m } // error[E0434]: can't capture dynamic environment in a fn item
 
 // function pointers
 fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
