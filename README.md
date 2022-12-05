@@ -400,9 +400,7 @@ Another way is to use Enum variants for the different node types, then you dont
 even need to use Option at all
 
 ```rust
-#[derive(Debug)]
 enum NodeVariant { Branch(Box<Node>,Box<Node>), Leaf(char) }
-#[derive(Debug)]
 struct Node { var: NodeVariant }
 fn main() {
 let y = Node{var:NodeVariant::Leaf('y')};
