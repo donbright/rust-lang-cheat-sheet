@@ -407,11 +407,11 @@ fn getcodes(a:i8)->(i8,i32){ (9,a*99) } // multi return
 let (x, s) = getcodes( 3, 56 );         // multi return via tuples
 fn mulby6(a:i8,b:i8=5)->i16{}   //error // Rust has no default parameters. 
 fn f(t:i8) {                            // nesting functions is OK
-  fn g(u:i8) { u*5 }
+  fn g(u:i8) { u*5 }; 
   let a = t + g(2);  }
 fn f2(t:i8) {             // however, nested functs cannot access outside variables 
   let mut m = 2;        
-  fn g2(u:i8) { u*5 + m } // error[E0434]: can't capture dynamic environment in a fn item
+  fn g2(u:i8){u*5 + m};}  // error[E0434]: can't capture dynamic environment in a fn item
 
 // function pointers
 fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
@@ -435,7 +435,8 @@ print!("{} ",i)               // 2 3  (0 1 2 3 filtered to only values greater t
 
 type ZFillCallback = fn(bottom:u32,top:u32)->u32;  // typedef of a function
 
-fn maximum(t:i8,...) {} // error, can't have variable number of arguments. see Macros! below
+fn maximum(t:i8,...) {} // error, can't have variable number of arguments.
+                        // only macros! can be Variadic in Rust (see below)
 
 ```
 
