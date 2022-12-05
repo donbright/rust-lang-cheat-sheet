@@ -411,8 +411,8 @@ let x = Node{var:NodeVariant::Branch(Box::new(y),Box::new(z))};
 // Node { var: Branch(Node { var: Leaf('y') }, Node { var: Leaf('z') }) }
 ```
 
-
 https://doc.rust-lang.org/std/boxed/index.html
+https://rosettacode.org/wiki/Huffman_coding#Rust
 
 Arc, RC - reference counted pointers. Todo
 
