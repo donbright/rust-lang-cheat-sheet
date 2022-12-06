@@ -22,7 +22,7 @@ Also note that Rust is still changing quite a bit in 2019-2022 so some of the be
 * Concurrency: ownership, mutability, channels, mutex, crossbeam + Rayon packages
 * Auto formatter: 'rustfmt filename.rs' (see rust-lang.org for installation)
 * compiler engine: LLVM, no non-LLVM compilers yet
-* raw pointers, low level, call C/C++: use the unsafe{} keyword
+* raw pointers, low level, call C/C++: use the unsafe{} keyword + ffi package
 * smart pointers: Box, Rc
 * online playgrounds: https://play.rust-lang.org, https://tio.run/ 
 * A survivial horror game where griefing is ... oops wrong Rust
@@ -64,29 +64,29 @@ $ cargo run       # runs program created from main.rs
 $ cargo test      # runs tests (in parallel by default)
 $ cargo test -- --test-threads=1  # run tests one at a time
 $ cargo test -- --nocapture       # run tests, show output
-$ cargo run --example fundemo -- --argtodemo # run example with argument
+$ cargo run --example fundemo -- --arg # run example with arg (./examples subdir)
 ```
 
-## Mutability basic
+## Mutability basics
 
 ```rust
 let x = false;           // all variable bindings are immutable by default
 x = true; // err         // compile error. can't change a variable which has an immutable binding
 let mut p = false;       // "mut" designates a binding as mutable
-p = true;                // ok, mutable binding can change;
+p = true;                // ok, a variable with mutable binding can change;
 ```
 
 ## types, variables, declarations, initialization
 ```rust
 let x: bool = false;   // let keyword
-let k = false;         // rustc can determine some types
+let k = false;         // rustc can determine some types automatically
 let y: char = '上';    // all chars are 4 bytes
 let 上 = 5; //err      // error. identifiers must be ASCII characters 
 let a: i8 = -2;        // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;       // 8 bit unsigned integers, also u16, u32, u64
-let n: f32 = 0.45;     // 32 bit float (automatcally converted+rounded from decimal to binary)
-let n = 42.01f64;  c   // 64 bit float literal of the number 42.01 (approximately)
-let r: [u8;3] = [3,4,5];          // array of 3 int, cannot grow
+let n: f32 = 0.45;     // 32 bit float (automatcally converted+rounded from base-10 decimal to binary)
+let n = 42.01f64;      // 64 bit float literal of the number 42.01 (approximately)
+let r: [u8;3] = [3,4,5];          // array of 3 int, immutable, cannot grow or change values
 let s = [0;500];                  // array of 500 integers, each initialized to 0
 let s = &r[0..2];                 // slice of array, s==&[3,4]
 let s = &r[0..2][0];              // index into slice, s==3
@@ -94,7 +94,7 @@ let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, 
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
 u.push( 2 );                      // append item to vector
-u.pop();                      // vectors can return+remove last input (like a stack)
+u.pop();                      // vectors can pop, return+remove last input (like a stack)
 v.contains(&3);               // true if vector contains value
 v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
@@ -109,15 +109,15 @@ let m = (4,5,"a");            // tuples can have multiple different types as ele
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
 let (a,b) = m.p, m.q; //err   // error, cannot index into a tuple using a variable
 
-let s = String::from("上善若水"); // String is a heap variable
-let s2 = "水善利萬物而不爭";       // &str, different from String
-let s3 = &s;                    // & prefix to String gives &str
+let s = String::from("上善若水"); // String is a heap variable. Strings are UTF8 encoded.
+let s2 = "水善利萬物而不爭";       // "" literals are type &str, different from String
+let s3 = &s;                    // & when prefixed to String gives &str
 let s4 = s2.to_string();        // create String from &str
 let s5 = format!("{}{}",s2,s3); // concatenate &str to &str
 let s6 = s + s2;                // concatenate String to &str
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split &str
 let s4 = s.get(0..2);                // SubString using indexes
-let i4 = s.find('水').unwrap_or(-1); // find index of character (not a byte offset)
+let i4 = s.find('水').unwrap_or(-1); // index of character (not always a byte offset, b/c utf8)
 let hellomsg = r###"            // Multi-line &str with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
@@ -127,14 +127,14 @@ usize, isize              // this is the pointer size. used in loops, vector len
 
 const BILBOG: i32 = 10;         // constant
 static ORGOG: &str = "zormpf";  // static, global-ish variable
-static FOOBY: i32 = 5;          // unsafely mutable
+static FOOBY: i32 = 5;          // only mutable inside unsafe{} blocks. 
 static Z_ERRMSG : [&str;2] = ["need input","need more input"]; // static strings
 
-type Valid = bool;        // typedef ( make your own type names ) 
+type Valid = bool;              // typedef ( make your own type names ) 
 
 let mut v = vec![1u8,2u8,3u8];  // determine the type of expression expr by looking at rustc error
 println!("{}",v.iter_mut());    // for example, if we want to know the type of v, build an error
-println!("{}",v.iter_mut());   // type of v.iter_mut() is std::slice::IterMut<'_, u8>`
+println!("{}",v.iter_mut());    // type of v.iter_mut() is std::slice::IterMut<'_, u8>`
  ```
 
 
@@ -188,7 +188,7 @@ let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is 
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
 ```
-Option and **Match**  - a control flow similar to **if else** but with more error checking at compile time
+Option and Match - a control flow similar to **if else** but with more error checking at compile time
 ```
 let x = v.get(12);
 match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
