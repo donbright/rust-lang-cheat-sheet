@@ -38,7 +38,9 @@ fn main() {
 ```
 
 ```bash
-$ rustc main.rs   # creates 'main' executable
+$ rustc main.rs   
+$ ./main
+Hello World
 ```
 
 ## Hello Packages, Hello Tests, Hello Dependencies
