@@ -125,11 +125,15 @@ let hellomsg = r###"            // Multi-line &str with embedded quotes
  "Hello" in Hindi is नमस्ते ('Namaste')
 "###;
 
-usize, isize              // this is the pointer size. used in loops, vector length, etc
+let x = vec![5,12,13];           // indices into slices/arrays/vectors must be of type usize
+let y = 2 as u8;                 // using u8, u16, etc will not work
+print!("{}",x[y]);               // error[E0277]: the type `[{integer}]` cannot be indexed by `u8`
+let z = 2 as usize;              // usize is the pointer size. used in loops, vector length, etc
+print!("{}",x[z]);               // ok.   there is also "isize" if usize needs to be signed
 
 const BILBOG: i32 = 10;         // constant
 static ORGOG: &str = "zormpf";  // static, global-ish variable
-static FOOBY: i32 = 5;          // only mutable inside unsafe{} blocks. 
+static FOOBY: i32 = 5;          // statics are only mutable inside unsafe{} blocks. 
 static Z_ERRMSG : [&str;2] = ["need input","need more input"]; // static strings
 
 type Valid = bool;              // typedef ( make your own type names ) 
