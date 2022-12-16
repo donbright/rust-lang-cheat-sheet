@@ -252,10 +252,11 @@ Note that there are no Exceptions. panic/Option/Result/multi-value-return are us
 
 ```rust
 println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
-print!("Hi, the answer is {} ",42);           // variables replace {}
+print!("Hi, the answer is {} ",42);           // curly braces {} where text should be
+Hi, the answer is 42
 
 let v = vec![1,2,3];
-println!( "v[0] is {:?} {}", v, v[0] )        // {:?} can print lots of special types
+println!( "v[0] from {:?} = {}", v, v[0] )    // {:?} can print lots of special types
 println!("{:02x?}",v);                        // {:02x?} can print 2 digit hex of vector
 let s = format!( "x coord={}", p.X )          // print to string 
 s2 := fmt.Sprintf( "{e}", 17.0 )              // another way to print to string
@@ -297,7 +298,7 @@ impl fmt::Display for Wheel{
    }
 }
 
-//enums
+// Display for enums
 pub enum Apple{PinkLady,HoneyCrisp}  
 impl fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
