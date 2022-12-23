@@ -187,6 +187,7 @@ $ cargo run    # will tell you exact line where panic occured, with call stack t
 ### Option - a type for functions that may return Some thing, or None thing 
 
 ```rust
+let v = vec![3,4,5];
 let c = v.get(12);          // this will not crash, c will instead be an Option
 print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
 print!("{:?}",v.get(0));    // prints the word "Some(3)"
