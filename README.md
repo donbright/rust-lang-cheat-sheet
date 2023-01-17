@@ -87,11 +87,11 @@ let 上 = 5; //err      // error. identifiers must be ASCII characters
 let a: i8 = -2;        // 8 bit signed integers, also i16, i32, i64  
 let b: u8 = 200;       // 8 bit unsigned integers, also u16, u32, u64
 let n: f32 = 0.45;     // 32 bit float (automatcally converted+rounded from base-10 decimal to binary)
-let n = 42.01f64;      // 64 bit float literal of the number 42.01 (approximately)
+let n2 = 42.01f64;      // 64 bit float literal of the number 42.01 (approximately)
 let r: [u8;3] = [3,4,5];          // array of 3 int, immutable, cannot grow or change values
-let s = [0;500];                  // array of 500 integers, each initialized to 0
-let s = &r[0..2];                 // slice of array, s==&[3,4]
-let s = &r[0..2][0];              // index into slice, s==3
+let s1 = [0;500];                  // array of 500 integers, each initialized to 0
+let s2 = &r[0..2];                 // slice of array, s==&[3,4]
+let s3 = &r[0..2][0];              // index into slice, s==3
 let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, can grow
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
@@ -102,14 +102,14 @@ v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
 v.extend(w);                  // extend v with w (v owns w, w can be immutable)
 v.resize(200,0);              // make vector have 200 elements, set them to 0
-let x = &w[1..];               // get a slice of a vector (a view into it's elements)
+let x = &w[1..];              // get a slice of a vector (a view into it's elements)
 print("{:?}",x);              // [12,13]; 
 let vs = v.len();             // length of vector
 let (p,d,q) = (4,5,6);        // tuple() can assign multiple variables at once
 print("{}",p);                // you can use them alone after tuple assignment
 let m = (4,5,"a");            // tuples can have multiple different types as elements
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
-let (a,b) = m.p, m.q; //err   // error, cannot index into a tuple using a variable
+let (c,d) = m.p, m.q; //err   // error, cannot index into a tuple using a variable
 
 let s = String::from("上善若水"); // String is a heap variable. Strings are UTF8 encoded.
 let s2 = "水善利萬物而不爭";       // "" literals are type &str, different from String
@@ -120,7 +120,7 @@ let s6 = s + s2;                // concatenate String to &str
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split &str
 let s4 = s.get(0..2);                // SubString using indexes
 let i4 = s.find('水').unwrap_or(-1); // index of character (not always a byte offset, b/c utf8)
-let hellomsg = r###"            // Multi-line &str with embedded quotes
+let hellomsg = r###"                 // Multi-line &str with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
  "Hello" in Hindi is नमस्ते ('Namaste')
 "###;
