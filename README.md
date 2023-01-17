@@ -710,7 +710,7 @@ fn main() { // main block starts
 ## Structs
 
 ```rust
-struct Wheel{ r:i8, s:i8};  // basic struct, like C, pascal, etc
+struct Wheel{ r:i8, s:i8};  // basic struct, like C, pascal, etc. r = radius, s = number of spokes 
 struct badWheel{ mut r: i8, mut h: i8, }; // error, mut keyword doesnt work inside struct
 let w = Wheel{r:5,s:7};   // new wheel, radius 5, spokes 7, immutable binding
 w.r = 6; // error, cannot mutably borrow field of immutable binding
@@ -742,6 +742,11 @@ if n==k {println!("hi");};    // PartialEq, operator overloading
 // customized operator overloading
 impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s} }
 if mw == w { print!("equal wheels"); }
+
+// default values for members of struct
+impl Default for Wheel { fn default() -> Wheel{Wheel { r: 8, s: 8 }}  }
+println!("{:?}",Wheel{..Default::default()});        // Wheel { r: 8, s: 8 } 
+println!("{:?}",Wheel{r:10,..Default::default()});   // Wheel { r: 10, s: 8 }
 
 #[derive(Debug)]                       // Initialize one struct from another
 struct Apple {color:(u8,u8,u8),price:f32};  
