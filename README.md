@@ -187,10 +187,11 @@ $ cargo run    # will tell you exact line where panic occured, with call stack t
 ### Option - a type for functions that may return Some thing, or None thing 
 
 ```rust
-let v = vec![3,4,5];
-let c = v.get(12);          // this will not crash, c will instead be an Option
-print!("{:?}",v.get(12));   // prints the word "None", Option can be None or Some
-print!("{:?}",v.get(0));    // prints the word "Some(3)"
+let v = vec![3,4,5];        // create Vector with three elements. then get() the element at index 12. 
+let c = v.get(12);          // there is no element at index 12, but this will not crash, c will instead be an Option
+print!("{:?}",v.get(12));   // prints the word "None", since there is no 12th element in v, its only 3 long
+print!("{:?}",v.get(0));    // prints the word "Some(3)", because there is, in fact, a nelement in v
+                            // Options have a value of either None, or Some(item), i.e. they are "Enums"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
 let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f = 0
