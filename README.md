@@ -286,7 +286,7 @@ println!("{:?}",vec![Wheel{radius:4},Wheel{radius:3},Wheel{radius:2}]);
 // If you want to customize your debug output, you can implement Debug yourself
 use std::fmt;
 struct Wheel{radius:i8}     
-impl fmt::Debug for Wheel {
+impl std::fmt::Debug for Wheel {
   fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{
     write!(f, "輪:徑[{}]", self.radius)
 }}
@@ -294,7 +294,7 @@ println!("{:?}",vec![Wheel{radius:4},Wheel{radius:3},Wheel{radius:2}]);
 // [輪:徑[4], 輪:徑[3], 輪:徑[2]]
 
 // fmt::Display makes your own structs and enums printable with ordinary {} symbol
-impl fmt::Display for Wheel{
+impl std::fmt::Display for Wheel{
   fn fmt(&self, f: &mut fmt::Formatter)->fmt::Result{
     write!(f, "W[{}]", self.radius)
    }
@@ -302,7 +302,7 @@ impl fmt::Display for Wheel{
 
 // Display for enums
 pub enum Apple{PinkLady,HoneyCrisp}  
-impl fmt::Display for Apple {
+impl std::fmt::Display for Apple {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self { Apple::PinkLady=>write!(f, "Ap:PLad"),
                      Apple::HoneyCrisp=>write!(f, "Ap:HonCr"),
