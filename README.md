@@ -61,9 +61,10 @@ authors = ["ada astra <ada@astra.moon>"]
 [dependencies]
 serde = "1.0.80"
 
-$ cargo build     # downloads dependencies + builds main.rs 
-$ cargo run       # runs program created from main.rs
-$ cargo test      # runs tests (in parallel by default)
+$ cargo add chrono # auto add dependency w/o wediting Cargo.toml
+$ cargo build      # downloads dependencies + builds main.rs 
+$ cargo run        # runs program created from main.rs
+$ cargo test       # runs tests (in parallel by default)
 $ cargo test -- --test-threads=1  # run tests one at a time
 $ cargo test -- --nocapture       # run tests, show output
 $ cargo run --example fundemo -- --arg # run example with arg (./examples subdir)
@@ -1621,7 +1622,7 @@ println!("{:x}", hasher.finish());     // .finish() does not 'reset' hasher obje
 
 ```
 
-### Time
+### Date and Time
 
 ```rust
 use std::time::{Instant};
@@ -1630,9 +1631,18 @@ let t = Instant::now();
 println!("{}",t.elapsed().as_secs());          // 5, seconds, rounded
 println!("{}",t.elapsed().subsec_millis());    // 300. remainder in milliseconds
 
+use chrono::prelude::*;
+println!("{:?} ", Utc::now().to_rfc2822());
+println!("{:?} ", Utc::now().format("%Y-%m-%d %H:%M:%S").to_string());
+println!("{:?} ", Local::now().to_rfc2822());
+println!("{:?} ",DateTime::parse_from_str("2014-11-28 21:00:09 +09:00", "%Y-%m-%d %H:%M:%S %z"));
+println!("{:?} ",Utc.with_ymd_and_hms(2014, 11, 28, 12, 0, 9).unwrap());
+"Tue, 17 Jan 2023 03:12:07 +0000" 
+"2023-01-17 03:12:07" 
+"Mon, 16 Jan 2023 21:12:07 -0600"
+Ok(2014-11-28T21:00:09+09:00)
+2014-11-28T12:00:09Z 
 ```
-
-
 
 ## Annotations
 
