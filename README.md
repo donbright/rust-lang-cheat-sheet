@@ -81,18 +81,20 @@ p = true;                // ok, a variable with mutable binding can change;
 
 ## types, variables, declarations, initialization
 ```rust
-let x: bool = false;   // let keyword
-let k = false;         // rustc can determine some types automatically
-let y: char = '上';    // all chars are 4 bytes
-let 上 = 5; //err      // error. identifiers must be ASCII characters 
-let a: i8 = -2;        // 8 bit signed integers, also i16, i32, i64  
-let b: u8 = 200;       // 8 bit unsigned integers, also u16, u32, u64
-let n: f32 = 0.45;     // 32 bit float (automatcally converted+rounded from base-10 decimal to binary)
+let x: bool = false;    // let keyword
+let k = false;          // rustc can determine some types automatically
+let y: char = '上';     // all chars are 4 bytes
+let 上 = 5; //err       // error. identifiers must be ASCII characters 
+let a: i8 = -2;         // 8 bit signed integers, also i16, i32, i64  
+let b: u8 = 200;        // 8 bit unsigned integers, also u16, u32, u64
+let n: f32 = 0.45;      // 32 bit float (automatcally converted+rounded from base-10 decimal to binary)
 let n2 = 42.01f64;      // 64 bit float literal of the number 42.01 (approximately)
 let r: [u8;3] = [3,4,5];          // array of 3 int, immutable, cannot grow or change values
-let s1 = [0;500];                  // array of 500 integers, each initialized to 0
-let s2 = &r[0..2];                 // slice of array, s==&[3,4]
-let s3 = &r[0..2][0];              // index into slice, s==3
+let s1 = [0;500];                 // array of 500 integers, each initialized to 0
+let s2 = &r[0..2];                // slice of array, s==&[3,4]
+let s3 = &r[0..2][0];             // index into slice, s==3
+let s4 = &r[1..];                 // slice from index 1 to end
+let s5 = &r[..2];                 // slice from beginning to index 2
 let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, can grow
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
