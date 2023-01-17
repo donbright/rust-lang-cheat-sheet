@@ -1637,11 +1637,13 @@ println!("{:?} ", Utc::now().format("%Y-%m-%d %H:%M:%S").to_string());
 println!("{:?} ", Local::now().to_rfc2822());
 println!("{:?} ",DateTime::parse_from_str("2014-11-28 21:00:09 +09:00", "%Y-%m-%d %H:%M:%S %z"));
 println!("{:?} ",Utc.with_ymd_and_hms(2014, 11, 28, 12, 0, 9).unwrap());
+println!("{:?} ",Utc.timestamp(1500000000, 0)); // Epoch time seconds, aka mtime on Unix files.
 "Tue, 17 Jan 2023 03:12:07 +0000" 
 "2023-01-17 03:12:07" 
 "Mon, 16 Jan 2023 21:12:07 -0600"
 Ok(2014-11-28T21:00:09+09:00)
-2014-11-28T12:00:09Z 
+2014-11-28T12:00:09Z
+2017-07-14T02:40:00Z
 ```
 
 ## Annotations
