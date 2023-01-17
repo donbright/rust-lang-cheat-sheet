@@ -190,7 +190,7 @@ $ cargo run    # will tell you exact line where panic occured, with call stack t
 let v = vec![3,4,5];        // create Vector with three elements. then get() the element at index 12. 
 let c = v.get(12);          // there is no element at index 12, but this will not crash, get returns an Option
 print!("{:?}",v.get(12));   // prints the word "None", since there is no 12th element in v, its only 3 long
-print!("{:?}",v.get(0));    // prints the word "Some(3)", because there is, in fact, a nelement in v
+print!("{:?}",v.get(0));    // prints the word "Some(3)", because there is an element at index 0
                             // Options have a value of either None, or Some(item), i.e. they are "Enums"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
 let d = v.get(12).unwrap(); // this crashes. 'unwrap' of a None Option will call panic!
