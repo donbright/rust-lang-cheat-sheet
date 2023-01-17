@@ -744,9 +744,16 @@ impl PartialEq for Wheel{ fn eq(&self,o:&Wheel)->bool {self.r==o.r&&self.s==o.s}
 if mw == w { print!("equal wheels"); }
 
 // default values for members of struct
-impl Default for Wheel { fn default() -> Wheel{Wheel { r: 8, s: 8 }}  }
-println!("{:?}",Wheel{..Default::default()});        // Wheel { r: 8, s: 8 } 
-println!("{:?}",Wheel{r:10,..Default::default()});   // Wheel { r: 10, s: 8 }
+#[derive(Debug,Default)]
+struct Wheel1{ r:i8, s:i8};
+println!("{:?}",Wheel1{..Default::default()});        // Wheel1 { r: 0, s: 0 } 
+
+// custom default values for members of struct
+#[derive(Debug)]
+struct Wheel2{ r:i8, s:i8};
+impl Default for Wheel2 { fn default() -> Wheel2{Wheel2 { r: 8, s: 8 }}  }
+println!("{:?}",Wheel2{..Default::default()});        // Wheel2 { r: 8, s: 8 } 
+println!("{:?}",Wheel2{r:10,..Default::default()});   // Wheel2 { r: 10, s: 8 }
 
 #[derive(Debug)]                       // Initialize one struct from another
 struct Apple {color:(u8,u8,u8),price:f32};  
