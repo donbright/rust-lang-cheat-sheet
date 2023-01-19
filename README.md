@@ -655,7 +655,7 @@ Borrowing is an alternative to moving. It is done with References & (memory addr
 // heap memory, using borrows and references instead of moves
 let a = String::from("☪☯ॐ✡γ⚕✝");
 let b = &a;  // this is borrowing, not moving, a to b
-let c = &a;  // it is OK to have more than one borrower
+let c = &a;  // it is OK to have more than one borrower of non-mutable variables
 println!("{}",a);    // ☪☯ॐ✡γ⚕✝
 println!("{:p}",&a); // 0x7ffcffb6b278
 println!("{:p}",b);  // 0x7ffcffb6b278  // b and c hold the address of a
@@ -681,7 +681,11 @@ let c = &mut a;
 let mut a = 5;
 let b = &mut a;
 let c = &mut a;
+
 ```
+Another way to think about it is Shared vs Exclusive
+* A plain old & borrow is a Shared Reference, since multiple people can share at once
+* A &mut reference is an Exclusive reference, only one can have it.  
 
 Lifetime in Rust: Resources are destroyed, (their heap memory is freed), at the end of a 'scope'. Their owners are also destroyed. That is the point of ownership - so that resources won't be accessed after they are destroyed, which is the source of a huge number of errors in C programs.
 
@@ -1973,3 +1977,5 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - Wesley Wiser https://stackoverflow.com/questions/41510424/most-idiomatic-way-to-create-a-default-struct
 - u/excaliburhissheath and u/connorcpu https://www.reddit.com/r/rust/comments/30k4k4/is_it_possible_to_modify_wrapped
 - Simson https://stackoverflow.com/questions/54472982/how-to-convert-vector-of-integers-to-and-from-bytes
+- Raul Jordan https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/
+
