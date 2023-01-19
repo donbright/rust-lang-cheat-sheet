@@ -1519,9 +1519,7 @@ let s = "hello".to_string();        // s = String
 let m = s.replace("hello","new");   // m = "new"
 let y = s.to_uppercase();           // y = "NEW"
 
-// str implements Write, sort of like C++ stringstream
-// str.as_bytes() converts to slice, which implements Read, similarly
-
+// str.as_bytes() converts to slice, which implements Read
 let s = "Reedeth Senek, and redeth eek Boece";
 let s2= "Ther shul ye seen expres that it no drede is"
 let buf = &mut vec![0u8; 64];
@@ -1539,12 +1537,12 @@ regex = "1.1.0"
 In main.rs:
 ```rust
 use regex::Regex;
-let text = r###"The country is named France, I think the capital city is Paris;
+let text = r###"The country is named France, I think the biggest city is Paris;
 the Boulangerie are beautiful on la rue du Cherche-Midi"###;              // multiline string
 
-let re = Regex::new(r"country is named (?P<country>.*?),.*?city is (?P<capcity>.*?);").unwrap();
+let re = Regex::new(r"country is named (?P<country>.*?),.*?biggest city is (?P<biggestcity>.*?);").unwrap();
 let caps = re.captures(text).unwrap();
-println!("{}, {}",&caps["capcity"],&caps["country"]);                  // Paris, France
+println!("{}, {}",&caps["biggestcity"],&caps["country"]);                  // Paris, France
 
 let re = Regex::new(r"(?ms)city is (?P<citname>.*?).$.*?beautiful on (?P<streetname>.*?)$").unwrap();
 let caps = re.captures(text).unwrap();
