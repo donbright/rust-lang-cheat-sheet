@@ -211,9 +211,12 @@ match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
 
 ```rust
 
-match std::env::var("SHLVL") {  // env::var() returns a Result<> type. 
+match std::env::var("SHLVL") {  // env::var() returns a std::result::Result(<T,E>) enum type. 
 	Ok(v)=>println!("SHLVL = {:?}",v), // if OK, std::env returns value of Environment variable
 	Err(e)=>println!("error message: {:?}",e.to_string()) }; // if not, error message
+
+note there is also std::io::Result used a lot in file operations. 
+
 ```
 
 **If Let** - A control statemnt like match but with a no-op for None or Err() 
