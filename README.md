@@ -265,14 +265,16 @@ println!( "v[0] from {:?} = {}", v, v[0] )    // {:?} can print lots of special 
 println!("{:02x?}",v);                        // {:02x?} can print 2 digit hex of vector
 let s = format!( "x coord={}", p.X )          // print to string 
 s2 := fmt.Sprintf( "{e}", 17.0 )              // another way to print to string
+// C / printf style formatted output: 
 println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); // hexadecimal, binary, etc. 
-// C-ish style results in:  "hex:11     bin:10001    sci:1.7e1"
+//   "hex:11 bin:10001 sci:1.7e1"
+// Pad with zeros: 
 println!("dec:{:#04} hex:{:#06x} bin:{:08b} sci:{:09e}",17,17,17,17.0); 
-// Pad with zeros: "dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1"
+//   "dec:0017 hex:0x0011 bin:00010001 sci:00001.7e1"
 println!(" {:.40} ", 1.0f32/3.0f32 );  // print 40 digits of precision for floating point
-//  "0.3333333432674407958984375000000000000000" 
+//   "0.3333333432674407958984375000000000000000" 
 println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align right
-//  " 232    8"
+//   " 232    8"
 let mut s=String::new();               // build string, concatenate over lines 
 s.push_str(&format!("{} {} ",1,2));
 s.push_str(&format!("{} {} ",3,4));
