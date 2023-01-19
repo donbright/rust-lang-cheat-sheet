@@ -1978,4 +1978,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - u/excaliburhissheath and u/connorcpu https://www.reddit.com/r/rust/comments/30k4k4/is_it_possible_to_modify_wrapped
 - Simson https://stackoverflow.com/questions/54472982/how-to-convert-vector-of-integers-to-and-from-bytes
 - Raul Jordan https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/
-
+- Will Crichton https://www.youtube.com/watch?v=bnnacleqg6k
