@@ -268,6 +268,10 @@ println!( "v[0] from {:?} = {}", v, v[0] )    // {:?} can print lots of special 
 println!("{:02x?}",v);                        // {:02x?} can print 2 digit hex of vector
 let s = format!( "x coord={}", p.X )          // print to string 
 s2 := fmt.Sprintf( "{e}", 17.0 )              // another way to print to string
+use std::fmt::Write;                          // yet another way - like C++ stringstream
+let s3 = String::new();                       // String implements fmt::Write so we can
+writeln!(s3,"Hello There");                   // write to a String like a file. 
+
 // C / printf style formatted output: 
 println!("hex:{:x} bin:{:b} sci:{:e}",17,17,17.0); // hexadecimal, binary, etc. 
 //   "hex:11 bin:10001 sci:1.7e1"
