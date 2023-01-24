@@ -1490,7 +1490,7 @@ let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.8860264850081875
 let ch='e';
 ch.is_digit(16) // true, 'e' is a numerical digit in base 16
 ch.is_digit(10) // false, 'e' is not a numerical digit in base 10, only 0-9 are.
-let y = 'f'.to_digit(16);  // convert from char to integer, base 16 (y becomes 15)
+let y:u32 = ch.to_digit(16).unwrap_or(0);  // convert 'e' into 15, since base=16. if fail, make y 0
 let n = 'x'.is_alphabetic(); // detect whether letter
 println!("𝄠 is hex 0x{:06x}, or decimal {}",'𝄠' as u32,'𝄠' as u32); // unicode codepoint
 println!("a is hex 0x{:06x}, or decimal {}",'a' as u32,'a' as u32); // for <128 this is the ascii code
