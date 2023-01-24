@@ -1424,7 +1424,7 @@ let bbz = z.to_be_bytes(); // same, but in big endian order
 println!("{:?},{:?},{:?},{:?}",bez[0],bez[1],bez[2],bez[3]); // 42,0,0,0
 println!("{:?},{:?},{:?},{:?}",bbz[0],bbz[1],bbz[2],bbz[3]); // 0,0,0,42
 
-let a = u64::from('A')              // get integer value of char
+let a = u32::from('A')              // get integer value of char. all chars are 4 bytes.
 let a = char::from_u32(68)          // get char value of an integer (utf8/ascii)
 let a = char::from_digit(4,10)      // get char '4' from integer 4, base 10
 
@@ -1487,11 +1487,11 @@ let b = 537629.886026485;    print!("{:.50}",b);      // 537629.8860264850081875
 let c = 537629.886026485f32; print!("{:.50}",c);      // 537629.875000000000000000000000000000000
 let d = 537629.886026485f64; print!("{:.50}",d);      // 537629.886026485008187592029571533203125
 
-let a = '3';
-if a.is_digit(10) { x = a.to_digit(10) };  // char detection and convert to integer, base 10
-let y = 'f'.to_digit(16);  // convert from char to integer, base 16 (y is 15)
+let ch='e';
+ch.is_digit(16) // true, 'e' is a numerical digit in base 16
+ch.is_digit(10) // false, 'e' is not a numerical digit in base 10, only 0-9 are.
+let y = 'f'.to_digit(16);  // convert from char to integer, base 16 (y becomes 15)
 let n = 'x'.is_alphabetic(); // detect whether letter
-let z = std::char::from_digit(x,10).unwrap(); // convert from integer to char, base 10. z is now '1'
 println!("𝄠 is hex 0x{:06x}, or decimal {}",'𝄠' as u32,'𝄠' as u32); // unicode codepoint
 println!("a is hex 0x{:06x}, or decimal {}",'a' as u32,'a' as u32); // for <128 this is the ascii code
 
