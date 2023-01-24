@@ -1403,7 +1403,7 @@ let z = 3.0/4.0;       // 0.75
 
 Exponentials, exponentiation, power, raising to a power
 
-```
+```rust
 let p1 = 2.pow(32) //err    // error[E0689]: can't call method `pow` on ambiguous numeric type `{integer}`
 let p2 = 2_u8.pow(32) //err // thread 'main' panicked at 'attempt to multiply with overflow'
 let p3 = 2_u8.checked_pow(32); // v becomes "None".
