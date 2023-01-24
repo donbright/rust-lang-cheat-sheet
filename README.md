@@ -286,8 +286,10 @@ println!(" {:>4} {:>4} ", 232, 8 );    // pad as columns, width 4 spaces, align 
 //   " 232    8"
 let mut s=String::new();               // build string, concatenate over lines 
 s.push_str(&format!("{} {} ",1,2));
-s.push_str(&format!("{} {} ",3,4));
-println!("{}",s);                      // 1 2 3 4 
+s.push_str(&format!("{} {}\n",3,4));    // "1 2 3 4\n"
+let mut s2=String::new();              // alternate version, same goal  
+write!(s2,"{} {}",1,2).unwrap_or(()); 
+writeln!(s2,"{} {}",3,4).unwrap_or(()); // "1 2 3 4\n"
 
 println!("\u{2766}");                  // ❦  unicode floral heart, character hex 2766 
 
