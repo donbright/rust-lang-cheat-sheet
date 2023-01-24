@@ -16,7 +16,7 @@ Also note that Rust is still changing quite a bit in 2019-2022 so some of the be
 * Ownership of memory enforced at build time
 * Statically linked
 * Not so Object-Orientish, tends to be Functional-ish
-* Control flow using patterns, 'match' keyword, Option+Result enums
+* Control flow using pattern matching, Option+Result enums
 * Packages: 'cargo add' command, https://crates.io
 * Testing: 'cargo test' command, #[test] unit tests, integration tests
 * Concurrency: ownership, mutability, channels, mutex, crossbeam + Rayon packages
@@ -1400,6 +1400,16 @@ let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
 let x = 3/4;           // 0
 let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
 let z = 3.0/4.0;       // 0.75
+
+Exponentials, exponentiation, power, raising to a power
+
+```
+let p1 = 2.pow(32) //err    // error[E0689]: can't call method `pow` on ambiguous numeric type `{integer}`
+let p2 = 2_u8.pow(32) //err // thread 'main' panicked at 'attempt to multiply with overflow'
+let p3 = 2_u8.checked_pow(32); // v becomes "None".
+let p4 = match 2_u8.checked_pow(32) { Ok(n)=>n,None=>0 } // match a checked_pow b/c it returns Option
+let p5 = 2u8.checked_pow(k).unwrap_or(0); // 0 if overflow, simpler than match 
+let p6 = 2_u64.pow(32)                    // ok
 ```
 
 ### data conversion
