@@ -1400,6 +1400,7 @@ let c = b.abs();       // ok, abs is defined on i32, 32 bit integer
 let x = 3/4;           // 0
 let y = 3.0/4;         // error, no implementation for `{float} / {integer}`
 let z = 3.0/4.0;       // 0.75
+```
 
 Exponentials, exponentiation, power, raising to a power
 
