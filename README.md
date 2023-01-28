@@ -329,39 +329,50 @@ impl std::fmt::Display for Apple {
 
 ### loop, for, while
 ```rust
-for i in 0..10 { print!("{},",x) };        // 0,1,2,3,4,5,6,7,8,9
-for i in 0..10.rev() { print!("{},",x) };  // 9,8,7,6,5,4,3,2,1,0
-for i in (0..10).step_by(2)      ;         // 0 2 4 6 8 
-for i in (0..10).skip(1).step_by(2);       // 1 3 5 7 9
-for i in (0..10).rev().step_by(2);         // 9 7 5 3 1 
-for i in (0..=10).rev().step_by(2);        // 10 8 6 4 2 0 
-for i in (0..=10).step_by(2)     ;         // 0 2 4 6 8 10 
-for i in (0..9).rev().step_by(2) ;         // 8 6 4 2 0 
-for i in (0..9).step_by(2)       ;         // 0 2 4 6 8 
-for i in (0..10).cycle().skip(5).take(10)  // 5 6 7 8 9 0 1 2 3 4 
-let v = vec![1, 35, 64, 36, 26];	   // vector to iterate
-for n in v { println!("{}",n) }		   // ordinary vector iterate
-for (i, n) in v.iter().enumerate() {       // iterate with index and item 
-	println!("{},{} ", i, n);
-}
 
-let mut i = 10;				// while
-while i > 0 {
-	println("{}",i);
-	i -= 2;   // if i actually goes negative, it will panic, subtraction overflow
-}
+for i in 0..10 {print!("{},",x)};          // 0,1,2,3,4,5,6,7,8,9
+for i in 0..10.rev() {print!("{},",x)};    // 9,8,7,6,5,4,3,2,1,0
+for i in (0..10).step_by(2) {print!("{},",x)};              // 0 2 4 6 8 
+for i in (0..10).skip(1).step_by(2) {print!("{},",x)};      // 1 3 5 7 9
+for i in (0..10).rev().step_by(2){print!("{},",x)};         // 9 7 5 3 1 
+for i in (0..=10).rev().step_by(2){print!("{},",x)};        // 10 8 6 4 2 0 
+for i in (0..=10).step_by(2){print!("{},",x)}     ;         // 0 2 4 6 8 10 
+for i in (0..9).rev().step_by(2){print!("{},",x)} ;         // 8 6 4 2 0 
+for i in (0..9).step_by(2){print!("{},",x)}       ;         // 0 2 4 6 8 
+for i in (0..10).cycle().skip(5).take(10){print!("{},",x)}  // 5 6 7 8 9 0 1 2 3 4 
 
-let mut i = 0;                          // loop
-loop { i=i+1; if i<10 { break; } };	// plain loop
-let x = loop { i=i+1; if i>=10 { break i; } } // loop that returns value, x = 10
+let v = vec![3,5,7];
+for n in v { println!("{}",n) }             // for loop over vector
 
-// While Let, can be used in situations where we expect Option::Some() for several iterations,
-// but we expect a Option::None() to be at the end of the iterations. For example:
-let mut x = (0..12).filter(|x| x%2==0);
-while let Some(i) = x.next() {print!("{}:",i);} 
-// 0:2:4:6:8:10:   // prints the even numbers between 0 and 12
+for (i, n) in v.iter().enumerate() {        // iterate with (index, item) tuple 
+	println!("{},{} ", i, n);}          // 0,3 \n 1,5 \n 2,7
+
+let mut i = 0;				    // while loop
+while i < 10 {print!("{}",i); i += 2;}      // 0 2 4 6 8
+let mut j:u8 = 9;                           
+while j > 0 {print!("{}",j); j -= 2;}       // 9 7 5 3 1 Panic! j is unsigned but goes below 0 
+
+let mut i = 0;                              // loop
+loop { i=i+1; if i<10 { break; } };	    // plain loop, exit with break;
+let x = loop { i=i+1; if i>=10 {break i;} } // loop that returns value, x = 10
 ```
 
+Iterators as an alternative to loops
+
+```rust
+let v = vec![3,5,7,11];                    // vector to iterate
+v.iter().for_each(|x| print!("{} ",x));    // for_each over iterator, 3 5 7 11
+print!("{}",v.iter().fold(0,|a,i| a+i));   // adds 0+1+2+3, prints 6. 
+// for more info , see iterators/functional section below
+```
+
+```rust
+// While Let, can be used in situations where we expect Option::Some() for several iterations,
+// but we expect a Option::None() to be at the end of the iterations. For example:
+let mut x = (0..12).filter(|x| x%2==0);          // x is an iterator
+while let Some(i) = x.next() {print!("{}:",i);}  // While loop over the iterator
+// 0:2:4:6:8:10:   // prints the even numbers between 0 and 12
+```
 
 ## Concurrency, parallel processing
 
