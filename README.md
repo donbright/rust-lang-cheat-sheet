@@ -374,7 +374,7 @@ while let Some(i) = x.next() {print!("{}:",i);}  // While loop over the iterator
 // 0:2:4:6:8:10:   // prints the even numbers between 0 and 12
 ```
 
-## Concurrency, parallel processing
+## Parallel processing
 
 ```rust
 extern crate rayon;
@@ -394,20 +394,14 @@ fn main() {
 ```
 
 ```bash
-$ $EDITOR Cargo.toml  # add rayon dependency
-[package]
-name = "beatrixpotter"
-version = "0.1.1"
-authors = ["flopsy mopsy <ra@bb.it>"]
-[dependencies]
-rayon = "1.0.0"
-
-$ cargo run          # installs rayon, runs program
+$ cargo add rayon  # add rayon dependency
+$ cargo run        # installs rayon, runs program
 ```
 
 ```rust 
 channels: todo
 mutex: todo
+concurrency: todo
 ```
 
 ## Smart pointers
