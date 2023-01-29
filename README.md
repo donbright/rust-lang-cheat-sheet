@@ -1006,17 +1006,18 @@ It can create mutable slices, which allow mutable access to the vector.
 ## Object Oriented style
 
 Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), and even Enums.
-In 2022 Rust added some generic-ish stuff that can also do some object-ish things. 
+todo - generics
 
 ## Files
 
 ```rust
-use std::fs::File;
-use std::io::{Write,Read}
-use std::fs::OpenOptions;
+use std::fs::File;         // File handling module
+use std::io::{Write,Read}  // read and write capabilities for File
+use std::fs::OpenOptions;  // specialized version of File
 
 // read file, non-crashing example
-match File::open("test.txt") {
+let filename = "test.txt";
+match File::open(filename) {
 	Err(why) => println!("failed to open file '{}': {}", filename, why),
         Ok(mut f) => {
         	println!("ok, opened {}",filename);
@@ -1046,23 +1047,36 @@ let line = io::stdin().lock().lines().next().unwrap().unwrap();
 
 let x = include!("datafile.txt"); // include external data file, example: vec![0,0,0];
 
-let mut tmpbuf = vec![0u8; 4096];  // read binary data in a loop to a buffer
-// infile is an Option<File>, could be passed around sort of like a *FILE in C
-let infile = std::File::open("somefile.bin"); 
-match infile.as_ref().unwrap().read( &mut tmpbuf ) {
-        Ok(numbytes_read) => println!("read {} bytes",numbytes_read),
-        Err(why) => println!("fail read {:?}",why),
-};
-	    
-
-// file errors inside a function and the question mark ?
-fn boodle( dart:u32 ) -> Result<usize, std::io::Error> {
-  f = File::open("/some/filename.txt")?;
-  let mut count = f.read(blah blah blah)?;
-  f.seek()?;  // no need to write error handling if/match for every operation
-  count += f.read()?; // ? just returns with approrpiate error wrapped in Result enum
-  Ok(count)
+// handle errors inside a io::Result-returning function with the question mark ?
+fn readfunc()  -> std::io::Result<()> {
+  let mut tmpbuf = vec![0u8;4096];
+  let mut f = File::open("somefile.bin")?;   // instead of unwrap, just return error
+  let count = f.read( &mut tmpbuf )?;        // instead of match, just return error
+  Ok(())                                     // we got this far, so there's no error
 }
+
+// read binary data in a loop to a buffer
+fn readfunc2()  -> std::io::Result<()> {
+  let mut tmpbuf = vec![0u8;4096];
+  let mut f = File::open("somefile.bin")?;   
+  loop {
+    let numbytes_read = f.read( &mut tmpbuf )?; 
+    println!("read data {}",nb);
+    if numbytes_read==0 { break Ok(()); }
+  } 
+}
+
+// same loop as above, but with While Let
+fn readfunc3()  -> std::io::Result<()> {
+  let mut tmpbuf = vec![0u8;4096];
+  let mut f = File::open("somefile.bin")?;   
+  while let numbytes_read = f.read( &mut tmpbuf )? {
+    println!("read # bytes: {}",numbytes_read);
+    if numbytes_read==0 { break; }
+  };
+  Ok(())
+}
+
 
 // Passing File to function... 
 pub fn zipread( mut rd:&File )  { let x = rd.read(&[buf])?; println!("{}",x); }
