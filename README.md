@@ -1005,7 +1005,8 @@ It can create mutable slices, which allow mutable access to the vector.
 
 ## Object Oriented style
 
-Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), and even Enums.
+Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), Enums (which can do much more than C enums), and "NewType" aka Tuple Structs where for example you say struct MyWrapper(u32) to wrap u32 and then impl your own methods on MyWrapper to mimic u32, along with derive_more and implement deref (u32 could be any other struct or type from another external crate).
+
 todo - generics
 
 ## Files
