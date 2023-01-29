@@ -1061,7 +1061,7 @@ fn readfunc2()  -> std::io::Result<()> {
   let mut f = File::open("somefile.bin")?;   
   loop {
     let numbytes_read = f.read( &mut tmpbuf )?; 
-    println!("read data {}",nb);
+    println!("read data {}",numbytes_read);
     if numbytes_read==0 { break Ok(()); }
   } 
 }
