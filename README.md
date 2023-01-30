@@ -1084,6 +1084,11 @@ pub fn zipread( mut rd:&File )  { let x = rd.read(&[buf])?; println!("{}",x); }
 // .. or... pass any struct with read trait 
 pub fn zipread( mut rd:impl Read )  { let x = rd.read(&[buf])?; println!("{}",x); }
 
+// File position
+// note this here is a u64 so y'all with a exabyte of data gone hafta finda workaroun'
+// also for some reason f has to be mutable if you do this. 
+println!("{}",f.stream_position()); 
+
 // there is no 'close', files close automatically at the end of scope ( "}" )
 
 ```
