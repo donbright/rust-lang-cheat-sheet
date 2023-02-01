@@ -68,6 +68,7 @@ $ cargo test       # runs tests (in parallel by default)
 $ cargo test -- --test-threads=1  # run tests one at a time
 $ cargo test -- --nocapture       # run tests, show output
 $ cargo run --example fundemo -- --arg # run example with arg (./examples subdir)
+$ cargo build --feature blargh     # build, enable the blargh feature of the crate
 ```
 
 ## Mutability basics
