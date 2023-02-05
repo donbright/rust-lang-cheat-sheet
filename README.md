@@ -455,7 +455,8 @@ let (x, s) = getcodes( 3, 56 );           // assign multi-return w tuples
 fn multy(a:i8,b:i8=5)->i16{a*b}   //error // Rust has no default parameters.
 fn multy(a:i8,b:Option<i8>)->i16 {        // but you can fake it with Option unwrap_or
   a * b.unwrap_or(5) }                    // unwrap_or(x) means x is the default value
-fn main() { print!("{}",mulby5(3,None));} // pass None to the func, result here=15
+fn main(){ print!("{}",multy(3,None));}   // pass None to the func, result here=15
+fm main(){ print!("{}",multy(3,Some(4));} // awkward, tho, as normal calls require Some()
 fn f(t:i8) {                              // nesting functions is OK
   fn g(u:i8) { u*5 };                     // g nested inside f
   let a = t + g(2);  }                    // g can be called from inside f
