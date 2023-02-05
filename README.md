@@ -449,15 +449,18 @@ Arc, RC - reference counted pointers. Todo
 
 ## Functions and closures
 ```rust
-fn add( a:i8, b:i8 ) -> i32 { b + a }   // 'return' keyword optional
-fn getcodes(a:i8)->(i8,i32){ (9,a*99) } // multi return
-let (x, s) = getcodes( 3, 56 );         // multi return via tuples
-fn mulby6(a:i8,b:i8=5)->i16{}   //error // Rust has no default parameters. 
-fn f(t:i8) {                            // nesting functions is OK
-  fn g(u:i8) { u*5 }; 
-  let a = t + g(2);  }
+fn add( a:i8, b:i8 ) -> i32 { b + a }     // 'return' keyword optional
+fn getcodes(a:i8)->(i8,i32){ (9,a*99) }   // multi return via tuples
+let (x, s) = getcodes( 3, 56 );           // assign multi-return w tuples
+fn multy(a:i8,b:i8=5)->i16{a*b}   //error // Rust has no default parameters.
+fn multy(a:i8,b:Option<i8>)->i16 {        // but you can fake it with Option unwrap_or
+  a * b.unwrap_or(5) }                    // unwrap_or(x) means x is the default value
+fn main() { print!("{}",mulby5(3,None));} // pass None to the func, result here=15
+fn f(t:i8) {                              // nesting functions is OK
+  fn g(u:i8) { u*5 };                     // g nested inside f
+  let a = t + g(2);  }                    // g can be called from inside f
 fn f2(t:i8) {             // however, nested functs cannot access outside variables 
-  let mut m = 2;        
+  let mut m = 2;          // m is declared outside the scope of g2 block
   fn g2(u:i8){u*5 + m};}  // error[E0434]: can't capture dynamic environment in a fn item
 
 // function pointers
@@ -469,21 +472,23 @@ fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }
 // 'where F:Fn' lets us build a function that can accept another function as an argument
 f(fp);  // call function f, passing a pointer to the 'addtwo' function. result=3
 
-// closures
-let c = |x| x + 2;    // define a closure, which is kinda like a lambda function
-let a = c(5);         // closures can be called, like functions. result = 7
-fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }  // f takes a function as an argument 
-f(c);                 // a closure can be passed, like a function pointer, result = 3
-let value = 5;        // a closure can also read values outside its scope
-f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
-
-for i in 0..4.filter(|x| x>1) // closures are used often with iterators (see below) 
-print!("{} ",i)               // 2 3  (0 1 2 3 filtered to only values greater than 1)
-
 type ZFillCallback = fn(bottom:u32,top:u32)->u32;  // typedef of a function
 
 fn maximum(t:i8,...) {} // error, can't have variable number of arguments.
                         // only macros! can be Variadic in Rust (see below)
+
+// closures
+let c = |x| x + 2;    // define a closure, which is kinda like a lambda function
+let a = c(5);         // closures can be called, like functions. result = 7
+let value = 5;        // a closure can also read values outside its scope
+let d = |x| value + x;// d(n) will now add 'value' to any input n. (in this case,5) 
+fn f<F>(fp: F) where F: Fn(i8)->i8 { println!("{}",fp(1)) }  // f takes a function as an argument 
+f(c);                 // a closure can be passed, like a function pointer, result = 3
+f(|x| x * value);     // and a closure can be anonymous, without a name. result = 5
+
+for i in 0..4.filter(|x| x>1) // anonymous closures are used often with iterators (see below) 
+print!("{} ",i)               // 2 3  (0 1 2 3 filtered to only values greater than 1)
+
 
 ```
 
