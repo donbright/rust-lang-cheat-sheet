@@ -867,7 +867,20 @@ if let Some(x) = m.get(&'a') {     // deal with map get() lookup using if let + 
 
 ```
 
-There are no hashmap literals, but you can make your own macro [like Shepmaster, on StackOverflow, click here](https://stackoverflow.com/questions/27582739/how-do-i-create-a-hashmap-literal)
+Concise initialization with from and from_iter
+
+```rust
+    let mut phonecodes = HashMap::from(
+       [("Afghanistan",93),
+        ("American Samoa",1),
+        ("Ukraine",380)]
+    );
+    let mut squares:HashMap<u32,u32> = HashMap::from_iter(
+        (0..24).map(|i| (i, i*i)) 
+    );    
+    println!("{:?}",phonecodes); //{"Afghanistan: 93, Ukraine: 380...
+    println!("{:?}",squares); //{10: 100, 17: 289, 1: 1, 19: 361, ...
+```
 
 HashSet
 
