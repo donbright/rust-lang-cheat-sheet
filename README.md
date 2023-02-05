@@ -99,6 +99,7 @@ let s5 = &r[..2];                 // slice from beginning to index 2
 let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, can grow
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
+let z = (0..999).collect::<Vec<u32>>(); // init Vector from Range (0..999)
 u.push( 2 );                      // append item to vector
 u.pop();                      // vectors can pop, return+remove last input (like a stack)
 v.contains(&3);               // true if vector contains value
@@ -380,17 +381,30 @@ while let Some(i) = x.next() {print!("{}:",i);}  // While loop over the iterator
 ```rust
 extern crate rayon;
 use rayon::prelude::*;
+
 fn main() {
     let mut v = Vec::new();  // create a vector of floats, to multiply each by 0.9
     for i in 0..1024*1280 { v.push(i as f32); }
     v.iter_mut().for_each(     |x| *x = *x * 0.9 ); // single thread version 
     v.par_iter_mut().for_each( |x| *x = *x * 0.9 ); // multiple threads version
     
+    let v = (0..999).collect::<Vec<u32>>(); // par_iter is slightly different
+    let tot = v.par_iter().map(|i|i*i).reduce(||0,|a,x|a+x); // parallel sum of squares
+    // see https://docs.rs/rayon/latest/rayon/iter/trait.ParallelIterator.html#method.fold
+    // for info on fold, reduce, map, etc, in Rayon
+    
     very_slow_function1(); // two single threaded functions that take a long time
     very_slow_function2(); 
     
     rayon::join( || very_slow_function1()    // run them in parallel if appropriate
     		 || very_slow_function2() );
+    
+    s = "VeryLargeString ...pretend goes on for 10Mb "; // imagine 10Mb string
+    s.chars().par_iter().do_stuff() // error // par_iter() cant work on string because
+                                  // it doesnt know where to cut the byte boundaries
+    let v = s.iter().collect::<Vec<char>>9); // so convert to vector of char each 4 bytes
+    v.par_iter().map(|ch| ch.to_ascii_lowercase()).do_stuff() // now you can
+		 
 }
 ```
 
