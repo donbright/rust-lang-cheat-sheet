@@ -867,19 +867,15 @@ if let Some(x) = m.get(&'a') {     // deal with map get() lookup using if let + 
 
 ```
 
-Concise initialization with from and from_iter
+Concise initialization with from and from_iter using tuples of (key,value)
 
 ```rust
-    let mut phonecodes = HashMap::from(
-       [("Afghanistan",93),
-        ("American Samoa",1),
-        ("Ukraine",380)]
-    );
-    let mut squares:HashMap<u32,u32> = HashMap::from_iter(
-        (0..24).map(|i| (i, i*i)) 
-    );    
-    println!("{:?}",phonecodes); //{"Afghanistan: 93, Ukraine: 380...
-    println!("{:?}",squares); //{10: 100, 17: 289, 1: 1, 19: 361, ...
+let mut phonecodes = HashMap::from(  // from uses a fixed size array
+  [("Afghanistan",93),("American Samoa",1),("Ukraine",380)]   );
+let mut squares:HashMap<u32,u32> = HashMap::from_iter(
+  (0..24).map(|i| (i, i*i))   );     // from_iter uses an iterator
+println!("{:?}",phonecodes); //{"Afghanistan: 93, Ukraine: 380...
+println!("{:?}",squares); //{10: 100, 3: 9, 1: 1, 13: 169, ...
 ```
 
 HashSet
