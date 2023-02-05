@@ -122,7 +122,7 @@ let s4 = s2.to_string();        // create String from &str
 let s5 = format!("{}{}",s2,s3); // concatenate &str to &str
 let s6 = s + s2;                // concatenate String to &str
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split &str
-let s4 = s.get(0..2);                // SubString using indexes
+s.chars().nth(4);               // get nth char. For byte indexing see get() far below
 let i4 = s.find('水').unwrap_or(-1); // index of character (not always a byte offset, b/c utf8)
 let hellomsg = r###"                 // Multi-line &str with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
@@ -975,6 +975,20 @@ fn main() {
 	dostuff( &mut arr );
 }
 
+```
+
+Get(), a byte index into a UTF8 String
+
+```rust
+let sa = String::from("a"); // get() - byte index slice from a String
+let sga = sa.get(0..1); // Some("a"). get returns Option, but not a Option<char> 
+let s = String::from("上善若水"); // get() with a UTF8 String where char.len()!=1
+let sg0 = s.get(0..0);  // Some("") , the empty string.
+let sg1 = s.get(0..1);  // None, because the first byte of 上 is not a utf8 char
+let sg2 = s.get(0..2);  // None, same reason
+let sg3 = s.get(0..3);  // Some("上"), this works because 上 in utf8 is 3 bytes
+let sg4 = s.get(0..4);  // None again, because we now have 上 + 1 other byte
+// see 上 at http://www.unicode.org/cgi-bin/GetUnihanData.pl?codepoint=4E0A
 ```
 
 ## Split_At_Mut - Mutability and References into a Vector
