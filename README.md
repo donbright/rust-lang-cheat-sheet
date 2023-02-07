@@ -158,11 +158,12 @@ println!("{}",v.iter_mut());    // type of v.iter_mut() is std::slice::IterMut<'
 << >>              // leftshift, rightshift, will crash on overflow
 // note that in C, overflowing << is actually undefined. 
 // Rust has multiple versions, each defined. 
-a.rotate_left(3)   // circular bit rotation, out of left -> in at right
-a.wrapping_shl(3)  // this destroys the left-most bits that would cause overflow
-a.overflowing_shl(4) // returns tuple (value,did_it_overflow) 
-a.rotate_right(4)  // circular bit rotation, wrapping around
-!                  // bitwise not
+let a:u8 = 0b10110011; // print!("{:08b}",a); // 0b10110011 padded binary output 
+a.rotate_left(1)    // 01100111 circular bit rotation, out of left -> in at right
+a.wrapping_shl(1)   // 01100110 this destroys the left-most bits that would cause overflow
+a.overflowing_shl(1)// 01100110,true returns tuple (value,did_it_overflow) 
+a.rotate_right(4)   // 11011001 circular bit rotation to the right
+!a                  // 01001100 bitwise not
 a == b != c < d <= e > f >= g  // logical comparison
 a && b || c ! d    // logical boolean, and, or, not
 
