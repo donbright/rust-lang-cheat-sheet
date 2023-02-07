@@ -814,6 +814,7 @@ let b = Apple{color:(9,12,38),..a };      // this is called "struct update"
 
 Enums in Rust do more than Enums in C/C++. They are actually more like 
 Tagged Unions or ADT / Algebraic Data Types from Functional programming languages.
+Other places call them Sum Types
 
 ```rust
 enum Fruit { Apple, Banana, Pear }
@@ -1047,11 +1048,16 @@ It can create mutable slices, which allow mutable access to the vector.
     println!("{:?}",v); // [W { r: 2 }, W { r: 4 }, W { r: 8 }]
 ```
 
-## Object Oriented style
+## Object-Oriented alternatives
 
-Inheritance - there is no inheritance. Typical alternatives are "composition" (struct within struct), Traits (sort of like Interfaces), Enums (which can do much more than C enums), and "NewType" aka Tuple Structs where for example you say struct MyWrapper(u32) to wrap u32 and then impl your own methods on MyWrapper to mimic u32, along with derive_more and implement deref (u32 could be any other struct or type from another external crate).
+Inheritance and Polymorphism - Rust doesn't have the object-oriented style of these things. Alternatives:
 
-todo - generics
+- "composition" (struct within struct),
+- Traits (sort of like Interfaces), 
+- Enums (which can do much more than C enums, they are more like Tagged Unions aka Algebraic Data Types aka Sum Types)
+- "NewType" pattern, aka Tuple Structs where for example you say struct MyWrapper(u32) to wrap u32 and then impl your own methods on MyWrapper to mimic u32, along with derive_more and implement deref (u32 could be any other struct or type from another external crate).
+- todo - describe Dynamic Trait Objects 
+- todo - describe Generics
 
 ## Files
 
@@ -2071,3 +2077,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - Simson https://stackoverflow.com/questions/54472982/how-to-convert-vector-of-integers-to-and-from-bytes
 - Raul Jordan https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/
 - Will Crichton https://www.youtube.com/watch?v=bnnacleqg6k
+- Jimmy Hartzell https://www.thecodedmessage.com/posts/oop-2-polymorphism/
