@@ -161,7 +161,7 @@ println!("{}",v.iter_mut());    // type of v.iter_mut() is std::slice::IterMut<'
 let a:u8 = 0b10110011; // print!("{:08b}",a); // 0b10110011 padded binary output 
 a.rotate_left(1)    // 01100111 circular bit rotation, out of left -> in at right
 a.wrapping_shl(1)   // 01100110 this destroys the left-most bits that would cause overflow
-a.overflowing_shl(1)// 01100110,true returns tuple (value,did_it_overflow) 
+a.overflowing_shl(1)// 01100110,false returns tuple (value,did it overflow the number type)  
 a.rotate_right(4)   // 11011001 circular bit rotation to the right
 !a                  // 01001100 bitwise not
 a == b != c < d <= e > f >= g  // logical comparison
