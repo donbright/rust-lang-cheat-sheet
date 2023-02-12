@@ -91,7 +91,10 @@ let b: u8 = 200;        // 8 bit unsigned integers, also u16, u32, u64
 let n: f32 = 0.45;      // 32 bit float (automatcally converted+rounded from base-10 decimal to binary)
 let n2 = 42.01f64;      // 64 bit float literal of the number 42.01 (approximately)
 let r: [u8;3] = [3,4,5];          // array of 3 int, immutable, cannot grow or change values
-let s1 = [0;500];                 // array of 500 integers, each initialized to 0
+let mut rm: [u8;3] = [3,4,5];     // same as r but mutable. cannot grow, but values can change.
+let mut s1 = [0;500];             // array of 500 integers, each initialized to 0.
+s1[0..200].fill(7);               // set the first 200 integers to the value 7
+s1[400..].fill(5);                // set the last 100 integers to the value 5
 let s2 = &r[0..2];                // slice of array, s==&[3,4]
 let s3 = &r[0..2][0];             // index into slice, s==3
 let s4 = &r[1..];                 // slice from index 1 to end
@@ -107,6 +110,9 @@ v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
 v.extend(w);                  // extend v with w (v owns w, w can be immutable)
 v.resize(200,0);              // make vector have 200 elements, set them to 0
+v[0..100].fill(7);            // set the first 100 elements in v to the value 7
+v[150..].fill(9);             // set the last 50 elements in v to the value 7
+v.fill(9);                    // set all elements of v to have the value 9
 let x = &w[1..];              // get a slice of a vector (a view into it's elements)
 print("{:?}",x);              // [12,13]; 
 let vs = v.len();             // length of vector
