@@ -2085,3 +2085,4 @@ Based on a8m's go-lang-cheat-sheet, https://github.com/a8m/go-lang-cheat-sheet, 
 - Raul Jordan https://rauljordan.com/rust-concepts-i-wish-i-learned-earlier/
 - Will Crichton https://www.youtube.com/watch?v=bnnacleqg6k
 - Jimmy Hartzell https://www.thecodedmessage.com/posts/oop-2-polymorphism/
+- Peter Hall https://stackoverflow.com/questions/63437935/in-rust-how-do-i-create-a-mutable-iterator
