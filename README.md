@@ -128,7 +128,7 @@ let s3 = &s;                    // & when prefixed to String gives &str
 let s4 = s2.to_string();        // create String from &str
 let s5 = format!("{}{}",s2,s3); // concatenate &str to &str
 let s6 = s + s2;                // concatenate String to &str
-for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{}",i);} // split &str
+for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{i}");} // split &str
 s.chars().nth(4);               // get nth char. For byte indexing see get() far below
 let i4 = s.find('水').unwrap_or(-1); // index of character (not always a byte offset, b/c utf8)
 let hellomsg = r###"                 // Multi-line &str with embedded quotes
@@ -176,7 +176,7 @@ a && b || c ! d    // logical boolean, and, or, not
 let a = 5;         // pointer + dereference example
 let b = &a;        // &a is 'address of a' in computers memory
 let c = *b;        // *b is contents of memory at address in b (dereference)
-print("{}",c);     // 5
+print("{c}");     // 5
 
 overloading: see struct
 ```
@@ -211,7 +211,7 @@ let f = v.get(5).unwrap_or(&0); // unwrap_or gives a value if get() is None. f =
 Option and Match - a control flow similar to **if else** but with more error checking at compile time
 ```
 let x = v.get(12);
-match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
+match x { Some(x)=>println!("OK! {x}"),  // print OK if v has 13th item
 	  None=>println!("sad face"), }   // otherwise print sad face
 // you will get a compile-time error if you forget to handle both Some and None
 ```
@@ -221,7 +221,7 @@ match x { Some(x)=>println!("OK! {}",x),  // print OK if v has 13th item
 ```rust
 
 match std::env::var("SHLVL") {  // env::var() returns a std::result::Result(<T,E>) enum type. 
-	Ok(v)=>println!("SHLVL = {:?}",v), // if OK, std::env returns value of Environment variable
+	Ok(v)=>println!("SHLVL = {v:?}"), // if OK, std::env returns value of Environment variable
 	Err(e)=>println!("error message: {:?}",e.to_string()) }; // if not, error message
 
 note there is also std::io::Result used a lot in file operations. 
@@ -232,10 +232,10 @@ note there is also std::io::Result used a lot in file operations.
 
 ```rust
 
-if let Some(x) = v.get(12) { println("OK! {}",x); } 
+if let Some(x) = v.get(12) { println("OK! {x}"); } 
 // we don't have to type out a handler for None. it does nothing. 
 
-if let Ok(x) = std::env::var("SHLVL") { println!("SHLVL = {:?}",x); }
+if let Ok(x) = std::env::var("SHLVL") { println!("SHLVL = {x:?}"); }
 // if the Result is Err, then nothing is done. 
 ```
 
@@ -268,9 +268,11 @@ Note that there are no Exceptions. panic/Option/Result/multi-value-return are us
 ## Printing
 
 ```rust
-println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ"); 
-print!("Hi, the answer is {} ",42);           // curly braces {} where text should be
-Hi, the answer is 42
+println!("Hello, 你好, नमस्ते, Привет, ᎣᏏᏲ");    // unicode text is OK 
+print!("Hi, is {}x{}={} ?",6,9,42);           // curly braces {} get replaced by arguments
+Hi, is 7x9=42 ?
+let (meepo,beepo) = (5,6);                    // print variables without using arguments..
+print!("{meepo}:{beepo}");                    // .. by putting the names inside {}
 
 let v = vec![1,2,3];
 println!( "v[0] from {:?} = {}", v, v[0] )    // {:?} can print lots of special types
@@ -1260,34 +1262,34 @@ let mut i = v.iter();
 print!("{:?}",i.collect::<Vec<_>>(); // iterator back to vector 
 
 // basic iteration and sorting
-for i in v.iter() {print!("{} ",i);} // 3 4 5 
-vec![3,4,5].iter().for_each(|x| print!("{} ",x)); // 3 4 5
+for i in v.iter() {print!("{i} ");} // 3 4 5 
+vec![3,4,5].iter().for_each(|x| print!("{x} ")); // 3 4 5
 let biggest = v.iter().max();        // 5
 let hasle2 = v.iter().any(|x| x<=4); // true if any element is less than or equal to 2
 let biggest = v[0..1].iter().max();  // will return 4, not 5, b/c we took a slice of the vector
-for i in vec![3,4,5].iter().take(2) {print("{}",i);} // 3, 4
-for (i,n) in vec![3,4,5].iter().enumerate() {print!("{}:{} ",i,n);} // 0:3 1:4 2:5
+for i in vec![3,4,5].iter().take(2) {print("{i}");} // 3, 4
+for (i,n) in vec![3,4,5].iter().enumerate() {print!("{i}:{n} ");} // 0:3 1:4 2:5
 vec![3,4,5,3].iter().find(|&&x| x == 3) // Some(&3), first three
 vec![3,4,5].iter().position(|&&x| x == 5) // 2 // kind of like indexOf() in other langs
 
 // combine multiple iterators
-(3..=5).chain(9..=11).for_each(|i|print!("{:?} ",i)); // 3 4 5 9 10 11
-(3..=5).zip(9..=11).for_each(|i|print!("{:?} ",i)); // (3, 9) (4, 10) (5, 11) 
+(3..=5).chain(9..=11).for_each(|i|print!("{i:?} ")); // 3 4 5 9 10 11
+(3..=5).zip(9..=11).for_each(|i|print!("{i:?} ")); // (3, 9) (4, 10) (5, 11) 
 
 // skipping, removing or modifying items
-for i in v.iter().step_by(2) {print!("{} ",i);} // 3 5 vec![
-for i in vec![3,4,5].iter().skip(1) {print("{}",i);} // 4, 5
+for i in v.iter().step_by(2) {print!("{i} ");} // 3 5 vec![
+for i in vec![3,4,5].iter().skip(1) {print("{i}");} // 4, 5
 print!("{:?}",vec![3,4,5].into_iter().map(|x| 2 * x).collect::<Vec<u8>>()); // 6 8 10
-for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{}",i);} // 3 4
-for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{}",i);} // Some(3), None
-for i in vec![4,5,3,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,3
-for i in vec![3,4,5,3].iter().skip_while(|x| **x>=4) {print!("{},",i);} // 3,4,5,3
-for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{},",i);} // 4,5
-for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{},",i);} //   (nothing) 
+for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{i}");} // 3 4
+for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{i}");} // Some(3), None
+for i in vec![4,5,3,3].iter().skip_while(|x| **x>=4) {print!("{i},");} // 3,3
+for i in vec![3,4,5,3].iter().skip_while(|x| **x>=4) {print!("{i},");} // 3,4,5,3
+for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{i},");} // 4,5
+for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{i},");} //   (nothing) 
 let v =[3,4,5]; for i in v.iter().cycle().skip(2); // 5,3,4 - cycle allows wraparound
 
 // mathematical operations
-for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{}",i)} // 3,7,12
+for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{i}")} // 3,7,12
 print!("{}",vec![3,4,5].iter().fold(0, |a, x| a + x)); // 12
 vec![3,4,5].iter().sum() // 3+4+5, 12
 vec![3,4,5].iter().product() // 12*5, 60
