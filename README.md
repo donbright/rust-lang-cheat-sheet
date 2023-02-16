@@ -60,8 +60,9 @@ authors = ["ada astra <ada@astra.moon>"]
 
 [dependencies]
 serde = "1.0.80"
-
+# edit main.rs to say "extern crate serde;" and "use serde::*;"
 $ cargo add chrono # auto add dependency w/o wediting Cargo.toml
+# edit main.rs to say "extern crate chrono;" and "use chrono::*;"
 $ cargo build      # downloads dependencies + builds main.rs 
 $ cargo run        # runs program created from main.rs
 $ cargo test       # runs tests (in parallel by default)
