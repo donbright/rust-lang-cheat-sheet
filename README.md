@@ -130,7 +130,10 @@ let s4 = s2.to_string();        // create String from &str
 let s5 = format!("{}{}",s2,s3); // concatenate &str to &str
 let s6 = s + s2;                // concatenate String to &str
 for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{i}");} // split &str
-s.chars().nth(4);               // get nth char. For byte indexing see get() far below
+s.chars().nth(4);               // get nth char. 
+s.get(2..).unwrap(); // ERROR   // get substring failed because 上 was 3 bytes
+s.get(3..).unwrap(); 		// 善若水
+
 let i4 = s.find('水').unwrap_or(-1); // index of character (not always a byte offset, b/c utf8)
 let hellomsg = r###"                 // Multi-line &str with embedded quotes
  "Hello" in Chinese is 你好 ('Ni Hao')
