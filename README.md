@@ -123,7 +123,7 @@ let m = (4,5,"a");            // tuples can have multiple different types as ele
 let (a,b) = m.1, m.3;         // tuple dereference with .1, .2, .3
 let (c,d) = m.p, m.q; //err   // error, cannot index into a tuple using a variable
 
-let s = String::from("上善若水"); // String is a heap variable. Strings are UTF8 encoded.
+let s = String::from("上善若水 "); // String is a heap variable. Strings are UTF8 encoded.
 let s2 = "水善利萬物而不爭";       // "" literals are type &str, different from String
 let s3 = &s;                    // & when prefixed to String gives &str
 let s4 = s2.to_string();        // create String from &str
@@ -133,6 +133,9 @@ for i in "말 한마디에 천냥 빚을 갚는다".split(" ") {print!("{i}");} 
 s.chars().nth(4);               // get nth char. 
 s.get(2..).unwrap(); // ERROR   // get substring failed because 上 was 3 bytes
 s.get(3..).unwrap(); 		// 善若水
+s.trim();                       // 上善若水, no trailing space
+s.starts_with("上善");          // true
+s.ends_with("水");              // true
 
 let i4 = s.find('水').unwrap_or(-1); // index of character (not always a byte offset, b/c utf8)
 let hellomsg = r###"                 // Multi-line &str with embedded quotes
