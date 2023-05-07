@@ -876,6 +876,16 @@ examinecm(cb);
 // ColorMap with 5 colors, 1 bytes per color
 ```
 
+Using strum, a reflection package, you can iterate an enum's values
+
+```
+$ cargo add strum strum_macros
+use strum::IntoEnumIterator;  
+#[derive(Debug, strum_macros::EnumIter)]
+enum Tofu { Smooth, Firm, ExtraFirm }
+Tofu::iter().for_each(|d|print!("{d:?},")); // Smooth,Firm,ExtraFirm
+```
+
 ## Collections, Key-value pairs, Sets
 
 HashMap, aka associative array / key-value store / map 
