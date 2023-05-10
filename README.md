@@ -825,6 +825,24 @@ let b = Apple{color:(9,12,38),..a };      // this is called "struct update"
 
 ```
 
+Structs with function pointers as members
+
+```
+struct ThingDoer {
+    name: String,
+    do_thing: fn(x:&Vec<u8>) -> u8,
+}
+fn baseball(v:&Vec<u8>)->u8{ 42 }
+fn main (){
+    let adder = ThingDoer{name:"addthing".to_string(), do_thing:|n| n.iter().fold(0,|a,b|a+b)};
+    let multer = ThingDoer{name:"multhing".to_string(), do_thing:|n| n.iter().fold(1,|a,b|a*b)};
+    let nother = ThingDoer{name:"nothing".to_string(), do_thing:|n|baseball(&n)};
+    let (f1,f2,f3) = (adder.do_thing,multer.do_thing,nother.do_thing);
+    let v = vec![1,2,3,4];
+    println!("{} {} {}",f1(&v),f2(&v),f3(&v));
+}
+```
+
 
 ## Enums - not like C
 
@@ -1005,7 +1023,7 @@ println!("{:?}",z[0..4]);   // error - not a slice
 println!("{:?}",&z[0..4]);  // OK to take a slice   
 // 1,6,1,8
 
-// pass array to function
+// pass array slice to function
 fn dostuff(x:&mut [u8]) {
 	x[0] = 5;
 	println!("{:?}  {}",x,x.len()); // 5 2 3 4   4
@@ -1251,7 +1269,15 @@ for v in std::env::vars() {println!("{:?}",v);}  // print env vars line by line
 
 ## Reflection
 
-todo
+For enums:
+```
+use strum::IntoEnumIterator;  
+#[derive(strum_macros::EnumIter)]
+enum Attachment { Avoidant, Anxious, Secure };
+Attachment::iter().for_each(|d|print!("{d:?},")); // Avoidant, Anxious, Secure
+```
+
+For others: todo
 
 ## Traits
 
