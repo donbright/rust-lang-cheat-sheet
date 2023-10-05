@@ -1351,6 +1351,8 @@ vec![3,4,5].iter().any(|x| x<2) // false
 print!("{}",vec![3,4,5].iter().eq(vec![1,3,4,5].iter().skip(1))); // true
 
 // misc
+permutations(n) // n-based permutations of each element of the iterator
+unique() // remove duplicates from iterators
 cloned() // clones each element
 unzip() // backwards of zip()
 rev() // reverse iterator
