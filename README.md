@@ -104,13 +104,19 @@ let mut u:Vec<u8> = Vec::new();   // create empty vector of unsigned 8 bit int, 
 let mut v = vec![3,4,5];          // initialize mutable vector using vec! macro
 let w = vec![1,12,13];            // vectors can be immutable too
 let z = (0..999).collect::<Vec<u32>>(); // init Vector from Range (0..999)
-u.push( 2 );                      // append item to vector
+u.push( 2 );                  // add item to vector
+v.rotate_right( 1 );          // in-place rotate of mutable vector [5,3,4]
+v.rotate_left( 1 );           // in-place rotate [3,4,5]
+let s6 = &mut v[1..];         // mutable slice, allows vector-like operations on a...
+s6.rotate_right( 1 );         // ...subslice of the vector [3,5,4] 
 u.pop();                      // vectors can pop, return+remove last input (like a stack)
 v.contains(&3);               // true if vector contains value
 v.remove(1);                  // remove the nth item from a vector...
 v.append(u);                  // append v with u (u becomes empty ([]), both mutable)
 v.extend(w);                  // extend v with w (v owns w, w can be immutable)
 v.resize(200,0);              // make vector have 200 elements, set them to 0
+v.resize(4398046511104,0);    // memory allocation of 4398046511104 bytes failed. core dumped.
+                              // There is no malloc() style checking for success, Rust just crashes
 v[0..100].fill(7);            // set the first 100 elements in v to the value 7
 v[150..].fill(9);             // set the last 50 elements in v to the value 7
 v.fill(9);                    // set all elements of v to have the value 9
@@ -190,7 +196,6 @@ overloading: see struct
 
 ## Run time errors, Crashing, panic, except, unwrap, Option, Result
 
-
 ```rust
 panic!("oops");             // panic!() instantly crashes program
 let v = vec![3,4,5];
@@ -206,9 +211,9 @@ $ cargo run    # will tell you exact line where panic occured, with call stack t
 ### Option - a type for functions that may return Some thing, or None thing 
 
 ```rust
-let v = vec![3,4,5];        // create Vector with three elements. then get() the element at index 12. 
+let v = vec![3,4,5];        // create Vector with three elements. then try to get() the element at index 12. 
 let c = v.get(12);          // there is no element at index 12, but this will not crash, get returns an Option
-print!("{:?}",v.get(12));   // prints the word "None", since there is no 12th element in v, its only 3 long
+print!("{:?}",v.get(12));   // prints the word "None", since there is no 12th element in v
 print!("{:?}",v.get(0));    // prints the word "Some(3)", because there is an element at index 0
                             // Options have a value of either None, or Some(item), i.e. they are "Enums"
 let e = v.get(0).unwrap();  // ok, 'unwrap' the Option returned by get(0), e is now 3
@@ -247,30 +252,27 @@ if let Ok(x) = std::env::var("SHLVL") { println!("SHLVL = {x:?}"); }
 ```
 
 Option in particular can prevent the use of null pointers, preventing crashes one might see in C/C++.
-
+Say we are keeping tack of Owls, we know each Owls name, but not necessarily their last location.
+	
 ```rust
-struct Owlgr { 
-	name: String, 
-	fiznozz: Option<String>     // in C++ this might be a *char which could init as NULL 
-}
+struct Owl { name: String, 
+	last_location: Option<String>  }   // in C++ location might be a *char which could init as NULL 
 
-let owls = [Owlgr{name:"Harry".to_string(),fiznozz:None},
-            Owlgr{name:"Tom".to_string(),fiznozz:Some("Zoozle".to_string())}];
+let owls = [Owl{name:"Opv".to_string(),last_location:None},
+            Owl{name:"Marty".to_string(),last_location:Some("Barn".to_string())}];
 
 for owl in &owls {
-	match &owl.fiznozz {
-		None=>println!("Owlgr named {} has no fiznozz!",owl.name),
-		Some(x)=>println!("Owlgr named {} has fiznozz of {}",owl.name,x),
-	}
-    }
-}
-
+	match &owl.last_location {
+		None=>println!("Owl named {} - location is not being tracked",owl.name),
+		Some(loc)=>println!("Owl named {} - last known location was {}",owl.name,loc),
+}}
 // note that we did not have to check for null pointers, nor derefernece any
-// pointer. if we forgot to check for None, the compiler would give an error.
+// pointer. if we forgot to check for None, the compiler would give an error at compile time.
+// there are no null-related runtime errors possible.
 
 ```
 
-Note that there are no Exceptions. panic/Option/Result/multi-value-return are used instead. 
+Note that there are no Exceptions. Panic/Option/Result/multi-value-return are used instead. 
 
 ## Printing
 
@@ -493,6 +495,8 @@ fn f(t:i8) {                              // nesting functions is OK
 fn f2(t:i8) {             // however, nested functs cannot access outside variables 
   let mut m = 2;          // m is declared outside the scope of g2 block
   fn g2(u:i8){u*5 + m};}  // error[E0434]: can't capture dynamic environment in a fn item
+fn f(t:i8) {
+  struct W{a:int}; t+1 }  // structs can be declared inside functions too
 
 // function pointers
 fn addtwo(t:i8)->i8{t+2}; // simple function, adds 2 to argument. 
@@ -595,41 +599,39 @@ Good examples of the results are on https://crates.io
 
 ```rust
 
-fn zorgnaught_level() -> i32 { 3 }
+let oz = ounces_in_recipe();
 
-let (zoogle, noogle, poogle) = (3,4,5);
-
-let x = zorgnaught_level();
-
-if x == zoogle {                   // normal if else, like C, Pascal, etc
-	print!("zoogle")
-} else if x == noogle {
-	print!("noogle")
-} else if x == poogle {
-	print!("poogle")
+// normal if else, like C, Pascal, etc
+if oz == 1 {
+	print!("1 ounce")
+} else if oz == 8 {
+	print!("1 cup")
+} else if oz == 16 {
+	print!("1 pint")
+} else if oz == 128 {
+	print!("1 gallon")
 } else {
-	print!("unknown zorgnaught level");
+	print!("non-unit # of ounces");
 }
 
-match x {            // match... mostly works on literals not variables
-	3 => print!("zoogle"),    // "=>" signifies a branch or leg of the match
-	4 => print!("noogle"),    // have as many=> legs as you want
-	5 => print!("poogle"),    // end each leg with a comma ,
-	_ => print!("unknown zorgnaught level"), // underscore _ will match anything not previously matched
+match oz { // match, like case, works on literals not variables
+	1 => print!("1 ounce"),  // "=>" signifies a branch or leg of the match
+	8 => print!("1 cup"),    // have as many=> legs as you want
+	16 => print!("1 pint"),    // end each leg with a comma ,
+	128 => print!("1 gallon"),
+	_ => print!("non-unit # of ounces") // underscore _ will match anything not previously matched
 }
 
- // match... can work on enums too
-pub enum Zorglvl{Zoogle,Noogle,Poogle}
+ // match can work on enums too, if you want to limit what values a variable can be assigned
+pub enum UnitVolume{Cup,Pint,Gallon}
 
-fn zorgnaught_level2() -> Zorglvl { Zorglvl::Zoogle }
+let ozv = UnitVolume::Cup;
 
-let x = zorgnaught_level2();
-
-match x {           
-	Zorglvl::Zoogle => print!("zoogle"),    // "=>" signifies a branch or leg of the match
-	Zorglvl::Noogle => print!("noogle"),    // have as many=> legs as you want
-	Zorglvl::Poogle => print!("poogle"),    // end each leg with a comma ,
-        // don't need underscore, enum checks all, covers all
+match ozv {           
+	UnitVolume::Cup => print!("cup"),    // "=>" signifies a branch or leg of the match
+	UnitVolume::Pint => print!("pint"),    // have as many=> legs as you want
+	UnitVolume::Gallon => print!("gallon"),    // end each leg with a comma ,
+        // don't need underscore match-arm with Enums, it knows its complete
 }
 
 let x = [1i8,2i8];                    // match patterns can be structs, enums, arrays, etc
@@ -1304,7 +1306,7 @@ println!("{:?}",i.next());  // None
 let mut i = v.iter();
 print!("{:?}",i.collect::<Vec<_>>(); // iterator back to vector 
 
-// basic iteration and sorting
+// basic iteration
 for i in v.iter() {print!("{i} ");} // 3 4 5 
 vec![3,4,5].iter().for_each(|x| print!("{x} ")); // 3 4 5
 let biggest = v.iter().max();        // 5
@@ -1319,17 +1321,20 @@ vec![3,4,5].iter().position(|&&x| x == 5) // 2 // kind of like indexOf() in othe
 (3..=5).chain(9..=11).for_each(|i|print!("{i:?} ")); // 3 4 5 9 10 11
 (3..=5).zip(9..=11).for_each(|i|print!("{i:?} ")); // (3, 9) (4, 10) (5, 11) 
 
-// skipping, removing or modifying items
+// skipping elements
 for i in v.iter().step_by(2) {print!("{i} ");} // 3 5 vec![
 for i in vec![3,4,5].iter().skip(1) {print("{i}");} // 4, 5
 print!("{:?}",vec![3,4,5].into_iter().map(|x| 2 * x).collect::<Vec<u8>>()); // 6 8 10
 for i in vec![3,4,5].iter().filter(|x| x<=4) {print!("{i}");} // 3 4
 for i in vec![Some(3),None,Some(4)].iter().fuse() {print!("{i}");} // Some(3), None
-for i in vec![4,5,3,3].iter().skip_while(|x| **x>=4) {print!("{i},");} // 3,3
+vec![4,5,3,3].iter().skip_while(|x| **x>=4).for_each(|x|print!("{},",x));  // 3,3, 
 for i in vec![3,4,5,3].iter().skip_while(|x| **x>=4) {print!("{i},");} // 3,4,5,3
 for i in vec![4,5,3,3,9,6].iter().take_while(|x| **x>=4) {print!("{i},");} // 4,5
 for i in vec![3,4,5,3].iter().take_while(|x| **x>=4) {print!("{i},");} //   (nothing) 
-let v =[3,4,5]; for i in v.iter().cycle().skip(2); // 5,3,4 - cycle allows wraparound
+vec![3,4,5].iter().cycle().take(6).for_each(|x|print!("{},",x)); // 3,4,5,3,4,5 cycle allows wraparound
+
+// modify elements
+v.iter_mut().for_each(|v|*v=*v+5);
 
 // mathematical operations
 for i in vec![3,4,5].iter().scan(0,|a,&x| {*a=*a+x;Some(*a)}) {print!("{i}")} // 3,7,12
@@ -1407,7 +1412,7 @@ Itertools library: more adapters
 
     // modifying and removing items
     "bananas".chars().coalesce(|x,y| if x=='a'{Ok('z')}else{Err((x,y))}).collect::<String>(); 
-    // coalesce will replace a pair of items with a new single item, if the item matches
+    // result = bzzz - coalesce will replace a pair of items with a new single item, if the item matches
     vec![1,2,3].into_iter().update(|n| *n *= *n).collect_vec(); // [1,4,9]
     let mut s=['.';3];s.iter_mut().set_from("abcdefgh".chars()); s.iter().collect::<String>(); // "abc"
 ```
