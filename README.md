@@ -1420,7 +1420,7 @@ Itertools library: more adapters
 ## Implementing your own iterator for your own struct
 
 If you want to be able to use all the cool adapters like filter(), map(), fold(), etc, 
-on your own cusom data structure you will need to implement the Iterator trait for your 
+on your own cusom data structure you can implement the Iterator trait for your 
 struct. Basically you need to create another struct called a "XIterator" that implements 
 a 'next()' method. Then you create a method in your own struct called 'iter()' that returns 
 a brand new XIterator struct.
@@ -1513,6 +1513,21 @@ fn main() {
     m.iter_mut().for_each(|i| *i += 1);
     m.iter().for_each(|i| print!("{:?} ",i));println!(""); // 4 5 6
 }
+```
+
+### fake your own iterator with Itertools 
+
+Itertools can help build iterators without creating your own custom struct.
+For example you can return an Iterator from a function that modifies your data. A short example
+follows for the the iproduct! macro, and the cartesian_product adapter.
+
+```rust
+fn f2() -> impl Iterator<Item = (u8,u8)> { iproduct!(0..2,0..3) }
+fn f3(mut v:Vec<u8>) -> impl Iterator<Item = (u8,u8)> {
+    v.push(1); v.into_iter().cartesian_product(0..3) }
+
+for vertex in f2() {println!("{:?}", vertex);} // (0,0) (0,1) (0,2) (1,0) (1,1) (1,2)
+for vertex in f3(vec![0]) {println!("{:?}", vertex);} // (0,0) (0,1) (0,2) (1,0) (1,1) (1,2)
 ```
 
 ## Math
