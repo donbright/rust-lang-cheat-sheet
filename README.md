@@ -1515,11 +1515,11 @@ fn main() {
 }
 ```
 
-### fake your own iterator with Itertools 
+### make your own Iterator with impl Iterator 
 
-Itertools can help build iterators without creating your own custom struct.
-For example you can return an Iterator from a function that modifies your data. A short example
-follows for the the iproduct! macro, and the cartesian_product adapter.
+"impl Iterator" can help build iterators without creating your own custom struct.
+For example you can return an Iterator from a function that modifies your data. Examples
+follows for Itertools iproduct! macro and cartesian_product adapter.
 
 ```rust
 fn f2() -> impl Iterator<Item = (u8,u8)> { iproduct!(0..2,0..3) }
