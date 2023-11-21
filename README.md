@@ -3,6 +3,25 @@
 [![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
 
 
+## Singularity notice
+
+As of 2023, 90+% of the stuff on this cheat-sheet you can figure out a lot faster by asking an AI, like ChatGPT. Ask it simply:
+
+     "Please help me write a Rust function that takes a Vector of floating point numbers and returns an array of strings" 
+     
+The LLM will spit out example code in two seconds, and then within three clicks you can copy/paste that code into 
+playground.rust-lang.org , hold down Control-Enter, and run it, and if there is an error, just copy/paste the entire
+error message back into ChatGPT and it will tell you what the error was and how to fix it. You can easily adapt this
+to your own needs much faster than building up some example from a cheatsheet. 
+
+Now if you want to learn more about something, its really easy to just ask the LLM 
+
+     "Could you please explain to me how Vectors and Strings in Rust work? What are they? Explain it to
+     me like im 10 years old, then again like I'm an undergrad with a background in C++" 
+     
+and it will just write several pages of explanation and simple examples just for you. This kind of "Cheat Sheet"
+is kind of becoming obsolete in the face of such technology.  
+
 ## Warning
 
 This cheat sheet is in a reasonably useful state for basic things, but it does contain many errors and typos and 
