@@ -45,7 +45,9 @@ Also note that Rust is still changing quite a bit in 2019-2022 so some of the be
 * smart pointers and reference counted: Box, Rc, Arc
 * online playgrounds: https://play.rust-lang.org, https://tio.run/ 
 * A survivial horror game where griefing is ... oops wrong Rust
-
+* Polymorphism: Traits, Trait Extensions, Trait Objects
+* Generic programming (a la C++ Templates): Generic Types
+  
 ## Hello World
 
 See https://www.rust-lang.org for installation details.
